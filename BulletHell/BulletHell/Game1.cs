@@ -9,6 +9,7 @@ namespace BulletHell
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        // Initialize screensize and other game properties
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -16,6 +17,7 @@ namespace BulletHell
             IsMouseVisible = true;
         }
 
+        // Set any values that weren't set in the constructor for Game1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -23,6 +25,8 @@ namespace BulletHell
             base.Initialize();
         }
 
+
+        // Load in content (sprites, assets, etc.)
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -30,6 +34,7 @@ namespace BulletHell
             // TODO: use this.Content to load your game content here
         }
 
+        // Update is called 60 times per second (60 FPS)
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
