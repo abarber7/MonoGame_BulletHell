@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BulletHell.Models
+namespace BulletHell.Player
 {
+    // Allows for rebinding.
     class Input
     {
         public Keys Up;

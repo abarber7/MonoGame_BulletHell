@@ -1,0 +1,2 @@
+Different player speeds for slow mode:
+https://gamedev.stackexchange.com/questions/75805/libgdx-detect-when-player-is-outside-of-screen/75862

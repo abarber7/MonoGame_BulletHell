@@ -7,7 +7,7 @@ namespace BulletHell.Sprites.Entities.Enemies
 {
     abstract class Enemy : Entity
     {
-        public Enemy(Texture2D texture) : base(texture)
+        public Enemy(Dictionary<string, object> enemyProperties) : base(enemyProperties)
         {
 
         }

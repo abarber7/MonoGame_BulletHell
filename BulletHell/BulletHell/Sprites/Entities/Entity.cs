@@ -5,8 +5,18 @@ using System.Text;
 
 namespace BulletHell.Sprites.Entities
 {
-    abstract class Entity : Sprite
+    internal abstract class Entity : Sprite
     {
-        private int healthPoints;
+        //private int healthPoints;
+
+        protected Entity(Dictionary<string, object> entityProperties) : base(entityProperties)
+        {
+            //healthPoints = (int)entityProperties["healthPoints"];
+        }
+
+        protected void Move()
+        {
+
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BulletHell.Utilities
 {
-    class UtlilityManager
+    internal class UtlilityManager
     {
         public static void Initialize(ContentManager content)
         {

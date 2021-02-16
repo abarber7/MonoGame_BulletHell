@@ -12,7 +12,7 @@ namespace BulletHell.Utilities
 
         public static Texture2D getTexture(string textureName)
         {
-            var texture = content.Load<Texture2D>(textureName);
+            var texture = Content.Load<Texture2D>(textureName);
 
             // Need to throw error if texture was not found.
 

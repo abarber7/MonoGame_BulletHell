@@ -1,5 +1,4 @@
-﻿using BulletHell.Models;
-using BulletHell.Sprites;
+﻿using BulletHell.Sprites;
 using BulletHell.Sprites.Entities;
 using BulletHell.Utilities;
 using Microsoft.Xna.Framework;
@@ -21,6 +20,8 @@ namespace BulletHell
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            UtlilityManager.Initialize(this.Content);
         }
 
         // Set any values that weren't set in the constructor for BulletHell
@@ -29,7 +30,6 @@ namespace BulletHell
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            UtlilityManager.Initialize(this.Content);
         }
 
 
@@ -41,35 +41,15 @@ namespace BulletHell
             // TODO: use this.Content to load your game content here
             var playerTexture = Content.Load<Texture2D>("Block");
 
-            _sprites = new List<Sprite>()
+            _sprites = new List<Sprite>();
+
+            List<Dictionary<string, object>> listOfEntitiesToCreate = this.demoEntites();
+
+            foreach (Dictionary<string, object> entity in listOfEntitiesToCreate)
             {
-                new Player(playerTexture)
-                {
-                    Input = new Input()
-                    {
-                        Left = Keys.A,
-                        Right = Keys.D,
-                        Up = Keys.W,
-                        Down = Keys.S,
-                    },
-                    Position = new Vector2(100, 100),
-                    Color = Color.Blue,
-                    Speed = 5f,
-                },
-                new Player(playerTexture)
-                {
-                    Input = new Input()
-                    {
-                        Left = Keys.Left,
-                        Right = Keys.Right,
-                        Up = Keys.Up,
-                        Down = Keys.Down,
-                    },
-                    Position = new Vector2(300, 100),
-                    Color = Color.Red,
-                    Speed = 5f,
-                }
-            };
+                Sprite sprite = EntityFactory.createEntity(entity);
+                _sprites.Add(sprite);
+            }
         }
 
         // Update is called 60 times per second (60 FPS). Put all game logic here.
@@ -95,6 +75,33 @@ namespace BulletHell
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private List<Dictionary<string, object>> demoEntites()
+        {
+            List<Dictionary<string, object>> listOfEntitiesToCreate = new List<Dictionary<string, object>>();
+
+            Dictionary<string, object> player1 = new Dictionary<string, object>(){
+                { "entityType", "player" },
+                { "textureName", "Block" },
+                { "color", "Blue" },
+                { "xPosition", 200 },
+                { "yPosition", 200 }
+            };
+
+            listOfEntitiesToCreate.Add(player1);
+
+            Dictionary<string, object> player2 = new Dictionary<string, object>(){
+                { "entityType", "player" },
+                { "textureName", "Block" },
+                { "color", "Red" },
+                { "xPosition", 100 },
+                { "yPosition", 100 }
+            };
+
+            listOfEntitiesToCreate.Add(player2);
+
+            return listOfEntitiesToCreate;
         }
     }
 }

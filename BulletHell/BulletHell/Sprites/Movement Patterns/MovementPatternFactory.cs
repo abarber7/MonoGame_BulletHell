@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,16 @@ namespace BulletHell.Sprites.Movement_Patterns
     {
         public static MovementPattern createMovementPattern(Dictionary<string, object> movementPatternProperties)
         {
-            return null;
+            MovementPattern movementPattern = null;
+            switch (movementPatternProperties["entityType"])
+            {
+                case "linear":
+                    movementPattern = new Linear(movementPatternProperties);
+                    break;
+                default:
+                    throw new Exception("Invalid Entity");
+            }
+            return movementPattern;
         }
     }
 }

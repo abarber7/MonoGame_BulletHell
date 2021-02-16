@@ -1,4 +1,5 @@
-﻿using BulletHell.Models;
+﻿using BulletHell.Player;
+using BulletHell.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -27,7 +28,12 @@ namespace BulletHell.Sprites
 
         public Sprite(Dictionary<string, object> spriteProperties)
         {
+            string textureName = (string)spriteProperties["textureName"];
+            _texture = TextureFactory.getTexture(textureName);
 
+            int xPosition = (int)spriteProperties["xPosition"];
+            int yPosition = (int)spriteProperties["yPosition"];
+            Position = new Vector2(xPosition, yPosition);
         }
 
         public virtual void Update(GameTime gametime, List<Sprite> sprits)

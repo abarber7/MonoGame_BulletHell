@@ -1,16 +1,27 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BulletHell.Player;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BulletHell.Utilities;
 
 namespace BulletHell.Sprites.Entities
 {
-    class Player : Entity
+    internal class Player : Entity
     {
-        public Player(Dictionary<string, object> entityProperties)
+        public Player(Dictionary<string, object> entityProperties) : base(entityProperties)
         {
+            Input = new Input()
+            {
+                Left = Keys.A,
+                Right = Keys.D,
+                Up = Keys.W,
+                Down = Keys.S,
+            };
+            Color = System.Drawing.Color.FromName((string)entityProperties["color"]).ToXNA();
+            Speed = 5f;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
