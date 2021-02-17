@@ -17,7 +17,11 @@ namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            this.Attack(sprites);
 
+            this.Move(sprites);
         }
+
+        public 
     }
 }

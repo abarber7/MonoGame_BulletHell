@@ -8,6 +8,7 @@ namespace BulletHell.Sprites.Projectiles.Concrete_Projectiles
 {
     class Bullet : Projectile
     {
+
         public Bullet(Dictionary<string, object> bulletProperties) : base(bulletProperties)
         {
             
@@ -15,7 +16,7 @@ namespace BulletHell.Sprites.Projectiles.Concrete_Projectiles
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-
+            base.Update(gameTime, sprites);
         }
     }
 }

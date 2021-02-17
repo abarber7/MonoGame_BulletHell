@@ -11,23 +11,54 @@ namespace BulletHell.Sprites.Entities
 {
     internal class Player : Entity
     {
+        public Input input;
+        private KeyboardState currentKey;
+        private KeyboardState previousKey;
+
         public Player(Dictionary<string, object> entityProperties) : base(entityProperties)
         {
-            Input = new Input()
+            input = new Input()
             {
                 Left = Keys.A,
                 Right = Keys.D,
                 Up = Keys.W,
                 Down = Keys.S,
             };
-            Color = System.Drawing.Color.FromName((string)entityProperties["color"]).ToXNA();
-            Speed = 5f;
+            string colorName = (string)entityProperties["color"];
+            color = System.Drawing.Color.FromName(colorName).ToXNA();
+            speed = 5f;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            Move();
+            previousKey = currentKey;
+            currentKey = Keyboard.GetState();
 
+            this.Attack(sprites);
+
+            this.Move(sprites);
+        }
+
+        private void Move(List<Sprite> sprites)
+        {
+            if (Keyboard.GetState().IsKeyDown(input.Left))
+            {
+                direction.X = -speed;
+            }
+            else if (Keyboard.GetState().IsKeyDown(input.Right))
+            {
+                direction.X = speed;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(input.Up))
+            {
+                direction.Y = -speed;
+            }
+            else if (Keyboard.GetState().IsKeyDown(input.Down))
+            {
+                direction.Y = speed;
+            }
+            
             foreach (var sprite in sprites)
             {
                 if (sprite == this)
@@ -35,39 +66,26 @@ namespace BulletHell.Sprites.Entities
                     continue;
                 }
 
-                if((this.Velocity.X > 0 && this.IsTouchingLeft(sprite)) || (this.Velocity.X < 0 && this.IsTouchingRight(sprite)))
+                if ((this.direction.X > 0 && this.IsTouchingLeft(sprite)) || (this.direction.X < 0 && this.IsTouchingRight(sprite)))
                 {
-                    this.Velocity.X = 0;
+                    this.direction.X = 0;
                 }
-                if ((this.Velocity.Y > 0 && this.IsTouchingTop(sprite)) || (this.Velocity.Y < 0 && this.IsTouchingBottom(sprite)))
+                if ((this.direction.Y > 0 && this.IsTouchingTop(sprite)) || (this.direction.Y < 0 && this.IsTouchingBottom(sprite)))
                 {
-                    this.Velocity.Y = 0;
+                    this.direction.Y = 0;
                 }
             }
-
-            Position += Velocity;
-
-            Velocity = Vector2.Zero;
+            
+            position += this.direction;
+            velocity = direction;
+            this.direction = Vector2.Zero;
         }
 
-        private void Move()
+        private void Attack(List<Sprite> sprites)
         {
-            if (Keyboard.GetState().IsKeyDown(Input.Left))
+            if (currentKey.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space))
             {
-                Velocity.X = -Speed;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Input.Right))
-            {
-                Velocity.X = Speed;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Input.Up))
-            {
-                Velocity.Y = -Speed;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Input.Down))
-            {
-                Velocity.Y = Speed;
+                base.Attack(sprites);
             }
         }
     }

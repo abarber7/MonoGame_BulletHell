@@ -10,14 +10,14 @@ namespace BulletHell
 {
     public class BulletHell : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private List<Sprite> _sprites;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private List<Sprite> sprites;
 
         // Initialize screensize and other game properties
         public BulletHell()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
@@ -36,43 +36,53 @@ namespace BulletHell
         // Load in content (sprites, assets, etc.)
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            var playerTexture = Content.Load<Texture2D>("Block");
-
-            _sprites = new List<Sprite>();
+            sprites = new List<Sprite>();
 
             List<Dictionary<string, object>> listOfEntitiesToCreate = this.demoEntites();
 
             foreach (Dictionary<string, object> entity in listOfEntitiesToCreate)
             {
                 Sprite sprite = EntityFactory.createEntity(entity);
-                _sprites.Add(sprite);
+                sprites.Add(sprite);
             }
         }
 
         // Update is called 60 times per second (60 FPS). Put all game logic here.
         protected override void Update(GameTime gameTime)
         {
-            foreach (var sprite in _sprites)
+            foreach (var sprite in sprites.ToArray())
             {
-                sprite.Update(gameTime, _sprites);
+                sprite.Update(gameTime, sprites);
             }
+
+            this.PostUpdate();
 
             base.Update(gameTime);
         }
 
+
+        private void PostUpdate()
+        {
+            for (int i = sprites.Count - 1; i > 0; i--)
+            {
+                if(sprites[i].isRemoved)
+                {
+                    sprites.RemoveAt(i);
+                }
+            }
+        }
 
         // This is called when the game should draw itself
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
-            foreach (var sprite in _sprites)
-                sprite.Draw(_spriteBatch);
-            _spriteBatch.End();
+            spriteBatch.Begin();
+            foreach (var sprite in sprites)
+                sprite.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
@@ -81,25 +91,19 @@ namespace BulletHell
         {
             List<Dictionary<string, object>> listOfEntitiesToCreate = new List<Dictionary<string, object>>();
 
-            Dictionary<string, object> player1 = new Dictionary<string, object>(){
+            Dictionary<string, object> player = new Dictionary<string, object>(){
                 { "entityType", "player" },
                 { "textureName", "Block" },
                 { "color", "Blue" },
-                { "xPosition", 200 },
-                { "yPosition", 200 }
+                { "xPosition", 500 },
+                { "yPosition", 500 },
+                { "projectile", new Dictionary<string, object>() {
+                    { "projectileType", "bullet" },
+                    { "textureName", "Bullet" }}
+                }
             };
 
-            listOfEntitiesToCreate.Add(player1);
-
-            Dictionary<string, object> player2 = new Dictionary<string, object>(){
-                { "entityType", "player" },
-                { "textureName", "Block" },
-                { "color", "Red" },
-                { "xPosition", 100 },
-                { "yPosition", 100 }
-            };
-
-            listOfEntitiesToCreate.Add(player2);
+            listOfEntitiesToCreate.Add(player);
 
             return listOfEntitiesToCreate;
         }
