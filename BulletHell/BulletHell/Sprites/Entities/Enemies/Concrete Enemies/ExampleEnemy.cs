@@ -14,6 +14,7 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            base.Update(gameTime, sprites);
             if (this.previousTime != (int)gameTime.TotalGameTime.TotalSeconds)
             {
                 this.Attack(sprites);

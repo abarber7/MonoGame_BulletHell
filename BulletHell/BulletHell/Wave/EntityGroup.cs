@@ -1,13 +1,12 @@
 ﻿namespace BulletHell.Sprites
 {
-    using System;
     using System.Collections.Generic;
     using global::BulletHell.Sprites.Entities;
 
     internal class EntityGroup
     {
-        Entity entityType;
-        int entityAmount;
+        private Entity entityType;
+        private int entityAmount;
 
         public EntityGroup(Dictionary<string, object> entityGroupProperties)
         {

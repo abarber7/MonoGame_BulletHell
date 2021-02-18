@@ -1,15 +1,12 @@
 ﻿namespace BulletHell.Sprites
 {
-    using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Entities;
 
     internal class Wave
     {
-        int waveNumber;
-        int waveDuration;
-        TimeSpan startTime;
-        List<EntityGroup> entityGroups = new List<EntityGroup>();
+        public int waveNumber;
+        public int waveDuration;
+        private List<EntityGroup> entityGroups = new List<EntityGroup>();
 
         public Wave(Dictionary<string, object> waveProperties)
         {

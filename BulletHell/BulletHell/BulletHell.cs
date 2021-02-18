@@ -12,6 +12,7 @@
         private SpriteBatch spriteBatch;
         private List<Sprite> sprites;
         private List<Wave> waves;
+        private double timeUntilNextWave = 0;
 
         // Initialize screensize and other game properties
         public BulletHell()
@@ -39,20 +40,23 @@
 
             this.sprites = new List<Sprite>();
 
+            this.waves = new List<Wave>();
+
             this.CreatePlayer();
 
-            List<Dictionary<string, object>> listOfEntitiesToCreate = this.DemoEntites();
+            // For individual entities
+            // this.CreateEnemies();
 
-            foreach (Dictionary<string, object> entity in listOfEntitiesToCreate)
-            {
-                Sprite sprite = EntityFactory.CreateEntity(entity);
-                this.sprites.Add(sprite);
-            }
+            // For waves
+            this.CreateWaves();
+
         }
 
         // Update is called 60 times per second (60 FPS). Put all game logic here.
         protected override void Update(GameTime gameTime)
         {
+            this.CheckAndDeployWave(gameTime);
+
             foreach (var sprite in this.sprites.ToArray())
             {
                 sprite.Update(gameTime, this.sprites);
@@ -61,17 +65,6 @@
             this.PostUpdate();
 
             base.Update(gameTime);
-        }
-
-        private void PostUpdate()
-        {
-            for (int i = this.sprites.Count - 1; i >= 0; i--)
-            {
-                if (this.sprites[i].IsRemoved)
-                {
-                    this.sprites.RemoveAt(i);
-                }
-            }
         }
 
         // This is called when the game should draw itself
@@ -88,6 +81,35 @@
             this.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void PostUpdate()
+        {
+            for (int i = this.sprites.Count - 1; i >= 0; i--)
+            {
+                if (this.sprites[i].IsRemoved)
+                {
+                    this.sprites.RemoveAt(i);
+                }
+            }
+        }
+
+        private void CheckAndDeployWave(GameTime gameTime)
+        {
+            this.timeUntilNextWave -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.timeUntilNextWave <= 0 && this.waves.Count > 0)
+            {
+                this.timeUntilNextWave = this.waves[0].waveDuration;
+                this.waves[0].CreateWave(this.sprites);
+                this.waves.RemoveRange(0, 1);
+            }
+        }
+
+        private void CreatePlayer()
+        {
+            Dictionary<string, object> playerProperties = this.PlayerProperties();
+            Sprite sprite = EntityFactory.CreateEntity(playerProperties);
+            this.sprites.Add(sprite);
         }
 
         private Dictionary<string, object> PlayerProperties()
@@ -127,49 +149,19 @@
             return playerProperties;
         }
 
-        private void CreatePlayer()
+        private void CreateEnemies()
         {
-            Dictionary<string, object> playerProperties = this.PlayerProperties();
-            Sprite sprite = EntityFactory.CreateEntity(playerProperties);
-            this.sprites.Add(sprite);
+            List<Dictionary<string, object>> listOfEnemiesToProperties = this.EnemyProperties();
+            foreach (Dictionary<string, object> entityProperties in listOfEnemiesToProperties)
+            {
+                Sprite sprite = EntityFactory.CreateEntity(entityProperties);
+                this.sprites.Add(sprite);
+            }
         }
 
-        private List<Dictionary<string, object>> DemoEntites()
+        private List<Dictionary<string, object>> EnemyProperties()
         {
-            List<Dictionary<string, object>> listOfEntitiesToCreate = new List<Dictionary<string, object>>();
-
-            Dictionary<string, object> player = new Dictionary<string, object>()
-            {
-                { "entityType", "player" },
-                { "textureName", "Block" },
-                { "color", "Blue" },
-                {
-                    "movementPattern", new Dictionary<string, object>()
-                {
-                    { "movementPatternType", "playerInput" },
-                    { "xPosition", 200 },
-                    { "yPosition", 200 },
-                    { "speed", 4f },
-                }
-                },
-                {
-                    "projectile", new Dictionary<string, object>()
-                {
-                    { "projectileType", "bullet" },
-                    { "textureName", "Bullet" },
-                    { "color", "Blue" },
-                    {
-                        "movementPattern", new Dictionary<string, object>()
-                    {
-                        { "movementPatternType", "linear" },
-                        { "xVelocity", 0 },
-                        { "yVelocity", -1 },
-                        { "speed", 8f },
-                    }
-                    },
-                }
-                },
-            };
+            List<Dictionary<string, object>> listOfEnemiesToProperties = new List<Dictionary<string, object>>();
 
             Dictionary<string, object> enemy = new Dictionary<string, object>()
             {
@@ -203,41 +195,48 @@
                 },
             };
 
-            listOfEntitiesToCreate.Add(player);
-            listOfEntitiesToCreate.Add(enemy);
-
-            return listOfEntitiesToCreate;
+            listOfEnemiesToProperties.Add(enemy);
+            return listOfEnemiesToProperties;
         }
 
-        private List<Wave> DemoWaves()
+        private void CreateWaves()
         {
-            List<Wave> waves = new List<Wave>();
+            List<Dictionary<string, object>> listOfWaveProperties = this.WaveProperties();
+
+            foreach (Dictionary<string, object> waveProperties in listOfWaveProperties)
+            {
+                Wave wave = new Wave(waveProperties);
+                this.waves.Add(wave);
+            }
+        }
+
+        private List<Dictionary<string, object>> WaveProperties()
+        {
+            List<Dictionary<string, object>> listOfWaveProperties = new List<Dictionary<string, object>>();
 
             Dictionary<string, object> wave1Properties = new Dictionary<string, object>()
             {
                 { "waveNumber", 1 },
-                { "waveDuration", 1000 },
+                { "waveDuration", 5 },
                 {
-                    "EntityGroups", new List<Dictionary<string, object>>()
+                    "entityGroups", new List<Dictionary<string, object>>()
                     {
                     new Dictionary<string, object>()
                     {
-                        { "EntityAmount", 1 },
+                        { "entityAmount", 1 },
                         {
-                            "EntityProperties", new Dictionary<string, object>()
+                            "entityProperties", new Dictionary<string, object>()
                             {
-                            { "entityType", "ExampleEnemy" },
+                            { "entityType", "exampleEnemy" },
                             { "textureName", "Block" },
                             { "color", "Red" },
+                            { "lifeSpan", 5 },
                             {
                                 "movementPattern", new Dictionary<string, object>()
                                 {
-                                { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 100 },
-                                { "yStartPosition", 100 },
-                                { "xEndPosition", 200 },
-                                { "yEndPosition", 100 },
-                                { "speed", 2f },
+                                { "movementPatternType", "Static" },
+                                { "xPosition", 100 },
+                                { "yPosition", 100 },
                                 }
                             },
                             {
@@ -245,6 +244,7 @@
                             {
                                 { "projectileType", "bullet" },
                                 { "textureName", "Bullet" },
+                                { "color", "Red" },
                                 {
                                     "movementPattern", new Dictionary<string, object>()
                                     {
@@ -263,11 +263,60 @@
                 },
             };
 
-            Wave wave1 = new Wave(wave1Properties);
+            listOfWaveProperties.Add(wave1Properties);
 
-            waves.Add(wave1);
+            Dictionary<string, object> wave2Properties = new Dictionary<string, object>()
+            {
+                { "waveNumber", 2 },
+                { "waveDuration", 5 },
+                {
+                    "entityGroups", new List<Dictionary<string, object>>()
+                    {
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                            { "entityType", "exampleEnemy" },
+                            { "textureName", "Block" },
+                            { "color", "Green" },
+                            { "lifeSpan", 5 },
+                            {
+                                "movementPattern", new Dictionary<string, object>()
+                                {
+                                { "movementPatternType", "Static" },
+                                { "xPosition", 300 },
+                                { "yPosition", 100 },
+                                }
+                            },
+                            {
+                                "projectile", new Dictionary<string, object>()
+                            {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "color", "Green" },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                    { "movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4f },
+                                    }
+                                },
+                            }
+                            },
+                            }
+                        },
+                    },
+                    }
+                },
+            };
 
-            return waves;
+            listOfWaveProperties.Add(wave2Properties);
+
+            return listOfWaveProperties;
         }
     }
 }

@@ -8,8 +8,7 @@
     {
         public static Entity CreateEntity(Dictionary<string, object> entityProperties)
         {
-            Entity entity = null;
-            entity = entityProperties["entityType"] switch
+            return entityProperties["entityType"] switch
             {
                 "player" => new Player(entityProperties),
                 "exampleEnemy" => new ExampleEnemy(entityProperties),
@@ -19,7 +18,6 @@
                 "finalBoss" => new FinalBoss(entityProperties),
                 _ => throw new Exception("Invalid Entity"),
             };
-            return entity;
         }
     }
 }

@@ -9,6 +9,7 @@
         public Projectile(Dictionary<string, object> projectileProperties)
             : base(projectileProperties)
         {
+
         }
 
         public Sprite Parent { get; set; }

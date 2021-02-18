@@ -10,7 +10,7 @@
         {
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
+        public void Update(GameTime gameTime, List<Sprite> sprites)
         {
         }
     }
