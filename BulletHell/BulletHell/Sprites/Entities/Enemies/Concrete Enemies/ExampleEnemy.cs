@@ -10,15 +10,23 @@ namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
     class ExampleEnemy : Enemy
     {
+        int previousTime = 0;
+
         public ExampleEnemy(Dictionary<string, object> exampleGruntProperties) : base(exampleGruntProperties)
         {
-            
+
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.Attack(sprites);
+            if (previousTime != (int)gameTime.TotalGameTime.TotalSeconds)
+            {
+                this.Attack(sprites);
+            }
 
+            previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
+
+            base.Collision(sprites);
             //this.Move(sprites);
         }
 

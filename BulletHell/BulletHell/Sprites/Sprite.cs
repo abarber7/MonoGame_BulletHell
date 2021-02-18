@@ -18,6 +18,7 @@ namespace BulletHell.Sprites
         protected float timeAlive;
         public float lifeSpan;
 
+        // Serves as hitbox
         public Rectangle Rectangle
         {
             get
@@ -31,8 +32,12 @@ namespace BulletHell.Sprites
             string textureName = (string)spriteProperties["textureName"];
             texture = TextureFactory.getTexture(textureName);
 
+            string colorName = (string)spriteProperties["color"];
+            color = System.Drawing.Color.FromName(colorName).ToXNA();
+
             movement = MovementPatternFactory.createMovementPattern((Dictionary<string, object>)spriteProperties["movementPattern"]);
             movement.origin = new Vector2(texture.Width / 2, texture.Height / 2); //orgin is based on texture
+            movement.parent = this;
         }
 
         public virtual void Update(GameTime gametime, List<Sprite> sprits)
@@ -46,7 +51,7 @@ namespace BulletHell.Sprites
         }
 
         #region Collision
-        protected bool IsTouchingLeft(Sprite sprite)
+        protected bool IsTouchingLeftSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Right + this.movement.velocity.X > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Left &&
@@ -54,7 +59,7 @@ namespace BulletHell.Sprites
               this.Rectangle.Top < sprite.Rectangle.Bottom;
         }
 
-        protected bool IsTouchingRight(Sprite sprite)
+        protected bool IsTouchingRightSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Left + this.movement.velocity.X < sprite.Rectangle.Right &&
               this.Rectangle.Right > sprite.Rectangle.Right &&
@@ -62,7 +67,7 @@ namespace BulletHell.Sprites
               this.Rectangle.Top < sprite.Rectangle.Bottom;
         }
 
-        protected bool IsTouchingTop(Sprite sprite)
+        protected bool IsTouchingTopSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Bottom + this.movement.velocity.Y > sprite.Rectangle.Top &&
               this.Rectangle.Top < sprite.Rectangle.Top &&
@@ -70,13 +75,27 @@ namespace BulletHell.Sprites
               this.Rectangle.Left < sprite.Rectangle.Right;
         }
 
-        protected bool IsTouchingBottom(Sprite sprite)
+        protected bool IsTouchingBottomSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Top + this.movement.velocity.Y < sprite.Rectangle.Bottom &&
               this.Rectangle.Bottom > sprite.Rectangle.Bottom &&
               this.Rectangle.Right > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Right;
         }
+
+
         #endregion
+
+        protected bool hasCollidedWithASprite(Sprite sprite)
+        {
+            if ((this.movement.velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.movement.velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)) || (this.movement.velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.movement.velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

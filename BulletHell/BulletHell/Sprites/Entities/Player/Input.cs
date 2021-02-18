@@ -12,5 +12,6 @@ namespace BulletHell.Player
         public Keys Down;
         public Keys Left;
         public Keys Right;
+        public Keys Attack;
     }
 }

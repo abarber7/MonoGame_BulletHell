@@ -15,6 +15,24 @@ namespace BulletHell.Sprites.Entities.Enemies
 
         }
 
-        
+        protected void Collision(List<Sprite> sprites)
+        {
+            foreach (var sprite in sprites)
+            {
+                if (sprite == this)
+                {
+                    continue;
+                }
+
+                if(sprite is Projectile projectile)
+                {
+                    if (projectile.parent is Player && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
+                    {
+                        this.isRemoved = true;
+                        sprite.isRemoved = true;
+                    }
+                }    
+            }
+        }
     }
 }

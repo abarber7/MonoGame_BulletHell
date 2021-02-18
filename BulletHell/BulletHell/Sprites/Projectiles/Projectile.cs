@@ -18,21 +18,33 @@ namespace BulletHell.Sprites.Projectiles
 
         public override void Update(GameTime gameTime, List<Sprite> sprits)
         {
-            if (parent.isRemoved)
+            this.Move();
+        }
+
+        public void Move()
+        {
+            if (this.outOfBounds())
             {
                 this.isRemoved = true;
             }
-            timeAlive += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (timeAlive >= lifeSpan)
-                this.isRemoved = true;
-
-            movement.position += movement.velocity;
+            this.movement.Move();
         }
 
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public bool outOfBounds()
+        {
+            if (this.movement.IsTouchingLeftOfScreen() || this.movement.IsTouchingRightOfScreen() || this.movement.IsTouchingBottomOfScreen() || this.movement.IsTouchingTopOfScreen())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

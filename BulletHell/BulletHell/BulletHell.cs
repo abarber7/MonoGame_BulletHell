@@ -10,9 +10,10 @@ namespace BulletHell
 {
     public class BulletHell : Game
     {
-        private GraphicsDeviceManager graphics;
+        private static GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private List<Sprite> sprites;
+        private List<Wave> waves;
 
         // Initialize screensize and other game properties
         public BulletHell()
@@ -104,19 +105,94 @@ namespace BulletHell
                 { "projectile", new Dictionary<string, object>() {
                     { "projectileType", "bullet" },
                     { "textureName", "Bullet" },
+                    { "color", "Blue" },
                     { "movementPattern", new Dictionary<string, object>() {
                         {"movementPatternType", "linear" },
                         { "xVelocity", 0 },
                         { "yVelocity", -1 },
-                        { "speed", 8f } } 
-                    } 
+                        { "speed", 8f } } } 
+                    }
                 }
+            };
+
+            Dictionary<string, object> enemy = new Dictionary<string, object>(){
+                { "entityType", "exampleEnemy" },
+                { "textureName", "Block" },
+                { "color", "Red" },
+                { "movementPattern", new Dictionary<string, object>(){
+                    {"movementPatternType", "Static" },
+                    { "xPosition", 100 },
+                    { "yPosition", 100 } }
+                },
+                { "projectile", new Dictionary<string, object>() {
+                    { "projectileType", "bullet" },
+                    { "textureName", "Bullet" },
+                    { "color", "Red" },
+                    { "movementPattern", new Dictionary<string, object>() {
+                        {"movementPatternType", "linear" },
+                        { "xVelocity", 0 },
+                        { "yVelocity", 1 },
+                        { "speed", 4f } } }
+                    }
                 }
             };
 
             listOfEntitiesToCreate.Add(player);
+            listOfEntitiesToCreate.Add(enemy);
 
             return listOfEntitiesToCreate;
+        }
+
+        private List<Wave> demoWaves()
+        {
+            List<Wave> waves = new List<Wave>();
+
+            Dictionary<string, object> wave1Properties = new Dictionary<string, object>(){
+                { "waveNumber", 1 },
+                { "waveDuration", 1000 },
+                { "EntityGroups", new List<Dictionary<string, object>>(){
+                    new Dictionary<string, object>()
+                    {
+                        { "EntityAmount", 1},
+                        { "EntityProperties", new Dictionary<string, object>(){
+                            { "entityType", "ExampleEnemy" },
+                            { "textureName", "Block" },
+                            { "color", "Red" },
+                            { "movementPattern", new Dictionary<string, object>(){
+                                {"movementPatternType", "backAndForth" },
+                                { "xStartPosition", 100 },
+                                { "yStartPosition", 100 },
+                                { "xEndPosition", 200 },
+                                { "yEndPosition", 100 },
+                                { "speed", 2f } }
+                            },
+                            { "projectile", new Dictionary<string, object>() {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "movementPattern", new Dictionary<string, object>() {
+                                    {"movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4f } } }
+                                }
+                                }
+                            }
+                        }   
+                    } 
+                }
+            }
+            };
+
+            Wave wave1 = new Wave(wave1Properties);
+
+            waves.Add(wave1);
+
+            return waves;
+        }
+
+        public static GraphicsDeviceManager getGraphics()
+        {
+            return graphics;
         }
     }
 }

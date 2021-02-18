@@ -28,13 +28,14 @@ namespace BulletHell.Sprites
     class Wave
     {
         int waveNumber;
-        int startTime;
-        int endTime;
+        int waveDuration;
         List<EntityGroup> entityGroups = new List<EntityGroup>();
 
         public Wave(Dictionary<string, object> waveProperties)
         {
             waveNumber = (int)waveProperties["waveNumber"];
+            waveDuration = (int)waveProperties["waveDuration"];
+
             foreach(Dictionary<string, object> entityGroupProperties in (List<Dictionary<string, object>>)waveProperties["entityGroups"])
             {
                 entityGroups.Add(new EntityGroup(entityGroupProperties));

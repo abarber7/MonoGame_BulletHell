@@ -18,6 +18,12 @@ namespace BulletHell.Sprites.Movement_Patterns
                 case "linear":
                     movementPattern = new Linear(movementPatternProperties);
                     break;
+                case "BackAndForth":
+                    movementPattern = new BackAndForth(movementPatternProperties);
+                    break;
+                case "Static":
+                    movementPattern = new Static(movementPatternProperties);
+                    break;
                 default:
                     throw new Exception("Invalid Entity");
             }

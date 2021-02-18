@@ -17,8 +17,6 @@ namespace BulletHell.Sprites.Entities
 
         public Player(Dictionary<string, object> entityProperties) : base(entityProperties)
         {
-            string colorName = (string)entityProperties["color"];
-            color = System.Drawing.Color.FromName(colorName).ToXNA();
             this.movement.speed = 5f;
         }
 
@@ -28,8 +26,8 @@ namespace BulletHell.Sprites.Entities
             currentKey = Keyboard.GetState();
 
             this.Attack(sprites);
-
-            this.movement.Move();
+            this.Collision(sprites);
+            this.Move();
         }
 
         private void Attack(List<Sprite> sprites)
@@ -37,6 +35,31 @@ namespace BulletHell.Sprites.Entities
             if (currentKey.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space))
             {
                 base.Attack(sprites);
+            }
+        }
+
+        private void Move()
+        {
+            this.movement.Move();
+        }
+
+        private void Collision(List<Sprite> sprites)
+        {
+            foreach (var sprite in sprites)
+            {
+                if (sprite == this)
+                {
+                    continue;
+                }
+
+                if ((this.movement.velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.movement.velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)))
+                {
+                    this.movement.velocity.X = 0;
+                }
+                if ((this.movement.velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.movement.velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
+                {
+                    this.movement.velocity.Y = 0;
+                }
             }
         }
     }

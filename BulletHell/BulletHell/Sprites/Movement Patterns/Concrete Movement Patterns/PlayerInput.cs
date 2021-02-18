@@ -19,8 +19,10 @@ namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
                 Right = Keys.D,
                 Up = Keys.W,
                 Down = Keys.S,
+                Attack = Keys.Space
             };
 
+            speed = (float)playerInputProperties["speed"];
             position.X = Convert.ToSingle((Int32)playerInputProperties["xPosition"]);
             position.Y = Convert.ToSingle((Int32)playerInputProperties["yPosition"]);
         }
@@ -45,22 +47,14 @@ namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
                 this.velocity.Y = this.speed;
             }
 
-            /*foreach (var sprite in sprites)
+            if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())
             {
-                if (sprite == this)
-                {
-                    continue;
-                }
-
-                if ((this.velocity.X > 0 && this.IsTouchingLeft(sprite)) || (this.velocity.X < 0 && this.IsTouchingRight(sprite)))
-                {
-                    this.velocity.X = 0;
-                }
-                if ((this.velocity.Y > 0 && this.IsTouchingTop(sprite)) || (this.velocity.Y < 0 && this.IsTouchingBottom(sprite)))
-                {
-                    this.velocity.Y = 0;
-                }
-            }*/
+                this.velocity.X = 0;
+            }
+            if (this.IsTouchingBottomOfScreen() || this.IsTouchingTopOfScreen())
+            {
+                this.velocity.Y = 0;
+            }
 
             this.position += this.velocity;
             this.velocity = Vector2.Zero;
