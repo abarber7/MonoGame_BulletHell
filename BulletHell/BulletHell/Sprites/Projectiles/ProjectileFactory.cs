@@ -1,24 +1,18 @@
-﻿using BulletHell.Sprites.Projectiles.Concrete_Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Projectiles
+﻿namespace BulletHell.Sprites.Projectiles
 {
-    class ProjectileFactory
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Sprites.Projectiles.Concrete_Projectiles;
+
+    internal class ProjectileFactory
     {
-        public static Projectile createProjectile(Dictionary<string, object> projectileProperties)
+        public static Projectile CreateProjectile(Dictionary<string, object> projectileProperties)
         {
-            Projectile entity = null;
-            switch (projectileProperties["projectileType"])
+            return projectileProperties["projectileType"] switch
             {
-                case "bullet":
-                    entity = new Bullet(projectileProperties);
-                    break;
-                default:
-                    throw new Exception("Invalid Projectile Type");
-            }
-            return entity;
+                "bullet" => new Bullet(projectileProperties),
+                _ => throw new Exception("Invalid Projectile Type"),
+            };
         }
     }
 }

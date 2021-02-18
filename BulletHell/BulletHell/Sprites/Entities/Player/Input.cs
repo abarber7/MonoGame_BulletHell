@@ -1,17 +1,18 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Player
+﻿namespace BulletHell.Player
 {
+    using Microsoft.Xna.Framework.Input;
+
     // Allows for rebinding.
-    class Input
+    internal class Input
     {
-        public Keys Up;
-        public Keys Down;
-        public Keys Left;
-        public Keys Right;
-        public Keys Attack;
+        public Keys Up { get; set; }
+
+        public Keys Down { get; set; }
+
+        public Keys Left { get; set; }
+
+        public Keys Right { get; set; }
+
+        public Keys Attack { get; set; }
     }
 }

@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
+﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
-    class Linear : MovementPattern
+    using System;
+    using System.Collections.Generic;
+
+    internal class Linear : MovementPattern
     {
-        public Linear(Dictionary<string, object> linearProperties) : base(linearProperties)
+        public Linear(Dictionary<string, object> linearProperties)
+            : base(linearProperties)
         {
-            speed = (float)linearProperties["speed"];
-            velocity.X = Convert.ToSingle((Int32)linearProperties["xVelocity"]);
-            velocity.Y = Convert.ToSingle((Int32)linearProperties["yVelocity"]);
+            this.Speed = (float)linearProperties["speed"];
+            this.velocity.X = Convert.ToSingle((int)linearProperties["xVelocity"]);
+            this.velocity.Y = Convert.ToSingle((int)linearProperties["yVelocity"]);
         }
 
         public override void Move()
         {
-
-            this.position += this.velocity * speed;
+            this.Position += this.velocity * this.Speed;
         }
     }
 }

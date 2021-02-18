@@ -1,20 +1,17 @@
-﻿using BulletHell.Sprites.Movement_Patterns;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Projectiles
+﻿namespace BulletHell.Sprites.Projectiles
 {
-    abstract class Projectile : Sprite, ICloneable
-    {
-        public Sprite parent;
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
 
-        public Projectile(Dictionary<string, object> projectileProperties) : base(projectileProperties)
+    internal abstract class Projectile : Sprite, ICloneable
+    {
+        public Projectile(Dictionary<string, object> projectileProperties)
+            : base(projectileProperties)
         {
-            
         }
+
+        public Sprite Parent { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprits)
         {
@@ -23,11 +20,12 @@ namespace BulletHell.Sprites.Projectiles
 
         public void Move()
         {
-            if (this.outOfBounds())
+            if (this.OutOfBounds())
             {
-                this.isRemoved = true;
+                this.IsRemoved = true;
             }
-            this.movement.Move();
+
+            this.Movement.Move();
         }
 
         public object Clone()
@@ -35,9 +33,9 @@ namespace BulletHell.Sprites.Projectiles
             return this.MemberwiseClone();
         }
 
-        public bool outOfBounds()
+        public bool OutOfBounds()
         {
-            if (this.movement.IsTouchingLeftOfScreen() || this.movement.IsTouchingRightOfScreen() || this.movement.IsTouchingBottomOfScreen() || this.movement.IsTouchingTopOfScreen())
+            if (this.Movement.IsTouchingLeftOfScreen() || this.Movement.IsTouchingRightOfScreen() || this.Movement.IsTouchingBottomOfScreen() || this.Movement.IsTouchingTopOfScreen())
             {
                 return true;
             }

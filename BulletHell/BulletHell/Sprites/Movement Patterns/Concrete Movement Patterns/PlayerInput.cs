@@ -1,17 +1,17 @@
-﻿using BulletHell.Player;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
+﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
-    class PlayerInput : MovementPattern
-    {
-        public Input input;
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Player;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
 
-        public PlayerInput(Dictionary<string, object> playerInputProperties) : base(playerInputProperties)
+    internal class PlayerInput : MovementPattern
+    {
+        private Input input;
+
+        public PlayerInput(Dictionary<string, object> playerInputProperties)
+            : base(playerInputProperties)
         {
             this.input = new Input()
             {
@@ -19,44 +19,45 @@ namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
                 Right = Keys.D,
                 Up = Keys.W,
                 Down = Keys.S,
-                Attack = Keys.Space
+                Attack = Keys.Space,
             };
 
-            speed = (float)playerInputProperties["speed"];
-            position.X = Convert.ToSingle((Int32)playerInputProperties["xPosition"]);
-            position.Y = Convert.ToSingle((Int32)playerInputProperties["yPosition"]);
+            this.Speed = (float)playerInputProperties["speed"];
+            this.Position.X = Convert.ToSingle((int)playerInputProperties["xPosition"]);
+            this.Position.Y = Convert.ToSingle((int)playerInputProperties["yPosition"]);
         }
 
         public override void Move()
         {
-            if (Keyboard.GetState().IsKeyDown(input.Left))
+            if (Keyboard.GetState().IsKeyDown(this.input.Left))
             {
-                this.velocity.X = -this.speed;
+                this.velocity.X = -this.Speed;
             }
-            else if (Keyboard.GetState().IsKeyDown(input.Right))
+            else if (Keyboard.GetState().IsKeyDown(this.input.Right))
             {
-                this.velocity.X = this.speed;
+                this.velocity.X = this.Speed;
             }
 
-            if (Keyboard.GetState().IsKeyDown(input.Up))
+            if (Keyboard.GetState().IsKeyDown(this.input.Up))
             {
-                this.velocity.Y = -this.speed;
+                this.velocity.Y = -this.Speed;
             }
-            else if (Keyboard.GetState().IsKeyDown(input.Down))
+            else if (Keyboard.GetState().IsKeyDown(this.input.Down))
             {
-                this.velocity.Y = this.speed;
+                this.velocity.Y = this.Speed;
             }
 
             if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())
             {
                 this.velocity.X = 0;
             }
+
             if (this.IsTouchingBottomOfScreen() || this.IsTouchingTopOfScreen())
             {
                 this.velocity.Y = 0;
             }
 
-            this.position += this.velocity;
+            this.Position += this.velocity;
             this.velocity = Vector2.Zero;
         }
     }

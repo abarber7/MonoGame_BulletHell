@@ -1,32 +1,23 @@
-﻿using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Movement_Patterns
+﻿namespace BulletHell.Sprites.Movement_Patterns
 {
-    class MovementPatternFactory
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+
+    internal class MovementPatternFactory
     {
-        public static MovementPattern createMovementPattern(Dictionary<string, object> movementPatternProperties)
+        public static MovementPattern CreateMovementPattern(Dictionary<string, object> movementPatternProperties)
         {
             MovementPattern movementPattern = null;
-            switch (movementPatternProperties["movementPatternType"])
+            movementPattern = movementPatternProperties["movementPatternType"] switch
             {
-                case "playerInput":
-                    movementPattern = new PlayerInput(movementPatternProperties);
-                    break;
-                case "linear":
-                    movementPattern = new Linear(movementPatternProperties);
-                    break;
-                case "BackAndForth":
-                    movementPattern = new BackAndForth(movementPatternProperties);
-                    break;
-                case "Static":
-                    movementPattern = new Static(movementPatternProperties);
-                    break;
-                default:
-                    throw new Exception("Invalid Entity");
-            }
+                "playerInput" => new PlayerInput(movementPatternProperties),
+                "linear" => new Linear(movementPatternProperties),
+                "BackAndForth" => new BackAndForth(movementPatternProperties),
+                "Static" => new Static(movementPatternProperties),
+                _ => throw new Exception("Invalid Entity"),
+            };
+
             return movementPattern;
         }
     }

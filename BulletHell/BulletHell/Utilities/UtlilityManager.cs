@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework.Content;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Utilities
+﻿namespace BulletHell.Utilities
 {
+    using Microsoft.Xna.Framework.Content;
+
     internal class UtlilityManager
     {
         public static void Initialize(ContentManager content)

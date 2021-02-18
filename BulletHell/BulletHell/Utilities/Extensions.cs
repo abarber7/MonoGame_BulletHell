@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
-namespace BulletHell.Utilities
+﻿namespace BulletHell.Utilities
 {
+    using System.Drawing;
+
     public static class Extensions
     {
         // Source: https://community.monogame.net/t/custom-color-class-not-being-converted-correctly/10921

@@ -1,18 +1,13 @@
-﻿using BulletHell.Sprites.Projectiles;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Entities.Enemies
+﻿namespace BulletHell.Sprites.Entities.Enemies
 {
-    abstract class Enemy : Entity
+    using System.Collections.Generic;
+    using global::BulletHell.Sprites.Projectiles;
+
+    internal abstract class Enemy : Entity
     {
-        
-
-        public Enemy(Dictionary<string, object> enemyProperties) : base(enemyProperties)
+        public Enemy(Dictionary<string, object> enemyProperties)
+            : base(enemyProperties)
         {
-
         }
 
         protected void Collision(List<Sprite> sprites)
@@ -24,14 +19,14 @@ namespace BulletHell.Sprites.Entities.Enemies
                     continue;
                 }
 
-                if(sprite is Projectile projectile)
+                if (sprite is Projectile projectile)
                 {
-                    if (projectile.parent is Player && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
+                    if (projectile.Parent is Player && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
                     {
-                        this.isRemoved = true;
-                        sprite.isRemoved = true;
+                        this.IsRemoved = true;
+                        sprite.IsRemoved = true;
                     }
-                }    
+                }
             }
         }
     }

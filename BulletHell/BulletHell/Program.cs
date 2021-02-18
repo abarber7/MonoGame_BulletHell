@@ -1,14 +1,16 @@
-﻿using System;
-
-namespace BulletHell
+﻿namespace BulletHell
 {
+    using System;
+
     public static class Program
     {
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             using (var game = new BulletHell())
+            {
                 game.Run();
+            }
         }
     }
 }

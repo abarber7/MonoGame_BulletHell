@@ -1,21 +1,17 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Utilities
+﻿namespace BulletHell.Utilities
 {
-    class TextureFactory
-    {
-        static public ContentManager Content { get; set; }
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
 
-        public static Texture2D getTexture(string textureName)
+    internal class TextureFactory
+    {
+        public static ContentManager Content { get; set; }
+
+        public static Texture2D GetTexture(string textureName)
         {
             var texture = Content.Load<Texture2D>(textureName);
 
-            // Need to throw error if texture was not found.
-
+            // TODO: Need to throw error if texture was not found.
             return texture;
         }
     }

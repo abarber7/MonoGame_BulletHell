@@ -1,38 +1,24 @@
-﻿using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.Entities
+﻿namespace BulletHell.Sprites.Entities
 {
-    class EntityFactory
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+
+    internal class EntityFactory
     {
-        public static Entity createEntity(Dictionary<string, object> entityProperties)
+        public static Entity CreateEntity(Dictionary<string, object> entityProperties)
         {
             Entity entity = null;
-            switch(entityProperties["entityType"])
+            entity = entityProperties["entityType"] switch
             {
-                case "player":
-                    entity = new Player(entityProperties);
-                    break;
-                case "exampleEnemy":
-                    entity = new ExampleEnemy(entityProperties);
-                    break;
-                case "simpleGrunt":
-                    entity = new SimpleGrunt(entityProperties);
-                    break;
-                case "complexGrunt":
-                    entity = new ComplexGrunt(entityProperties);
-                    break;
-                case "midBoss":
-                    entity = new MidBoss(entityProperties);
-                    break;
-                case "finalBoss":
-                    entity = new FinalBoss(entityProperties);
-                    break;
-                default:
-                    throw new Exception("Invalid Entity");
-            }
+                "player" => new Player(entityProperties),
+                "exampleEnemy" => new ExampleEnemy(entityProperties),
+                "simpleGrunt" => new SimpleGrunt(entityProperties),
+                "complexGrunt" => new ComplexGrunt(entityProperties),
+                "midBoss" => new MidBoss(entityProperties),
+                "finalBoss" => new FinalBoss(entityProperties),
+                _ => throw new Exception("Invalid Entity"),
+            };
             return entity;
         }
     }
