@@ -1,4 +1,5 @@
 ﻿using BulletHell.Player;
+using BulletHell.Sprites.Movement_Patterns;
 using BulletHell.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,15 +12,9 @@ namespace BulletHell.Sprites
     abstract class Sprite
     {
         public Texture2D texture;
-        public float rotation;
         public bool isRemoved = false;
-        public Vector2 origin;
-        public Vector2 position;
-        public Vector2 direction;
-        public Vector2 velocity;
-        public float rotationVelocity = 3f;
+        public MovementPattern movement;
         public Color color = Color.White;
-        public float speed;
         protected float timeAlive;
         public float lifeSpan;
 
@@ -27,7 +22,7 @@ namespace BulletHell.Sprites
         {
             get
             {
-                return new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+                return new Rectangle((int)movement.position.X, (int)movement.position.Y, texture.Width, texture.Height);
             }
         }
 
@@ -36,7 +31,8 @@ namespace BulletHell.Sprites
             string textureName = (string)spriteProperties["textureName"];
             texture = TextureFactory.getTexture(textureName);
 
-            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            movement = MovementPatternFactory.createMovementPattern((Dictionary<string, object>)spriteProperties["movementPattern"]);
+            movement.origin = new Vector2(texture.Width / 2, texture.Height / 2); //orgin is based on texture
         }
 
         public virtual void Update(GameTime gametime, List<Sprite> sprits)
@@ -46,13 +42,13 @@ namespace BulletHell.Sprites
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, color, rotation, origin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, movement.position, null, color, movement.rotation, movement.origin, 1, SpriteEffects.None, 0);
         }
 
         #region Collision
         protected bool IsTouchingLeft(Sprite sprite)
         {
-            return this.Rectangle.Right + this.direction.X > sprite.Rectangle.Left &&
+            return this.Rectangle.Right + this.movement.velocity.X > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Left &&
               this.Rectangle.Bottom > sprite.Rectangle.Top &&
               this.Rectangle.Top < sprite.Rectangle.Bottom;
@@ -60,7 +56,7 @@ namespace BulletHell.Sprites
 
         protected bool IsTouchingRight(Sprite sprite)
         {
-            return this.Rectangle.Left + this.direction.X < sprite.Rectangle.Right &&
+            return this.Rectangle.Left + this.movement.velocity.X < sprite.Rectangle.Right &&
               this.Rectangle.Right > sprite.Rectangle.Right &&
               this.Rectangle.Bottom > sprite.Rectangle.Top &&
               this.Rectangle.Top < sprite.Rectangle.Bottom;
@@ -68,7 +64,7 @@ namespace BulletHell.Sprites
 
         protected bool IsTouchingTop(Sprite sprite)
         {
-            return this.Rectangle.Bottom + this.direction.Y > sprite.Rectangle.Top &&
+            return this.Rectangle.Bottom + this.movement.velocity.Y > sprite.Rectangle.Top &&
               this.Rectangle.Top < sprite.Rectangle.Top &&
               this.Rectangle.Right > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Right;
@@ -76,7 +72,7 @@ namespace BulletHell.Sprites
 
         protected bool IsTouchingBottom(Sprite sprite)
         {
-            return this.Rectangle.Top + this.direction.Y < sprite.Rectangle.Bottom &&
+            return this.Rectangle.Top + this.movement.velocity.Y < sprite.Rectangle.Bottom &&
               this.Rectangle.Bottom > sprite.Rectangle.Bottom &&
               this.Rectangle.Right > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Right;

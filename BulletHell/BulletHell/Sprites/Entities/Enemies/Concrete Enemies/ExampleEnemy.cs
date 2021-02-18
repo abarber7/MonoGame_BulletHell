@@ -19,9 +19,8 @@ namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
         {
             this.Attack(sprites);
 
-            this.Move(sprites);
+            //this.Move(sprites);
         }
 
-        public 
     }
 }

@@ -95,11 +95,22 @@ namespace BulletHell
                 { "entityType", "player" },
                 { "textureName", "Block" },
                 { "color", "Blue" },
-                { "xPosition", 500 },
-                { "yPosition", 500 },
+                { "movementPattern", new Dictionary<string, object>(){
+                    {"movementPatternType", "playerInput" },
+                    { "xPosition", 200 },
+                    { "yPosition", 200 },
+                    { "speed", 4f } }
+                },
                 { "projectile", new Dictionary<string, object>() {
                     { "projectileType", "bullet" },
-                    { "textureName", "Bullet" }}
+                    { "textureName", "Bullet" },
+                    { "movementPattern", new Dictionary<string, object>() {
+                        {"movementPatternType", "linear" },
+                        { "xVelocity", 0 },
+                        { "yVelocity", -1 },
+                        { "speed", 8f } } 
+                    } 
+                }
                 }
             };
 

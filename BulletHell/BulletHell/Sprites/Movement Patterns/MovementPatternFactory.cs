@@ -10,8 +10,11 @@ namespace BulletHell.Sprites.Movement_Patterns
         public static MovementPattern createMovementPattern(Dictionary<string, object> movementPatternProperties)
         {
             MovementPattern movementPattern = null;
-            switch (movementPatternProperties["entityType"])
+            switch (movementPatternProperties["movementPatternType"])
             {
+                case "playerInput":
+                    movementPattern = new PlayerInput(movementPatternProperties);
+                    break;
                 case "linear":
                     movementPattern = new Linear(movementPatternProperties);
                     break;

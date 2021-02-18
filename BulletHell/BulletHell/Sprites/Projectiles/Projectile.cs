@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BulletHell.Sprites.Movement_Patterns;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,13 @@ using System.Text;
 
 namespace BulletHell.Sprites.Projectiles
 {
-    class Projectile : Sprite, ICloneable
+    abstract class Projectile : Sprite, ICloneable
     {
         public Sprite parent;
 
         public Projectile(Dictionary<string, object> projectileProperties) : base(projectileProperties)
         {
-
+            
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprits)
@@ -26,7 +27,7 @@ namespace BulletHell.Sprites.Projectiles
             if (timeAlive >= lifeSpan)
                 this.isRemoved = true;
 
-            position += velocity * 4;
+            movement.position += movement.velocity;
         }
 
         public object Clone()
