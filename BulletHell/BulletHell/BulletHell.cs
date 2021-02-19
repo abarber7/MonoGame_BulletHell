@@ -125,7 +125,7 @@
                     { "movementPatternType", "playerInput" },
                     { "xPosition", 200 },
                     { "yPosition", 200 },
-                    { "speed", 4f },
+                    { "speed", 4 },
                     }
                 },
                 {
@@ -140,7 +140,7 @@
                         { "movementPatternType", "linear" },
                         { "xVelocity", 0 },
                         { "yVelocity", -1 },
-                        { "speed", 8f },
+                        { "speed", 8 },
                         }
                     },
                     }
@@ -188,7 +188,7 @@
                         { "movementPatternType", "linear" },
                         { "xVelocity", 0 },
                         { "yVelocity", 1 },
-                        { "speed", 4f },
+                        { "speed", 4 },
                         }
                     },
                     }
@@ -234,9 +234,12 @@
                             {
                                 "movementPattern", new Dictionary<string, object>()
                                 {
-                                { "movementPatternType", "Static" },
-                                { "xPosition", 100 },
-                                { "yPosition", 100 },
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 100 },
+                                { "yStartPosition", 100 },
+                                { "xEndPosition", 200 },
+                                { "yEndPosition", 200 },
+                                { "speed", 50 },
                                 }
                             },
                             {
@@ -251,7 +254,7 @@
                                     { "movementPatternType", "linear" },
                                     { "xVelocity", 0 },
                                     { "yVelocity", 1 },
-                                    { "speed", 4f },
+                                    { "speed", 4 },
                                     }
                                 },
                             }
@@ -302,7 +305,7 @@
                                     { "movementPatternType", "linear" },
                                     { "xVelocity", 0 },
                                     { "yVelocity", 1 },
-                                    { "speed", 4f },
+                                    { "speed", 4 },
                                     }
                                 },
                             }
@@ -314,7 +317,7 @@
                 },
             };
 
-            listOfWaveProperties.Add(wave2Properties);
+            //listOfWaveProperties.Add(wave2Properties);
 
             return listOfWaveProperties;
         }

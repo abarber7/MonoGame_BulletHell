@@ -6,25 +6,29 @@
 
     internal abstract class Enemy : Entity
     {
+        private double timer;
+
         public Enemy(Dictionary<string, object> enemyProperties)
             : base(enemyProperties)
         {
             this.LifeSpan = (int)enemyProperties["lifeSpan"];
-            this.Timer = 0;
+            this.timer = 0;
         }
 
-        protected int LifeSpan { get; set; }
-
-        protected int Timer { get; set; }
+        protected double LifeSpan { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.Timer += (int)gameTime.ElapsedGameTime.TotalSeconds;
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.Timer >= this.LifeSpan)
+            if (this.timer >= this.LifeSpan)
             {
                 this.IsRemoved = true;
             }
+
+            this.Collision(sprites);
+
+            this.Movement.Move();
         }
 
         protected void Collision(List<Sprite> sprites)
