@@ -14,7 +14,7 @@
         public Player(Dictionary<string, object> entityProperties)
             : base(entityProperties)
         {
-            this.Movement.Speed = 5f;
+            this.Movement.Speed = 5;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

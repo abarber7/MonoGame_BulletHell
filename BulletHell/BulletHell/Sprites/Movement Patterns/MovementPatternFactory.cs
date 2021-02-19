@@ -15,6 +15,7 @@
                 "linear" => new Linear(movementPatternProperties),
                 "backAndForth" => new BackAndForth(movementPatternProperties),
                 "static" => new Static(movementPatternProperties),
+                "pattern" => new Pattern(movementPatternProperties),
                 _ => throw new Exception("Invalid Entity"),
             };
 
