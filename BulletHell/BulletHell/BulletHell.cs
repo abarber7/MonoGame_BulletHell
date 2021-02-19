@@ -125,7 +125,7 @@
                     { "movementPatternType", "playerInput" },
                     { "xPosition", 200 },
                     { "yPosition", 200 },
-                    { "speed", 4f },
+                    { "speed", 4 },
                     }
                 },
                 {
@@ -140,7 +140,7 @@
                         { "movementPatternType", "linear" },
                         { "xVelocity", 0 },
                         { "yVelocity", -1 },
-                        { "speed", 8f },
+                        { "speed", 8 },
                         }
                     },
                     }
@@ -188,7 +188,7 @@
                         { "movementPatternType", "linear" },
                         { "xVelocity", 0 },
                         { "yVelocity", 1 },
-                        { "speed", 4f },
+                        { "speed", 4 },
                         }
                     },
                     }
@@ -230,13 +230,16 @@
                             { "entityType", "exampleEnemy" },
                             { "textureName", "Block" },
                             { "color", "Red" },
-                            { "lifeSpan", 5 },
+                            { "lifeSpan", 30 },
                             {
                                 "movementPattern", new Dictionary<string, object>()
                                 {
-                                { "movementPatternType", "Static" },
-                                { "xPosition", 100 },
-                                { "yPosition", 100 },
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 150 },
+                                { "yStartPosition", 230 },
+                                { "xEndPosition", 250 },
+                                { "yEndPosition", 300 },
+                                { "speed", 100 },
                                 }
                             },
                             {
@@ -251,7 +254,89 @@
                                     { "movementPatternType", "linear" },
                                     { "xVelocity", 0 },
                                     { "yVelocity", 1 },
-                                    { "speed", 4f },
+                                    { "speed", 4 },
+                                    }
+                                },
+                            }
+                            },
+                            }
+                        },
+                    },
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                            { "entityType", "exampleEnemy" },
+                            { "textureName", "Block" },
+                            { "color", "Red" },
+                            { "lifeSpan", 30 },
+                            {
+                                "movementPattern", new Dictionary<string, object>()
+                                {
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 150 },
+                                { "yStartPosition", 430 },
+                                { "xEndPosition", 250 },
+                                { "yEndPosition", 300 },
+                                { "speed", 100 },
+                                }
+                            },
+                            {
+                                "projectile", new Dictionary<string, object>()
+                            {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "color", "Red" },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                    { "movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4 },
+                                    }
+                                },
+                            }
+                            },
+                            }
+                        },
+                    },
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                            { "entityType", "exampleEnemy" },
+                            { "textureName", "Block" },
+                            { "color", "Red" },
+                            { "lifeSpan", 30 },
+                            {
+                                "movementPattern", new Dictionary<string, object>()
+                                {
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 150 },
+                                { "yStartPosition", 100 },
+                                { "xEndPosition", 400 },
+                                { "yEndPosition", 100 },
+                                { "speed", 100 },
+                                }
+                            },
+                            {
+                                "projectile", new Dictionary<string, object>()
+                            {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "color", "Red" },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                    { "movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4 },
                                     }
                                 },
                             }
@@ -302,7 +387,7 @@
                                     { "movementPatternType", "linear" },
                                     { "xVelocity", 0 },
                                     { "yVelocity", 1 },
-                                    { "speed", 4f },
+                                    { "speed", 4 },
                                     }
                                 },
                             }
@@ -314,7 +399,7 @@
                 },
             };
 
-            listOfWaveProperties.Add(wave2Properties);
+            //listOfWaveProperties.Add(wave2Properties);
 
             return listOfWaveProperties;
         }

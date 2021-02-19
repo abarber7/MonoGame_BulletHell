@@ -21,10 +21,6 @@
             }
 
             this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
-
-            this.Collision(sprites);
-
-            // this.Move(sprites);
         }
     }
 }

@@ -13,8 +13,8 @@
             {
                 "playerInput" => new PlayerInput(movementPatternProperties),
                 "linear" => new Linear(movementPatternProperties),
-                "BackAndForth" => new BackAndForth(movementPatternProperties),
-                "Static" => new Static(movementPatternProperties),
+                "backAndForth" => new BackAndForth(movementPatternProperties),
+                "static" => new Static(movementPatternProperties),
                 _ => throw new Exception("Invalid Entity"),
             };
 
