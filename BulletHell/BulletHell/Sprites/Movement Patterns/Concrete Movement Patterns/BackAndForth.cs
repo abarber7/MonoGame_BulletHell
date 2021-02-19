@@ -8,7 +8,6 @@
     {
         private Vector2 startPosition;
         private Vector2 endPosition;
-        private bool goingTowardsEnd;
 
         public BackAndForth(Dictionary<string, object> backAndForthProperties)
             : base(backAndForthProperties)
@@ -19,23 +18,103 @@
             this.endPosition.X = Convert.ToSingle((int)backAndForthProperties["xEndPosition"]);
             this.endPosition.Y = Convert.ToSingle((int)backAndForthProperties["yEndPosition"]);
             this.Position = this.startPosition;
-            this.velocity.X = this.Speed / (this.endPosition.X - this.startPosition.X);
-            this.velocity.Y = this.Speed / (this.endPosition.Y - this.startPosition.Y);
-            this.goingTowardsEnd = true;
+            this.velocity.X = (this.endPosition.X - this.startPosition.X) == 0 ? 0 : this.Speed / (this.endPosition.X - this.startPosition.X);
+            this.velocity.Y = (this.endPosition.Y - this.startPosition.Y) == 0 ? 0 : this.Speed / (this.endPosition.Y - this.startPosition.Y);
         }
 
         public override void Move()
         {
-            if 
+            if (this.ExceededPosition())
+            {
+                this.velocity = -this.velocity;
+            }
 
-            if (this.goingTowardsEnd)
+            this.Position += this.velocity;
+        }
+
+        private bool ExceededPosition()
+        {
+            // Up
+            if (this.velocity.Y < 0)
             {
-                this.Position += this.velocity;
+                // Up to start
+                if ((this.Position.Y + this.velocity.Y - this.startPosition.Y < this.Position.Y - this.startPosition.Y)
+                    && this.Position.Y < this.startPosition.Y
+                    && this.startPosition.Y - this.endPosition.Y < 0)
+                {
+                    return true;
+                }
+
+                // Up to end
+                if ((this.Position.Y + this.velocity.Y - this.endPosition.Y < this.Position.Y - this.endPosition.Y)
+                    && this.Position.Y < this.endPosition.Y
+                    && this.endPosition.Y - this.startPosition.Y < 0)
+                {
+                    return true;
+                }
             }
-            else
+
+            // Down
+            else if (this.velocity.Y > 0)
             {
-                this.Position -= this.velocity;
+                // Down to finish
+                if ((this.endPosition.Y - this.Position.Y + this.velocity.Y > this.endPosition.Y - this.Position.Y)
+                    && this.Position.Y > this.endPosition.Y
+                    && this.endPosition.Y - this.startPosition.Y > 0)
+                {
+                    return true;
+                }
+
+                // Down to Start
+                if ((this.startPosition.Y - this.Position.Y + this.velocity.Y > this.startPosition.Y - this.Position.Y)
+                    && this.Position.Y > this.startPosition.Y
+                    && this.endPosition.Y - this.startPosition.Y < 0)
+                {
+                    return true;
+                }
             }
+
+            // Left
+            else if (this.velocity.X < 0)
+            {
+                // Up to start
+                if ((this.Position.X + this.velocity.X - this.startPosition.X < this.Position.X - this.startPosition.X)
+                    && this.Position.X < this.startPosition.X
+                    && this.startPosition.X - this.endPosition.X < 0)
+                {
+                    return true;
+                }
+
+                // Up to end
+                if ((this.Position.X + this.velocity.X - this.endPosition.X < this.Position.X - this.endPosition.X)
+                    && this.Position.X < this.endPosition.X
+                    && this.endPosition.X - this.startPosition.X < 0)
+                {
+                    return true;
+                }
+            }
+
+            // Right
+            else if (this.velocity.X > 0)
+            {
+                // Right to finish
+                if ((this.endPosition.X - this.Position.X + this.velocity.X > this.endPosition.X - this.Position.X)
+                    && this.Position.X > this.endPosition.X
+                    && this.endPosition.X - this.startPosition.X > 0)
+                {
+                    return true;
+                }
+
+                // Right to Start
+                if ((this.startPosition.X - this.Position.X + this.velocity.X > this.startPosition.X - this.Position.X)
+                    && this.Position.X > this.startPosition.X
+                    && this.endPosition.X - this.startPosition.X < 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

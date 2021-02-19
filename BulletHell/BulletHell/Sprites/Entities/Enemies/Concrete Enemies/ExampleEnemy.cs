@@ -21,8 +21,6 @@
             }
 
             this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
-
-            
         }
     }
 }
