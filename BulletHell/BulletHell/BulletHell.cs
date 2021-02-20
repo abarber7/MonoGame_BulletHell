@@ -45,10 +45,10 @@
             this.CreatePlayer();
 
             // For individual entities
-            // this.CreateEnemies();
+             this.CreateEnemies();
 
             // For waves
-            this.CreateWaves();
+            // this.CreateWaves();
 
         }
 
@@ -168,12 +168,21 @@
                 { "entityType", "exampleEnemy" },
                 { "textureName", "Block" },
                 { "color", "Red" },
+                { "lifeSpan", 30 },
                 {
                     "movementPattern", new Dictionary<string, object>()
                     {
-                    { "movementPatternType", "Static" },
-                    { "xPosition", 100 },
-                    { "yPosition", 100 },
+                    { "movementPatternType", "pattern" },
+                    {
+                        "points", new List<List<int>>()
+                        {
+                            new List<int>() { 200, 200 },
+                            new List<int>() { 200, 300 },
+                            new List<int>() { 300, 300 },
+                            new List<int>() { 300, 200 },
+                        }
+                    },
+                    { "speed", 100 },
                     }
                 },
                 {

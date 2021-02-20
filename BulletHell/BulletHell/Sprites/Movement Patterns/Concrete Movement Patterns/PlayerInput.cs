@@ -22,7 +22,7 @@
                 Attack = Keys.Space,
             };
 
-            this.Speed = Convert.ToSingle((int)playerInputProperties["speed"]);
+            this.Speed = (int)playerInputProperties["speed"];
             this.Position.X = Convert.ToSingle((int)playerInputProperties["xPosition"]);
             this.Position.Y = Convert.ToSingle((int)playerInputProperties["yPosition"]);
         }
@@ -57,7 +57,7 @@
                 this.velocity.Y = 0;
             }
 
-            this.Position += this.velocity;
+            base.Move();
             this.velocity = Vector2.Zero;
         }
     }
