@@ -16,6 +16,7 @@
                 "backAndForth" => new BackAndForth(movementPatternProperties),
                 "static" => new Static(movementPatternProperties),
                 "pattern" => new Pattern(movementPatternProperties),
+                "runAndGun" => new RunAndGun(movementPatternProperties),
                 _ => throw new Exception("Invalid Entity"),
             };
 
