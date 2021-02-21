@@ -1,0 +1,29 @@
+The game will last 3 minutes, divided into maximum wave length time periods from 30 to 60 seconds. If all enemy machines are defeated, waves can be transitioned through in shorter periods. The player character, Bolong the Dragon, starts out with 10 lives on easy difficulty, 5 for medium difficulty, or 1 life on the hard difficulty level. Each difficulty level represents additional score points that can be earned, as well as increases to enemy attack speeds and damage per hit to the player. Life losses come in fractional parts per lower-level attack hit, and integer amounts per high-level attack hit. The player has simple linear firing attacks to use, which are by default fired with the spacebar. These attacks can be enhanced with power-ups at various points during gameplay.
+
+The first wave of enemy machines lasts 45 seconds and contains, in 15 second intervals, a small amount of grunt type A, then an increased amount of A, and finally a smaller number of grunt A while introducing grunt type B to the player. Grunt types A and B can have attack types that are uniformly spaced in straight lines, with small to medium projectile sizes, a similar version of attack where projectiles will seek towards the player, or a third attack type where projectiles have a scattered spread of bullets which originate from the grunts and follow a linear pattern outward. It is also possible for the player to take collision damage from being bodily hit by enemies.
+
+In the second wave, the player faces a mid-boss, with two different attack sequences of 15 seconds each, or until the mid-boss’ health reaches the half mark. For attack types and patterns, the mid-boss gets a rope-style attack consisting of medium to large projectiles that radiate outwards from it in slowly twisting shapes, occasional honing projectiles, and for the second phase the rope attack will actively spin while moving outward, with a moderately tighter spread of projectiles.
+
+The second wave of grunts, set at the 1:15 time mark for a pacifist run-through, has more 15 second intervals with increasing difficulty for each. It starts out with a small amount of grunt B, then goes to an increased amount of B with a small amount of A, and finishes out with large amounts of both types A and B. If the enemies are not defeated, they will exit the play area after each sub-wave finishes, making way for the final boss after a maximum wave length of 45 seconds.
+
+The final boss appears at the 2 minute mark of a pacifist run, and has two sequences of attacks, similar to the mid-boss. This boss starts out with the spinning rope style of attack, and will send the occasional grunt to bodily attack the player. After the half health point, or after 30 seconds have passed, the boss will change attack types to use variations of tightly spaced simple attacks, paired with the occasional large, screen-splitting laser that comes with a short warning just before and does large amounts of damage if the player is hit by it.
+
+The player wins the game if they have greater than 0 lives left by the end of the final boss fight. Player lives are visible in the game’s side panel, and additional lives can be earned as one of the power-up types that can drop throughout gameplay. Power-ups are broken into two tiers, with tier 1 items having lower probability to be dropped after the first two waves, and tier 2 having the lower probability during the first two waves. In tier 1, the pool contains such items as Faster Firing, Shield, and Bigger Bullets. Tier 2 contains Clones, Bombs, and Extra Lives. All power-ups will despawn after 3 seconds if not picked up. Increased chances for power-up drops and changes in probability of drops per tier can be earned through scoring high during each wave.
+
+Game difficulties are changed from the main menu before the start of the game, as are key bindings. However, options such as slow mode and a cheat mode can be enabled during gameplay with key toggles or options in the pause menu. Information for pulling up the pause menu will be persistently shown in the information panel to the side of the play area. In slow mode, the player’s hitbox is visible, and all aspects of gameplay are slowed.
+
+Stage timeline:
+0:00-0:45 - First Grunt Wave
+	0:00-0:15 - Small amount of grunt A
+	0:15-0:30 - Increased amount of A
+	0:30-0:45 - Introduce grunt B with a small amount of grunt A
+0:45-1:15 - Mid boss
+	0:45-1:00 - First attack sequence
+	1:15-1:30 - Second attack sequence
+1:15-2:00 - Second Grunt Wave
+	1:15-1:30 - Small amount of grunt B
+	1:30-1:45 - Increased amount of B with a small amount of grunt A
+	1:45-2:00 - Increased amount of B and increased amount of A
+2:00-3:00 - Final boss
+	2:00-2:30 - First attack sequence
+	2:30-3:00 - Second attack sequence
