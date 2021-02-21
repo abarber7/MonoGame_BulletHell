@@ -12,7 +12,8 @@
     {
         private KeyboardState currentKey;
         private KeyboardState previousKey;
-        public delegate void AddHitBox(Rectangle r);
+        public bool slowMode;
+        public delegate void AddHitBox(Rectangle r, GameTime gameTime);
         AddHitBox func;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,18 +29,21 @@
         }
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            slowMode = false;
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
 
             this.Attack(sprites);
             this.Collision(sprites);
 
-            // check if slow speed
+            
             int previousSpeed = this.Movement.Speed;
+            // check if slow speed
             if (this.currentKey.IsKeyDown(Keys.LeftShift))
             {
                 this.Movement.Speed /= 2;
-                this.func(this.Rectangle);
+                this.func(this.Rectangle, gameTime);
+                slowMode = true;
             }
 
             this.Move();

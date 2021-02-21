@@ -11,6 +11,7 @@
 
     public class BulletHell : Game
     {
+        private Sprites.Entities.Player player;
         private SpriteBatch spriteBatch;
         private List<Sprite> sprites;
         private List<Wave> waves;
@@ -80,6 +81,13 @@
                 sprite.Draw(this.spriteBatch);
             }
 
+            // toggle
+            if (this.player.slowMode == true)
+            {
+                Texture2D x = this.Content.Load<Texture2D>("Bullet");
+                this.spriteBatch.Draw(x, this.player.Rectangle, Color.White);
+            }
+
             this.spriteBatch.End();
 
             base.Draw(gameTime);
@@ -110,20 +118,23 @@
         private void CreatePlayer()
         {
             Dictionary<string, object> playerProperties = this.PlayerProperties();
-            Sprites.Entities.Player sprite = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
-            sprite.AssignDelegate(this.drawHitbox);
-            this.sprites.Add(sprite);
+            player = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
+            player.AssignDelegate(this.drawHitbox);
+            this.sprites.Add(player);
         }
 
-        private void drawHitbox(Rectangle r)
+        private void drawHitbox(Rectangle r, GameTime gameTime)
         {
             // shows in Debug that slowmode in player calls this function, however nothing is drawn
+            var newBatch = new SpriteBatch(this.spriteBatch.GraphicsDevice);
             Debug.WriteLine("In draw hitbox");
-            Texture2D x = Content.Load<Texture2D>("Block");
+            Texture2D x = Content.Load<Texture2D>("Bullet");
             Vector2 v = new Vector2(Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight / 2); 
-            this.spriteBatch.Begin();
-            spriteBatch.Draw(x, v, null, Color.White, 0, v, 1, SpriteEffects.None, 0);
-            this.spriteBatch.End();
+            newBatch.Begin();
+            newBatch.Draw(x,v,Color.White);
+            newBatch.End();
+
+            //base.Draw(gameTime);
         }
 
         private Dictionary<string, object> PlayerProperties()
