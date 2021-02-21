@@ -1,5 +1,6 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
+    using System;
     using System.Collections.Generic;
     using global::BulletHell.Sprites.Entities.Enemies;
     using global::BulletHell.Sprites.Projectiles;
@@ -10,13 +11,19 @@
     {
         private KeyboardState currentKey;
         private KeyboardState previousKey;
+        delegate void AddHitBox(Rectangle r);
+        AddHitBox func;
 
+        
         public Player(Dictionary<string, object> entityProperties)
             : base(entityProperties)
         {
             this.Movement.Speed = 5;
         }
-
+        public void assignDelegate(Action drawHitbox)
+        {
+            this.func += drawHitbox;
+        }
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             this.previousKey = this.currentKey;
@@ -24,7 +31,16 @@
 
             this.Attack(sprites);
             this.Collision(sprites);
+
+            // check if slow speed
+            int previousSpeed = this.Movement.Speed;
+            if (this.currentKey.IsKeyDown(Keys.LeftShift))
+            {
+                this.Movement.Speed /= 2;
+            }
+
             this.Move();
+            this.Movement.Speed = previousSpeed;
         }
 
         private new void Attack(List<Sprite> sprites)

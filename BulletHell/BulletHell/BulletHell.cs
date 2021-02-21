@@ -108,10 +108,21 @@
         private void CreatePlayer()
         {
             Dictionary<string, object> playerProperties = this.PlayerProperties();
-            Sprite sprite = EntityFactory.CreateEntity(playerProperties);
+            Sprites.Entities.Player sprite = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
+            sprite.assignDelegate(drawHitbox);
             this.sprites.Add(sprite);
         }
 
+        void drawHitbox()
+        {
+
+            this.spriteBatch.Begin();
+
+            this.spriteBatch.draw(1x1Tex, HitboxRect, Color.Red);//NOTE you might need multiple calls to draw depending on how your code is set up.
+
+            this.spriteBatch.End();
+
+        }
         private Dictionary<string, object> PlayerProperties()
         {
             Dictionary<string, object> playerProperties = new Dictionary<string, object>()
@@ -123,8 +134,8 @@
                     "movementPattern", new Dictionary<string, object>()
                     {
                     { "movementPatternType", "playerInput" },
-                    { "xPosition", 200 },
-                    { "yPosition", 200 },
+                    { "xPosition", Graphics.PreferredBackBufferWidth / 2 },
+                    { "yPosition", Graphics.PreferredBackBufferHeight },
                     { "speed", 4 },
                     }
                 },
