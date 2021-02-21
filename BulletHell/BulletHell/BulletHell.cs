@@ -1,6 +1,8 @@
 ﻿namespace BulletHell
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities;
     using global::BulletHell.Utilities;
@@ -109,20 +111,21 @@
         {
             Dictionary<string, object> playerProperties = this.PlayerProperties();
             Sprites.Entities.Player sprite = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
-            sprite.assignDelegate(drawHitbox);
+            sprite.AssignDelegate(this.drawHitbox);
             this.sprites.Add(sprite);
         }
 
-        void drawHitbox()
+        private void drawHitbox(Rectangle r)
         {
-
+            // shows in Debug that slowmode in player calls this function, however nothing is drawn
+            Debug.WriteLine("In draw hitbox");
+            Texture2D x = Content.Load<Texture2D>("Block");
+            Vector2 v = new Vector2(Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight / 2); 
             this.spriteBatch.Begin();
-
-            this.spriteBatch.draw(1x1Tex, HitboxRect, Color.Red);//NOTE you might need multiple calls to draw depending on how your code is set up.
-
+            spriteBatch.Draw(x, v, null, Color.White, 0, v, 1, SpriteEffects.None, 0);
             this.spriteBatch.End();
-
         }
+
         private Dictionary<string, object> PlayerProperties()
         {
             Dictionary<string, object> playerProperties = new Dictionary<string, object>()

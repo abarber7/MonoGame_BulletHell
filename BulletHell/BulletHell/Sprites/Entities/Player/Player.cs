@@ -2,27 +2,29 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using global::BulletHell.Sprites.Entities.Enemies;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 
-    internal class Player : Entity
+    internal class Player : Entity, INotifyPropertyChanged
     {
         private KeyboardState currentKey;
         private KeyboardState previousKey;
-        delegate void AddHitBox(Rectangle r);
+        public delegate void AddHitBox(Rectangle r);
         AddHitBox func;
 
-        
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Player(Dictionary<string, object> entityProperties)
             : base(entityProperties)
         {
             this.Movement.Speed = 5;
         }
-        public void assignDelegate(Action drawHitbox)
+        public void AssignDelegate(AddHitBox drawHitbox)
         {
-            this.func += drawHitbox;
+            this.func = new AddHitBox(drawHitbox);
         }
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -37,6 +39,7 @@
             if (this.currentKey.IsKeyDown(Keys.LeftShift))
             {
                 this.Movement.Speed /= 2;
+                this.func(this.Rectangle);
             }
 
             this.Move();
