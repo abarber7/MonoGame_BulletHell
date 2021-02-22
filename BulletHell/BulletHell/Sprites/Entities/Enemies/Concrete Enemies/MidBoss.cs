@@ -12,6 +12,7 @@
 
         public void Update(GameTime gameTime, List<Sprite> sprites)
         {
+
         }
     }
 }
