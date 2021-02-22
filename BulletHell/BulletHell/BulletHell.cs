@@ -234,6 +234,12 @@
 
         private List<Dictionary<string, object>> WaveProperties()
         {
+            Random r = new Random();
+            int randX1 = r.Next(100, 400);
+            int randY1 = r.Next(50, 200);
+            int randX2 = r.Next(100, 400);
+            int randY2 = r.Next(50, 200);
+
             List<Dictionary<string, object>> listOfWaveProperties = new List<Dictionary<string, object>>();
 
             Dictionary<string, object> wave1Properties = new Dictionary<string, object>()
@@ -249,19 +255,19 @@
                         {
                             "entityProperties", new Dictionary<string, object>()
                             {
-                            { "entityType", "exampleEnemy" },
+                            { "entityType", "simpleGrunt" },
                             { "textureName", "Block" },
-                            { "color", "Red" },
+                            { "color", "Green" },
                             { "lifeSpan", 30 },
                             {
                                 "movementPattern", new Dictionary<string, object>()
                                 {
                                 { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 150 },
-                                { "yStartPosition", 230 },
-                                { "xEndPosition", 250 },
-                                { "yEndPosition", 300 },
-                                { "speed", 100 },
+                                { "xStartPosition", 0 },
+                                { "yStartPosition", 50 },
+                                { "xEndPosition", 800 },
+                                { "yEndPosition", 50 },
+                                { "speed", 800 },
                                 }
                             },
                             {
@@ -290,60 +296,19 @@
                         {
                             "entityProperties", new Dictionary<string, object>()
                             {
-                            { "entityType", "exampleEnemy" },
+                            { "entityType", "simpleGrunt" },
                             { "textureName", "Block" },
-                            { "color", "Red" },
+                            { "color", "Green" },
                             { "lifeSpan", 30 },
                             {
                                 "movementPattern", new Dictionary<string, object>()
                                 {
                                 { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 150 },
-                                { "yStartPosition", 430 },
-                                { "xEndPosition", 250 },
-                                { "yEndPosition", 300 },
-                                { "speed", 100 },
-                                }
-                            },
-                            {
-                                "projectile", new Dictionary<string, object>()
-                            {
-                                { "projectileType", "bullet" },
-                                { "textureName", "Bullet" },
-                                { "color", "Red" },
-                                {
-                                    "movementPattern", new Dictionary<string, object>()
-                                    {
-                                    { "movementPatternType", "linear" },
-                                    { "xVelocity", 0 },
-                                    { "yVelocity", 1 },
-                                    { "speed", 4 },
-                                    }
-                                },
-                            }
-                            },
-                            }
-                        },
-                    },
-                    new Dictionary<string, object>()
-                    {
-                        { "entityAmount", 1 },
-                        {
-                            "entityProperties", new Dictionary<string, object>()
-                            {
-                            { "entityType", "exampleEnemy" },
-                            { "textureName", "Block" },
-                            { "color", "Red" },
-                            { "lifeSpan", 30 },
-                            {
-                                "movementPattern", new Dictionary<string, object>()
-                                {
-                                { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 150 },
-                                { "yStartPosition", 100 },
-                                { "xEndPosition", 400 },
-                                { "yEndPosition", 100 },
-                                { "speed", 100 },
+                                { "xStartPosition", 800 },
+                                { "yStartPosition", 50 },
+                                { "xEndPosition", 0 },
+                                { "yEndPosition", 50 },
+                                { "speed", 800 },
                                 }
                             },
                             {
@@ -371,6 +336,10 @@
             };
 
             listOfWaveProperties.Add(wave1Properties);
+            randX1 = r.Next(100, 400);
+            randY1 = r.Next(50, 200);
+            randX2 = r.Next(100, 400);
+            randY2 = r.Next(50, 200);
 
             Dictionary<string, object> wave2Properties = new Dictionary<string, object>()
             {
@@ -385,16 +354,19 @@
                         {
                             "entityProperties", new Dictionary<string, object>()
                             {
-                            { "entityType", "exampleEnemy" },
+                            { "entityType", "simpleGrunt" },
                             { "textureName", "Block" },
                             { "color", "Green" },
-                            { "lifeSpan", 5 },
+                            { "lifeSpan", 30 },
                             {
                                 "movementPattern", new Dictionary<string, object>()
                                 {
-                                { "movementPatternType", "Static" },
-                                { "xPosition", 300 },
-                                { "yPosition", 100 },
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 0 },
+                                { "yStartPosition", 50 },
+                                { "xEndPosition", 800 },
+                                { "yEndPosition", 50 },
+                                { "speed", 800 },
                                 }
                             },
                             {
@@ -402,7 +374,48 @@
                             {
                                 { "projectileType", "bullet" },
                                 { "textureName", "Bullet" },
-                                { "color", "Green" },
+                                { "color", "Red" },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                    { "movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4 },
+                                    }
+                                },
+                            }
+                            },
+                            }
+                        },
+                    },
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                            { "entityType", "simpleGrunt" },
+                            { "textureName", "Block" },
+                            { "color", "Green" },
+                            { "lifeSpan", 30 },
+                            {
+                                "movementPattern", new Dictionary<string, object>()
+                                {
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 800 },
+                                { "yStartPosition", 50 },
+                                { "xEndPosition", 0 },
+                                { "yEndPosition", 50 },
+                                { "speed", 800 },
+                                }
+                            },
+                            {
+                                "projectile", new Dictionary<string, object>()
+                            {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "color", "Red" },
                                 {
                                     "movementPattern", new Dictionary<string, object>()
                                     {
@@ -421,7 +434,102 @@
                 },
             };
 
-            //listOfWaveProperties.Add(wave2Properties);
+            listOfWaveProperties.Add(wave2Properties);
+
+            Dictionary<string, object> wave3Properties = new Dictionary<string, object>()
+            {
+                { "waveNumber", 3 },
+                { "waveDuration", 5 },
+                {
+                    "entityGroups", new List<Dictionary<string, object>>()
+                    {
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                            { "entityType", "simpleGrunt" },
+                            { "textureName", "Block" },
+                            { "color", "Green" },
+                            { "lifeSpan", 30 },
+                            {
+                                "movementPattern", new Dictionary<string, object>()
+                                {
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 0 },
+                                { "yStartPosition", 50 },
+                                { "xEndPosition", 800 },
+                                { "yEndPosition", 50 },
+                                { "speed", 800 },
+                                }
+                            },
+                            {
+                                "projectile", new Dictionary<string, object>()
+                            {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "color", "Red" },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                    { "movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4 },
+                                    }
+                                },
+                            }
+                            },
+                            }
+                        },
+                    },
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                            { "entityType", "simpleGrunt" },
+                            { "textureName", "Block" },
+                            { "color", "Green" },
+                            { "lifeSpan", 30 },
+                            {
+                                "movementPattern", new Dictionary<string, object>()
+                                {
+                                { "movementPatternType", "backAndForth" },
+                                { "xStartPosition", 800 },
+                                { "yStartPosition", 50 },
+                                { "xEndPosition", 0 },
+                                { "yEndPosition", 50 },
+                                { "speed", 800 },
+                                }
+                            },
+                            {
+                                "projectile", new Dictionary<string, object>()
+                            {
+                                { "projectileType", "bullet" },
+                                { "textureName", "Bullet" },
+                                { "color", "Red" },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                    { "movementPatternType", "linear" },
+                                    { "xVelocity", 0 },
+                                    { "yVelocity", 1 },
+                                    { "speed", 4 },
+                                    }
+                                },
+                            }
+                            },
+                            }
+                        },
+                    },
+                    }
+                },
+            };
+
+            listOfWaveProperties.Add(wave3Properties);
 
             return listOfWaveProperties;
         }
