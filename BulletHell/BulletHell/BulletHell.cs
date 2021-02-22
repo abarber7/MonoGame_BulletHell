@@ -165,7 +165,7 @@
 
             Dictionary<string, object> enemy = new Dictionary<string, object>()
             {
-                { "entityType", "exampleEnemy" },
+                { "entityType", "finalBoss" },
                 { "textureName", "Block" },
                 { "color", "Red" },
                 { "lifeSpan", 30 },
@@ -177,27 +177,30 @@
                         "points", new List<List<int>>()
                         {
                             new List<int>() { 200, 200 },
-                            new List<int>() { 200, 300 },
                             new List<int>() { 300, 300 },
+                            new List<int>() { 200, 300 },
                             new List<int>() { 300, 200 },
                         }
                     },
-                    { "speed", 100 },
+                    { "speed", 250 },
                     }
                 },
                 {
                     "projectile", new Dictionary<string, object>()
                     {
-                    { "projectileType", "bullet" },
+                    { "projectileType", "bounceBullet" },
                     { "textureName", "Bullet" },
                     { "color", "Red" },
+                    { "bounceTimes", 1 },
                     {
                         "movementPattern", new Dictionary<string, object>()
                         {
-                        { "movementPatternType", "linear" },
+                        { "movementPatternType", "bounce" },
                         { "xVelocity", 0 },
-                        { "yVelocity", 1 },
-                        { "speed", 4 },
+                        { "yVelocity", 0 },
+                        { "xPosition", 0 },
+                        { "yPosition", 0 },
+                        { "speed", 3 },
                         }
                     },
                     }
