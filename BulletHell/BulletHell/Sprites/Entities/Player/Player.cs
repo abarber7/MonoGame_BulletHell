@@ -8,46 +8,45 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 
-    internal class Player : Entity, INotifyPropertyChanged
+    internal class Player : Entity
     {
+        public bool slowMode;
         private KeyboardState currentKey;
         private KeyboardState previousKey;
-        public bool slowMode;
-        public delegate void AddHitBox(Rectangle r, GameTime gameTime);
-        AddHitBox func;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public Player(Dictionary<string, object> entityProperties)
             : base(entityProperties)
         {
             this.Movement.Speed = 5;
         }
-        public void AssignDelegate(AddHitBox drawHitbox)
-        {
-            this.func = new AddHitBox(drawHitbox);
-        }
+
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            slowMode = false;
+            
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
 
             this.Attack(sprites);
             this.Collision(sprites);
 
-            
             int previousSpeed = this.Movement.Speed;
+
             // check if slow speed
-            if (this.currentKey.IsKeyDown(Keys.LeftShift))
-            {
-                this.Movement.Speed /= 2;
-                this.func(this.Rectangle, gameTime);
-                slowMode = true;
-            }
+            this.slowMode = this.IsSlowPressed();
 
             this.Move();
             this.Movement.Speed = previousSpeed;
+        }
+
+        public bool IsSlowPressed()
+        {
+            if (this.currentKey.IsKeyDown(Keys.LeftShift))
+            {
+                this.Movement.Speed /= 2;
+                return true;
+            }
+
+            return false;
         }
 
         private new void Attack(List<Sprite> sprites)

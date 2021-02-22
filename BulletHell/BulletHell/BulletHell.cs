@@ -118,23 +118,8 @@
         private void CreatePlayer()
         {
             Dictionary<string, object> playerProperties = this.PlayerProperties();
-            player = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
-            player.AssignDelegate(this.drawHitbox);
-            this.sprites.Add(player);
-        }
-
-        private void drawHitbox(Rectangle r, GameTime gameTime)
-        {
-            // shows in Debug that slowmode in player calls this function, however nothing is drawn
-            var newBatch = new SpriteBatch(this.spriteBatch.GraphicsDevice);
-            Debug.WriteLine("In draw hitbox");
-            Texture2D x = Content.Load<Texture2D>("Bullet");
-            Vector2 v = new Vector2(Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight / 2); 
-            newBatch.Begin();
-            newBatch.Draw(x,v,Color.White);
-            newBatch.End();
-
-            //base.Draw(gameTime);
+            this.player = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
+            this.sprites.Add(this.player);
         }
 
         private Dictionary<string, object> PlayerProperties()
