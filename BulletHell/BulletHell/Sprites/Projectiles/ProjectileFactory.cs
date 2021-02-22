@@ -12,6 +12,7 @@
             {
                 "bullet" => new Bullet(projectileProperties),
                 "bouncingBullet" => new BouncingBullet(projectileProperties),
+                "bounceBullet" => new BounceBullet(projectileProperties),
                 _ => throw new Exception("Invalid Projectile Type"),
             };
         }
