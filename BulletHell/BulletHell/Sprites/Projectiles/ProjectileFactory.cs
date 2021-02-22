@@ -11,6 +11,7 @@
             return projectileProperties["projectileType"] switch
             {
                 "bullet" => new Bullet(projectileProperties),
+                "bounceBullet" => new BounceBullet(projectileProperties),
                 _ => throw new Exception("Invalid Projectile Type"),
             };
         }

@@ -19,7 +19,7 @@
             this.Move();
         }
 
-        public void Move()
+        public virtual void Move()
         {
             if (this.OutOfBounds())
             {

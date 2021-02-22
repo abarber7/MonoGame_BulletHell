@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities;
     using global::BulletHell.Utilities;
@@ -10,6 +11,7 @@
 
     public class BulletHell : Game
     {
+        private Sprites.Entities.Player player;
         private SpriteBatch spriteBatch;
         private List<Sprite> sprites;
         private List<Wave> waves;
@@ -46,10 +48,10 @@
             this.CreatePlayer();
 
             // For individual entities
-            // this.CreateEnemies();
+             this.CreateEnemies();
 
             // For waves
-            this.CreateWaves();
+            // this.CreateWaves();
 
         }
 
@@ -77,6 +79,13 @@
             foreach (var sprite in this.sprites)
             {
                 sprite.Draw(this.spriteBatch);
+            }
+
+            // toggle
+            if (this.player.slowMode == true)
+            {
+                Texture2D x = this.Content.Load<Texture2D>("Bullet");
+                this.spriteBatch.Draw(x, this.player.Rectangle, Color.White);
             }
 
             this.spriteBatch.End();
@@ -109,8 +118,8 @@
         private void CreatePlayer()
         {
             Dictionary<string, object> playerProperties = this.PlayerProperties();
-            Sprite sprite = EntityFactory.CreateEntity(playerProperties);
-            this.sprites.Add(sprite);
+            this.player = (Sprites.Entities.Player)EntityFactory.CreateEntity(playerProperties);
+            this.sprites.Add(this.player);
         }
 
         private Dictionary<string, object> PlayerProperties()
@@ -124,8 +133,8 @@
                     "movementPattern", new Dictionary<string, object>()
                     {
                     { "movementPatternType", "playerInput" },
-                    { "xPosition", 200 },
-                    { "yPosition", 200 },
+                    { "xPosition", Graphics.PreferredBackBufferWidth / 2 },
+                    { "yPosition", Graphics.PreferredBackBufferHeight },
                     { "speed", 4 },
                     }
                 },
@@ -166,30 +175,42 @@
 
             Dictionary<string, object> enemy = new Dictionary<string, object>()
             {
-                { "entityType", "exampleEnemy" },
+                { "entityType", "finalBoss" },
                 { "textureName", "Block" },
                 { "color", "Red" },
+                { "lifeSpan", 30 },
                 {
                     "movementPattern", new Dictionary<string, object>()
                     {
-                    { "movementPatternType", "Static" },
-                    { "xPosition", 100 },
-                    { "yPosition", 100 },
+                    { "movementPatternType", "pattern" },
+                    {
+                        "points", new List<List<int>>()
+                        {
+                            new List<int>() { 200, 200 },
+                            new List<int>() { 300, 300 },
+                            new List<int>() { 200, 300 },
+                            new List<int>() { 300, 200 },
+                        }
+                    },
+                    { "speed", 250 },
                     }
                 },
                 {
                     "projectile", new Dictionary<string, object>()
                     {
-                    { "projectileType", "bullet" },
+                    { "projectileType", "bounceBullet" },
                     { "textureName", "Bullet" },
                     { "color", "Red" },
+                    { "bounceTimes", 1 },
                     {
                         "movementPattern", new Dictionary<string, object>()
                         {
-                        { "movementPatternType", "linear" },
+                        { "movementPatternType", "bounce" },
                         { "xVelocity", 0 },
-                        { "yVelocity", 1 },
-                        { "speed", 4 },
+                        { "yVelocity", 0 },
+                        { "xPosition", 0 },
+                        { "yPosition", 0 },
+                        { "speed", 3 },
                         }
                     },
                     }
