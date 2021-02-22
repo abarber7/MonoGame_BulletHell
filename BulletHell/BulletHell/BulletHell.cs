@@ -165,24 +165,20 @@
 
             Dictionary<string, object> enemy = new Dictionary<string, object>()
             {
-                { "entityType", "exampleEnemy" },
+                { "entityType", "complexGrunt" },
                 { "textureName", "Block" },
                 { "color", "Red" },
                 { "lifeSpan", 30 },
                 {
                     "movementPattern", new Dictionary<string, object>()
                     {
-                    { "movementPatternType", "pattern" },
-                    {
-                        "points", new List<List<int>>()
-                        {
-                            new List<int>() { 200, 200 },
-                            new List<int>() { 200, 300 },
-                            new List<int>() { 300, 300 },
-                            new List<int>() { 300, 200 },
-                        }
-                    },
-                    { "speed", 100 },
+                        { "movementPatternType", "semicircle" },
+                        { "xStartPosition", 50 },
+                        { "yStartPosition", 30 },
+                        { "xEndPosition", 100 },
+                        { "yEndPosition", 30 },
+                        { "half1Or2", false },
+                        { "speed", 10 },
                     }
                 },
                 {
