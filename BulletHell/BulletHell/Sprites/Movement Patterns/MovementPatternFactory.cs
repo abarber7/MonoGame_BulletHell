@@ -17,6 +17,7 @@
                 "static" => new Static(movementPatternProperties),
                 "pattern" => new Pattern(movementPatternProperties),
                 "runAndGun" => new RunAndGun(movementPatternProperties),
+                "bounce" => new Bounce(movementPatternProperties),
                 _ => throw new Exception("Invalid Entity"),
             };
 
