@@ -1,4 +1,4 @@
-﻿﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
+﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
     using System;
     using System.Collections.Generic;

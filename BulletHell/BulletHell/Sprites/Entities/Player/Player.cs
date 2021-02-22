@@ -1,8 +1,6 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using global::BulletHell.Sprites.Entities.Enemies;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
@@ -10,7 +8,6 @@
 
     internal class Player : Entity
     {
-        public bool slowMode;
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
@@ -22,31 +19,12 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
 
             this.Attack(sprites);
             this.Collision(sprites);
-
-            int previousSpeed = this.Movement.Speed;
-
-            // check if slow speed
-            this.slowMode = this.IsSlowPressed();
-
             this.Move();
-            this.Movement.Speed = previousSpeed;
-        }
-
-        public bool IsSlowPressed()
-        {
-            if (this.currentKey.IsKeyDown(Keys.LeftShift))
-            {
-                this.Movement.Speed /= 2;
-                return true;
-            }
-
-            return false;
         }
 
         private new void Attack(List<Sprite> sprites)
