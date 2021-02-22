@@ -604,6 +604,64 @@
 
             listOfWaveProperties.Add(wave4Properties);
 
+            Dictionary<string, object> wave5Properties = new Dictionary<string, object>()
+            {
+                { "waveNumber", 2 },
+                { "waveDuration", 30 },
+                {
+                    "entityGroups", new List<Dictionary<string, object>>()
+                    {
+                    new Dictionary<string, object>()
+                    {
+                        { "entityAmount", 1 },
+                        {
+                            "entityProperties", new Dictionary<string, object>()
+                            {
+                                { "entityType", "complexGrunt" },
+                                { "textureName", "Block" },
+                                { "color", "Red" },
+                                { "lifeSpan", 30 },
+                                {
+                                    "movementPattern", new Dictionary<string, object>()
+                                    {
+                                        { "movementPatternType", "semicircle" },
+                                        { "xStartPosition", 50 },
+                                        { "yStartPosition", 30 },
+                                        { "xEndPosition", 100 },
+                                        { "yEndPosition", 30 },
+                                        { "half1Or2", false },
+                                        { "speed", 10 },
+                                    }
+                                },
+                                {
+                                    "projectile", new Dictionary<string, object>()
+                                    {
+                                    { "projectileType", "bounceBullet" },
+                                    { "textureName", "Bullet" },
+                                    { "color", "Red" },
+                                    { "bounceTimes", 1 },
+                                    {
+                                        "movementPattern", new Dictionary<string, object>()
+                                        {
+                                        { "movementPatternType", "bounce" },
+                                        { "xVelocity", 0 },
+                                        { "yVelocity", 0 },
+                                        { "xPosition", 0 },
+                                        { "yPosition", 0 },
+                                        { "speed", 3 },
+                                        }
+                                    },
+                                    }
+                                },
+                            }
+                        },
+                    },
+                    }
+                },
+            };
+
+            listOfWaveProperties.Add(wave5Properties);
+
             Dictionary<string, object> wave6Properties = new Dictionary<string, object>()
             {
                 { "waveNumber", 6 },
