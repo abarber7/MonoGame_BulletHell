@@ -30,17 +30,27 @@
         {
             Projectile newProjectile = this.Projectile.Clone() as Projectile;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.Position = this.Movement.Position;
             newProjectile.Movement.velocity = this.Movement.velocity;
+            newProjectile.Movement.Position = this.Movement.Position;
+            int projectileSpeed = newProjectile.Movement.Speed;
+            newProjectile.Movement.velocity.X = 0;
+            newProjectile.Movement.velocity.Y = 1;
+            newProjectile.Movement.velocity.X *= projectileSpeed;
+            newProjectile.Movement.velocity.Y *= projectileSpeed;
+            newProjectile.Movement.Position = this.Movement.Position;
             newProjectile.Parent = this;
 
             sprites.Add(newProjectile);
 
             newProjectile = this.Projectile.Clone() as Projectile;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.Position = this.Movement.Position;
             newProjectile.Movement.velocity = this.Movement.velocity;
-            newProjectile.Movement.velocity.Y += 2;
+            newProjectile.Movement.Position = this.Movement.Position;
+            projectileSpeed = newProjectile.Movement.Speed;
+            newProjectile.Movement.velocity.X = 0;
+            newProjectile.Movement.velocity.Y = 1;
+            newProjectile.Movement.velocity.X *= projectileSpeed;
+            newProjectile.Movement.velocity.Y *= projectileSpeed;
             newProjectile.Movement.velocity.X += 2;
             newProjectile.Parent = this;
 
@@ -48,9 +58,13 @@
 
             newProjectile = this.Projectile.Clone() as Projectile;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.Position = this.Movement.Position;
             newProjectile.Movement.velocity = this.Movement.velocity;
-            newProjectile.Movement.velocity.Y -= 2;
+            newProjectile.Movement.Position = this.Movement.Position;
+            projectileSpeed = newProjectile.Movement.Speed;
+            newProjectile.Movement.velocity.X = 0;
+            newProjectile.Movement.velocity.Y = 1;
+            newProjectile.Movement.velocity.X *= projectileSpeed;
+            newProjectile.Movement.velocity.Y *= projectileSpeed;
             newProjectile.Movement.velocity.X -= 2;
             newProjectile.Parent = this;
 
