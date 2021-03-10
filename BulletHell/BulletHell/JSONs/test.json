@@ -7,7 +7,7 @@
          "movementPatternType":"playerInput",
          "xPosition":300,
          "yPosition":300,
-         "speed":4
+         "speed":4,
       },
       "projectile":{
          "projectileType":"bullet",
@@ -17,7 +17,7 @@
             "movementPatternType":"linear",
             "xVelocity":0,
             "yVelocity":-1,
-            "speed":15
+            "speed":15,
          }
       }
    },
@@ -39,7 +39,7 @@
                      "yStartPosition":50,
                      "xEndPosition":800,
                      "yEndPosition":50,
-                     "speed":800
+                     "speed":800,
                   },
                   "projectile":{
                      "projectileType":"bullet",
