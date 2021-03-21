@@ -8,13 +8,23 @@
 
     internal class ComplexGrunt : Enemy
     {
+        private int previousTime = 0;
+
         public ComplexGrunt(Dictionary<string, object> complexGruntProperties)
             : base(complexGruntProperties)
         {
         }
 
-        public void Update(GameTime gameTime, List<Sprite> sprites)
+        public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            base.Update(gameTime, sprites);
+            if (this.previousTime != ((int)gameTime.TotalGameTime.TotalSeconds))
+            {
+                this.Attack(sprites);
+                this.Attack(sprites);
+            }
+
+            this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
         }
     }
 }

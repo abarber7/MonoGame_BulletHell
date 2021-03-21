@@ -22,7 +22,6 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
 
