@@ -13,9 +13,9 @@
             this.waveNumber = (int)waveProperties["waveNumber"];
             this.waveDuration = (int)waveProperties["waveDuration"];
 
-            foreach (Dictionary<string, object> entityGroupProperties in (List<Dictionary<string, object>>)waveProperties["entityGroups"])
+            foreach (object entityGroupProperties in (List<object>)waveProperties["entityGroups"])
             {
-                this.entityGroups.Add(new EntityGroup(entityGroupProperties));
+                this.entityGroups.Add(new EntityGroup((Dictionary<string, object>)entityGroupProperties));
             }
         }
 
