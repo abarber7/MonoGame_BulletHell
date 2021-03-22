@@ -11,6 +11,7 @@
     internal class Player : Entity
     {
         public bool slowMode;
+        public bool invicible;
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
@@ -24,6 +25,8 @@
         {
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
+
+            this.SetInvincibility();
 
             this.Attack(sprites);
             this.Collision(sprites);
@@ -46,6 +49,21 @@
             }
 
             return false;
+        }
+
+        public void SetInvincibility()
+        {
+            if (this.currentKey.IsKeyDown(Keys.OemTilde))
+            {
+                if (this.invicible)
+                {
+                    this.invicible = false;
+                }
+                else
+                {
+                    this.invicible = true;
+                }
+            }
         }
 
         private new void Attack(List<Sprite> sprites)
@@ -84,7 +102,11 @@
                 {
                     if (projectile.Parent is Enemy && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
                     {
-                        this.IsRemoved = true;
+                        if (this.invicible == false)
+                        {
+                            this.IsRemoved = true;
+                        }
+
                         sprite.IsRemoved = true;
                     }
                 }
