@@ -1,8 +1,13 @@
 ﻿namespace BulletHell
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using global::BulletHell.Game_Utilities;
     using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities;
+    using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using global::BulletHell.Sprites.Projectiles;
     using global::BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -10,9 +15,12 @@
     public class BulletHell : Game
     {
         private SpriteBatch spriteBatch;
+        private SpriteFont font;
         private List<Sprite> sprites;
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
+        private int lives = 3;
+        private bool finalBossDefeated = false;
 
         // Initialize screensize and other game properties
         public BulletHell()
@@ -22,6 +30,7 @@
             this.IsMouseVisible = true;
 
             UtlilityManager.Initialize(this.Content);
+            GameLoader.LoadGameDictionary("Test");
         }
 
         public static GraphicsDeviceManager Graphics { get; set; }
@@ -40,16 +49,11 @@
 
             this.sprites = new List<Sprite>();
 
-            this.waves = new List<Wave>();
-
             this.CreatePlayer();
 
-            // For individual entities
-             this.CreateEnemies();
+            this.CreateStats();
 
-            // For waves
-            // this.CreateWaves();
-
+            this.CreateWaves();
         }
 
         // Update is called 60 times per second (60 FPS). Put all game logic here.
@@ -64,6 +68,11 @@
 
             this.PostUpdate();
 
+            if (this.lives == 0 || this.finalBossDefeated)
+            {
+                this.EndGamePrompt();
+            }
+
             base.Update(gameTime);
         }
 
@@ -76,11 +85,52 @@
             foreach (var sprite in this.sprites)
             {
                 sprite.Draw(this.spriteBatch);
+
+                if (sprite is Sprites.Entities.Player)
+                {
+                    Sprites.Entities.Player player = (Sprites.Entities.Player)sprite;
+                    if (player.slowMode)
+                    {
+                        this.DrawBoxAroundSprite(player);
+                        player.slowMode = false;
+                    }
+                }
             }
+
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
 
             this.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void DrawBoxAroundSprite(Sprite sprite)
+        {
+            Texture2D hitboxTexture = new Texture2D(Graphics.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
+            Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (i < sprite.Rectangle.Width)
+                {
+                    data[i] = Color.White;
+                }
+                else if (i % sprite.Rectangle.Width == 0)
+                {
+                    data[i] = Color.White;
+                }
+                else if (i % sprite.Rectangle.Width == sprite.Rectangle.Width - 1)
+                {
+                    data[i] = Color.White;
+                }
+                else if (i > (sprite.Rectangle.Width * sprite.Rectangle.Height) - sprite.Rectangle.Width)
+                {
+                    data[i] = Color.White;
+                }
+            }
+
+            hitboxTexture.SetData(data);
+
+            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Movement.Position.X - (hitboxTexture.Width / 2), sprite.Movement.Position.Y - (hitboxTexture.Height / 2)), Color.White);
         }
 
         private void PostUpdate()
@@ -88,6 +138,42 @@
             for (int i = this.sprites.Count - 1; i >= 0; i--)
             {
                 if (this.sprites[i].IsRemoved)
+                {
+                    // Some namespace issue, thinks Bullethell.Player is a namespace
+                    if (this.sprites[i] is Sprites.Entities.Player)
+                    {
+                        this.lives--;
+                        this.RemoveAllProjectiles();
+                        this.CreatePlayer();
+                    }
+                    else if (this.sprites[i] is FinalBoss)
+                    {
+                        this.finalBossDefeated = true;
+                    }
+
+                    this.sprites.RemoveAt(i);
+                }
+            }
+        }
+
+        private void EndGamePrompt()
+        {
+            // TODO: Implement with Antonio's menu system.
+            if (this.lives == 0)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        private void RemoveAllProjectiles()
+        {
+            for (int i = this.sprites.Count - 1; i >= 0; i--)
+            {
+                if (this.sprites[i] is Projectile)
                 {
                     this.sprites.RemoveAt(i);
                 }
@@ -107,306 +193,17 @@
 
         private void CreatePlayer()
         {
-            Dictionary<string, object> playerProperties = this.PlayerProperties();
-            Sprite sprite = EntityFactory.CreateEntity(playerProperties);
-            this.sprites.Add(sprite);
+            this.sprites.Add(GameLoader.LoadPlayer());
         }
 
-        private Dictionary<string, object> PlayerProperties()
+        private void CreateStats()
         {
-            Dictionary<string, object> playerProperties = new Dictionary<string, object>()
-            {
-                { "entityType", "player" },
-                { "textureName", "Block" },
-                { "color", "Blue" },
-                {
-                    "movementPattern", new Dictionary<string, object>()
-                    {
-                    { "movementPatternType", "playerInput" },
-                    { "xPosition", 200 },
-                    { "yPosition", 200 },
-                    { "speed", 4 },
-                    }
-                },
-                {
-                    "projectile", new Dictionary<string, object>()
-                    {
-                    { "projectileType", "bullet" },
-                    { "textureName", "Bullet" },
-                    { "color", "Blue" },
-                    {
-                        "movementPattern", new Dictionary<string, object>()
-                        {
-                        { "movementPatternType", "linear" },
-                        { "xVelocity", 0 },
-                        { "yVelocity", -1 },
-                        { "speed", 8 },
-                        }
-                    },
-                    }
-                },
-            };
-            return playerProperties;
-        }
-
-        private void CreateEnemies()
-        {
-            List<Dictionary<string, object>> listOfEnemiesToProperties = this.EnemyProperties();
-            foreach (Dictionary<string, object> entityProperties in listOfEnemiesToProperties)
-            {
-                Sprite sprite = EntityFactory.CreateEntity(entityProperties);
-                this.sprites.Add(sprite);
-            }
-        }
-
-        private List<Dictionary<string, object>> EnemyProperties()
-        {
-            List<Dictionary<string, object>> listOfEnemiesToProperties = new List<Dictionary<string, object>>();
-
-            Dictionary<string, object> enemy = new Dictionary<string, object>()
-            {
-                { "entityType", "complexGrunt" },
-                { "textureName", "Block" },
-                { "color", "Red" },
-                { "lifeSpan", 30 },
-                {
-                    "movementPattern", new Dictionary<string, object>()
-                    {
-                        { "movementPatternType", "semicircle" },
-                        { "xStartPosition", 50 },
-                        { "yStartPosition", 30 },
-                        { "xEndPosition", 100 },
-                        { "yEndPosition", 30 },
-                        { "half1Or2", false },
-                        { "speed", 10 },
-                    }
-                },
-                {
-                    "projectile", new Dictionary<string, object>()
-                    {
-                    { "projectileType", "bullet" },
-                    { "textureName", "Bullet" },
-                    { "color", "Red" },
-                    {
-                        "movementPattern", new Dictionary<string, object>()
-                        {
-                        { "movementPatternType", "linear" },
-                        { "xVelocity", 0 },
-                        { "yVelocity", 1 },
-                        { "speed", 4 },
-                        }
-                    },
-                    }
-                },
-            };
-
-            listOfEnemiesToProperties.Add(enemy);
-            return listOfEnemiesToProperties;
+            this.font = this.Content.Load<SpriteFont>("Font");
         }
 
         private void CreateWaves()
         {
-            List<Dictionary<string, object>> listOfWaveProperties = this.WaveProperties();
-
-            foreach (Dictionary<string, object> waveProperties in listOfWaveProperties)
-            {
-                Wave wave = new Wave(waveProperties);
-                this.waves.Add(wave);
-            }
-        }
-
-        private List<Dictionary<string, object>> WaveProperties()
-        {
-            List<Dictionary<string, object>> listOfWaveProperties = new List<Dictionary<string, object>>();
-
-            Dictionary<string, object> wave1Properties = new Dictionary<string, object>()
-            {
-                { "waveNumber", 1 },
-                { "waveDuration", 5 },
-                {
-                    "entityGroups", new List<Dictionary<string, object>>()
-                    {
-                    new Dictionary<string, object>()
-                    {
-                        { "entityAmount", 1 },
-                        {
-                            "entityProperties", new Dictionary<string, object>()
-                            {
-                            { "entityType", "exampleEnemy" },
-                            { "textureName", "Block" },
-                            { "color", "Red" },
-                            { "lifeSpan", 30 },
-                            {
-                                "movementPattern", new Dictionary<string, object>()
-                                {
-                                { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 150 },
-                                { "yStartPosition", 230 },
-                                { "xEndPosition", 250 },
-                                { "yEndPosition", 300 },
-                                { "speed", 100 },
-                                }
-                            },
-                            {
-                                "projectile", new Dictionary<string, object>()
-                            {
-                                { "projectileType", "bullet" },
-                                { "textureName", "Bullet" },
-                                { "color", "Red" },
-                                {
-                                    "movementPattern", new Dictionary<string, object>()
-                                    {
-                                    { "movementPatternType", "linear" },
-                                    { "xVelocity", 0 },
-                                    { "yVelocity", 1 },
-                                    { "speed", 4 },
-                                    }
-                                },
-                            }
-                            },
-                            }
-                        },
-                    },
-                    new Dictionary<string, object>()
-                    {
-                        { "entityAmount", 1 },
-                        {
-                            "entityProperties", new Dictionary<string, object>()
-                            {
-                            { "entityType", "exampleEnemy" },
-                            { "textureName", "Block" },
-                            { "color", "Red" },
-                            { "lifeSpan", 30 },
-                            {
-                                "movementPattern", new Dictionary<string, object>()
-                                {
-                                { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 150 },
-                                { "yStartPosition", 430 },
-                                { "xEndPosition", 250 },
-                                { "yEndPosition", 300 },
-                                { "speed", 100 },
-                                }
-                            },
-                            {
-                                "projectile", new Dictionary<string, object>()
-                            {
-                                { "projectileType", "bullet" },
-                                { "textureName", "Bullet" },
-                                { "color", "Red" },
-                                {
-                                    "movementPattern", new Dictionary<string, object>()
-                                    {
-                                    { "movementPatternType", "linear" },
-                                    { "xVelocity", 0 },
-                                    { "yVelocity", 1 },
-                                    { "speed", 4 },
-                                    }
-                                },
-                            }
-                            },
-                            }
-                        },
-                    },
-                    new Dictionary<string, object>()
-                    {
-                        { "entityAmount", 1 },
-                        {
-                            "entityProperties", new Dictionary<string, object>()
-                            {
-                            { "entityType", "exampleEnemy" },
-                            { "textureName", "Block" },
-                            { "color", "Red" },
-                            { "lifeSpan", 30 },
-                            {
-                                "movementPattern", new Dictionary<string, object>()
-                                {
-                                { "movementPatternType", "backAndForth" },
-                                { "xStartPosition", 150 },
-                                { "yStartPosition", 100 },
-                                { "xEndPosition", 400 },
-                                { "yEndPosition", 100 },
-                                { "speed", 100 },
-                                }
-                            },
-                            {
-                                "projectile", new Dictionary<string, object>()
-                            {
-                                { "projectileType", "bullet" },
-                                { "textureName", "Bullet" },
-                                { "color", "Red" },
-                                {
-                                    "movementPattern", new Dictionary<string, object>()
-                                    {
-                                    { "movementPatternType", "linear" },
-                                    { "xVelocity", 0 },
-                                    { "yVelocity", 1 },
-                                    { "speed", 4 },
-                                    }
-                                },
-                            }
-                            },
-                            }
-                        },
-                    },
-                    }
-                },
-            };
-
-            listOfWaveProperties.Add(wave1Properties);
-
-            Dictionary<string, object> wave2Properties = new Dictionary<string, object>()
-            {
-                { "waveNumber", 2 },
-                { "waveDuration", 5 },
-                {
-                    "entityGroups", new List<Dictionary<string, object>>()
-                    {
-                    new Dictionary<string, object>()
-                    {
-                        { "entityAmount", 1 },
-                        {
-                            "entityProperties", new Dictionary<string, object>()
-                            {
-                            { "entityType", "exampleEnemy" },
-                            { "textureName", "Block" },
-                            { "color", "Green" },
-                            { "lifeSpan", 5 },
-                            {
-                                "movementPattern", new Dictionary<string, object>()
-                                {
-                                { "movementPatternType", "Static" },
-                                { "xPosition", 300 },
-                                { "yPosition", 100 },
-                                }
-                            },
-                            {
-                                "projectile", new Dictionary<string, object>()
-                            {
-                                { "projectileType", "bullet" },
-                                { "textureName", "Bullet" },
-                                { "color", "Green" },
-                                {
-                                    "movementPattern", new Dictionary<string, object>()
-                                    {
-                                    { "movementPatternType", "linear" },
-                                    { "xVelocity", 0 },
-                                    { "yVelocity", 1 },
-                                    { "speed", 4 },
-                                    }
-                                },
-                            }
-                            },
-                            }
-                        },
-                    },
-                    }
-                },
-            };
-
-            //listOfWaveProperties.Add(wave2Properties);
-
-            return listOfWaveProperties;
+            this.waves = GameLoader.LoadWaves();
         }
     }
 }
