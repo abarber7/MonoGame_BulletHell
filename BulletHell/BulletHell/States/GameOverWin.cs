@@ -15,6 +15,7 @@ namespace BulletHell.States
         private List<Component> _components;
         private SnowEmitter _snowEmitter;
         private SpriteBatch spriteBatch;
+        private Texture2D youWinTexture;
 
 
         public object GraphicsDevice { get; private set; }
@@ -24,6 +25,7 @@ namespace BulletHell.States
         {
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
+            youWinTexture = _content.Load<Texture2D>("Titles/YouWinWhite");
 
 
             var newGameButton = new Button(buttonTexture, buttonFont)
@@ -65,6 +67,7 @@ namespace BulletHell.States
             _game.GraphicsDevice.Clear(Color.LightSeaGreen);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(youWinTexture, new Vector2(190, 50), Color.Gold);
 
             foreach (var component in _components)
                 component.Draw(gameTime, spriteBatch);

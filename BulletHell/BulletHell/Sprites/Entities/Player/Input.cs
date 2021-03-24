@@ -5,6 +5,7 @@
     // Allows for rebinding.
     internal class Input
     {
+        public static object Keys { get; internal set; }
         public Keys Up { get; set; }
 
         public Keys Down { get; set; }

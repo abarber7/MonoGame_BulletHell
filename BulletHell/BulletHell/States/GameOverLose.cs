@@ -15,6 +15,8 @@ namespace BulletHell.States
         private List<Component> _components;
         private SnowEmitter _snowEmitter;
         private SpriteBatch spriteBatch;
+        private Texture2D gameOverTexture;
+
 
 
         public object GraphicsDevice { get; private set; }
@@ -24,7 +26,7 @@ namespace BulletHell.States
         {
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
-
+            gameOverTexture = _content.Load<Texture2D>("Titles/GameOver");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -65,6 +67,7 @@ namespace BulletHell.States
             _game.GraphicsDevice.Clear(Color.Red);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(gameOverTexture, new Vector2(90, 50), Color.Black);
 
             foreach (var component in _components)
                 component.Draw(gameTime, spriteBatch);

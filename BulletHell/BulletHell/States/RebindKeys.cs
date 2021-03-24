@@ -1,9 +1,14 @@
 ﻿using BulletHell.Controls;
 using BulletHell.Game_Utilities;
+using BulletHell.Player;
+using BulletHell.Sprites;
+using BulletHell.Sprites.Movement_Patterns;
+using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
 using BulletHell.States.Emitters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +20,7 @@ namespace BulletHell.States
         private List<Component> _components;
         private SnowEmitter _snowEmitter;
         private SpriteBatch spriteBatch;
+        private Texture2D ConfigureControlsTexture;
 
 
         public object GraphicsDevice { get; private set; }
@@ -24,12 +30,14 @@ namespace BulletHell.States
         {
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
+            ConfigureControlsTexture = _content.Load<Texture2D>("Titles/ConfigureControls");
 
 
             var upButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(150, 150),
-                Text = "Up",
+                Text = "Up"
+                //  + PlayerInput.input.Attack,
             };
 
             upButton.Click += UpButton_Click;
@@ -89,9 +97,10 @@ namespace BulletHell.States
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.DarkSalmon);
+            _game.GraphicsDevice.Clear(Color.DarkGray);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(ConfigureControlsTexture, new Vector2(-7, 0), Color.Black);
 
             foreach (var component in _components)
                 component.Draw(gameTime, spriteBatch);
@@ -116,6 +125,7 @@ namespace BulletHell.States
 
         private void UpButton_Click(object sender, EventArgs e)
         {
+              //new Input() { Up = Keys.P };
         }
 
         private void DownButton_Click(object sender, EventArgs e)
