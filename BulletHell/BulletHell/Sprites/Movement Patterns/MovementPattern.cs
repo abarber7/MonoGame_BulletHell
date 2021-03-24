@@ -88,6 +88,7 @@
             Vector2 velocity = new Vector2();
             velocity.X = (endPosition.X - startPosition.X) == 0 ? 0 : speed / (endPosition.X - startPosition.X);
             velocity.Y = (endPosition.Y - startPosition.Y) == 0 ? 0 : speed / (endPosition.Y - startPosition.Y);
+
             return velocity;
         }
 

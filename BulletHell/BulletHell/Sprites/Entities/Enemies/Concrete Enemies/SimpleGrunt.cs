@@ -23,7 +23,7 @@
 
             this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.timer2 > 1.2f)
+            if (this.timer2 > 1f)
             {
                 this.timer2 = 0;
                 this.Attack(sprites);
