@@ -10,7 +10,7 @@ using System.Text;
 
 namespace BulletHell.States
 {
-    public class MenuState : State
+    public class GameOverWin : State
     {
         private List<Component> _components;
         private SnowEmitter _snowEmitter;
@@ -19,49 +19,50 @@ namespace BulletHell.States
 
         public object GraphicsDevice { get; private set; }
 
-        public MenuState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
+        public GameOverWin(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
 
+
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 200),
-                Text = "New Game",
+                Text = "Play Again",
             };
 
             newGameButton.Click += NewGameButton_Click;
 
-
-            var optionsButton = new Button(buttonTexture, buttonFont)
+            var returnButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 250),
-                Text = "Options",
+                Text = "Main Menu",
             };
 
-            optionsButton.Click += OptionsButton_Click;
+            returnButton.Click += ReturnButton_Click;
 
-            var quitGameButton = new Button(buttonTexture, buttonFont)
+            var ExitGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 300),
-                Text = "Quit",
+                Text = "Exit Game",
             };
 
-            quitGameButton.Click += QuitGameButton_Click;
+            ExitGameButton.Click += ExitGameButton_Click;
+
 
 
             _components = new List<Component>()
       {
         newGameButton,
-        optionsButton,
-        quitGameButton,
+        returnButton,
+        ExitGameButton,
       };
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.Black);
+            _game.GraphicsDevice.Clear(Color.LightSeaGreen);
 
             spriteBatch.Begin();
 
@@ -71,17 +72,6 @@ namespace BulletHell.States
             _snowEmitter.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-        }
-
-
-        private void OptionsButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new Options(_game, _graphicsDevice, _content));
-        }
-
-        private void NewGameButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new DifficultyState(_game, _graphicsDevice, _content));
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -97,10 +87,21 @@ namespace BulletHell.States
             _snowEmitter.Update(gameTime);
         }
 
-        private void QuitGameButton_Click(object sender, EventArgs e)
+        private void NewGameButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new DifficultyState(_game, _graphicsDevice, _content));
+        }
+
+        private void ReturnButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+        }
+
+        private void ExitGameButton_Click(object sender, EventArgs e)
         {
             _game.Exit();
         }
+
 
         public override void LoadContent()
         {

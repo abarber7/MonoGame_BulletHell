@@ -25,8 +25,8 @@
 
         public static Random Random;
 
-        public static int ScreenWidth = 1280;
-        public static int ScreenHeight = 720;
+        public static int ScreenWidth = 800;
+        public static int ScreenHeight = 480;
 
         // Initialize screensize and other game properties
         public BulletHell()
@@ -36,7 +36,6 @@
             this.IsMouseVisible = true;
 
             UtlilityManager.Initialize(this.Content);
-            GameLoader.LoadGameDictionary("Test");
             Random = new Random();
 
         }

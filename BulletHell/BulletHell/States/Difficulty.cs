@@ -10,7 +10,7 @@ using System.Text;
 
 namespace BulletHell.States
 {
-    public class MenuState : State
+    public class DifficultyState : State
     {
         private List<Component> _components;
         private SnowEmitter _snowEmitter;
@@ -19,49 +19,56 @@ namespace BulletHell.States
 
         public object GraphicsDevice { get; private set; }
 
-        public MenuState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
+        public DifficultyState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
 
-            var newGameButton = new Button(buttonTexture, buttonFont)
+            var newGameEasyButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 200),
-                Text = "New Game",
+                Text = "Easy",
             };
 
-            newGameButton.Click += NewGameButton_Click;
+            newGameEasyButton.Click += NewGameEasyButton_Click;
 
-
-            var optionsButton = new Button(buttonTexture, buttonFont)
+            var newGameNormalButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 250),
-                Text = "Options",
+                Text = "Normal",
             };
 
-            optionsButton.Click += OptionsButton_Click;
+            newGameNormalButton.Click += NewGameNormalButton_Click;
 
-            var quitGameButton = new Button(buttonTexture, buttonFont)
+            var newGameHardButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 300),
-                Text = "Quit",
+                Text = "Hard",
             };
 
-            quitGameButton.Click += QuitGameButton_Click;
+            newGameHardButton.Click += NewGameHardButton_Click;
 
+            var returnButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(300, 350),
+                Text = "Main Menu",
+            };
+
+            returnButton.Click += QuitGameButton_Click;
 
             _components = new List<Component>()
       {
-        newGameButton,
-        optionsButton,
-        quitGameButton,
+        newGameEasyButton,
+        newGameNormalButton,
+        newGameHardButton,
+        returnButton,
       };
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.Black);
+            _game.GraphicsDevice.Clear(Color.Green);
 
             spriteBatch.Begin();
 
@@ -73,15 +80,25 @@ namespace BulletHell.States
             spriteBatch.End();
         }
 
-
-        private void OptionsButton_Click(object sender, EventArgs e)
+        private void NewGameHardButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new Options(_game, _graphicsDevice, _content));
+            GameLoader.LoadGameDictionary("Test2");
+
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
-        private void NewGameButton_Click(object sender, EventArgs e)
+        private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new DifficultyState(_game, _graphicsDevice, _content));
+            GameLoader.LoadGameDictionary("Test");
+
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+
+        private void NewGameEasyButton_Click(object sender, EventArgs e)
+        {
+            GameLoader.LoadGameDictionary("Test");
+
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -99,7 +116,7 @@ namespace BulletHell.States
 
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            _game.Exit();
+            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
         }
 
         public override void LoadContent()

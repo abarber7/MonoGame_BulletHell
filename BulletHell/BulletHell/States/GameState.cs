@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Text;
 using global::BulletHell.Utilities;
 using Microsoft.Xna.Framework.Input;
+using BulletHell.Sprites.Projectiles;
+using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
 
 namespace BulletHell.States
 {
@@ -17,9 +19,16 @@ namespace BulletHell.States
         private List<Sprite> sprites;
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
-        private State _currentState;
+        private SpriteFont font;
+
+        
+      private State _currentState;
 
         private State _nextState;
+
+        private int lives = 3;
+        private bool finalBossDefeated = false;
+
 
         public GameState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
@@ -44,6 +53,10 @@ namespace BulletHell.States
                     }
                 }
             }
+
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
+
+
             this.spriteBatch.End();
 
         }
@@ -57,6 +70,8 @@ namespace BulletHell.States
             this.CreatePlayer();
 
             this.CreateWaves();
+
+            this.CreateStats();
         }
 
         public override void Update(GameTime gameTime)
@@ -68,6 +83,12 @@ namespace BulletHell.States
             {
                 sprite.Update(gameTime, this.sprites);
             }
+
+            if (this.lives == 0 || this.finalBossDefeated)
+            {
+                this.EndGamePrompt();
+            }
+
 
             this.PostUpdate();
         }
@@ -128,10 +149,53 @@ namespace BulletHell.States
             {
                 if (this.sprites[i].IsRemoved)
                 {
+                    if (this.sprites[i] is Sprites.Entities.Player)
+                    {
+                        this.lives--;
+                        this.RemoveAllProjectiles();
+                        this.CreatePlayer();
+                    }
+                    else if (this.sprites[i] is FinalBoss)
+                    {
+                        this.finalBossDefeated = true;
+                    }
+
                     this.sprites.RemoveAt(i);
                 }
             }
         }
+        private void EndGamePrompt()
+        {
+            // TODO: Implement with Antonio's menu system.
+            if (this.lives == 0)
+            {
+                _game.ChangeState(new GameOverLose(_game, _graphicsDevice, _content));
+
+            }
+            else if (this.finalBossDefeated = true)
+            {
+                _game.ChangeState(new GameOverWin(_game, _graphicsDevice, _content));
+
+            }
+        }
+
+        private void CreateStats()
+        {
+            this.font = this._content.Load<SpriteFont>("Fonts/Font");
+        }
+
+
+        private void RemoveAllProjectiles()
+        {
+            for (int i = this.sprites.Count - 1; i >= 0; i--)
+            {
+                if (this.sprites[i] is Projectile)
+                {
+                    this.sprites.RemoveAt(i);
+                }
+            }
+        }
+
 
         public override void Draw(GameTime gameTime)
         {
