@@ -24,6 +24,7 @@
             this.stopPosition = stopPosition;
             this.exitPosition = exitPosition;
             this.Speed = speed;
+            this.timer = timer;
 
             this.CurrentSpeed = this.Speed * 2;
             this.Position = this.spawnPosition; // set position to spawn positions

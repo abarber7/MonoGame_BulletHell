@@ -6,8 +6,8 @@
 
     internal abstract class MovementPattern : ICloneable
     {
-        protected Vector2 velocity;
-        protected Vector2 position;
+        public Vector2 velocity; // should be protected
+        public Vector2 position; // should be protected
 
         public Sprite Parent { get; set; }
 

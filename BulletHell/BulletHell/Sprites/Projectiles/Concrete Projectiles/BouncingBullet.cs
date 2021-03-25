@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -11,8 +12,8 @@
         // max bounce number
         private int maxBounces = 5;
 
-        public BouncingBullet(Dictionary<string, object> bouncingBulletProperties)
-            : base(bouncingBulletProperties)
+        public BouncingBullet(Texture2D texture, Color color, MovementPattern movement)
+            : base(texture, color, movement)
         {
         }
 

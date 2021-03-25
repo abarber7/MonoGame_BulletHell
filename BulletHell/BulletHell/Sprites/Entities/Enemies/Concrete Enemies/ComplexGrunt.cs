@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using global::BulletHell.Sprites.Movement_Patterns;
+    using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -12,8 +14,8 @@
         private float timer2;
         private float timer3;
 
-        public ComplexGrunt(Dictionary<string, object> complexGruntProperties)
-            : base(complexGruntProperties)
+        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
+            : base(texture, color, movement, projectile, lifeSpan)
         {
         }
 

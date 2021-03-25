@@ -4,13 +4,14 @@
     using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal class FinalBoss : Enemy
     {
         private int previousTime = 0;
 
-        public FinalBoss(Dictionary<string, object> finalBossProperties)
-            : base(finalBossProperties)
+        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
+            : base(texture, color, movement, projectile, lifeSpan)
         {
         }
 

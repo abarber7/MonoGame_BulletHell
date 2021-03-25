@@ -1,15 +1,18 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
     using System.Collections.Generic;
+    using global::BulletHell.Sprites.Movement_Patterns;
+    using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal class SimpleGrunt : Enemy
     {
         private int previousTime = 0;
         private float timer2;
 
-        public SimpleGrunt(Dictionary<string, object> simpleGruntProperties)
-            : base(simpleGruntProperties)
+        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
+            : base(texture, color, movement, projectile, lifeSpan)
         {
         }
 

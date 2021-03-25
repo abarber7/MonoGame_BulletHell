@@ -2,23 +2,38 @@
 {
     using System;
     using System.Collections.Generic;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles.Concrete_Projectiles;
+    using global::BulletHell.Utilities;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal class ProjectileFactory
     {
         public static Projectile CreateProjectile(Dictionary<string, object> projectileProperties)
         {
             Projectile projectile = null;
+
+            string textureName = (string)projectileProperties["textureName"];
+            Texture2D texture = TextureFactory.GetTexture(textureName);
+
+            string colorName = (string)projectileProperties["color"];
+            Color color = System.Drawing.Color.FromName(colorName).ToXNA();
+
+            MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)projectileProperties["movementPattern"]);
+            movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
+
             switch (projectileProperties["projectileType"])
             {
                 case "bullet":
-                    projectile = new Bullet(projectileProperties);
+                    projectile = new Bullet(texture, color, movement);
                     break;
                 case "bouncingBullet":
-                    projectile = new BouncingBullet(projectileProperties);
+                    projectile = new BouncingBullet(texture, color, movement);
                     break;
                 case "bounceBullet":
-                    projectile = new BounceBullet(projectileProperties);
+                    int numberOfTimesToBounce = (int)projectileProperties["bounceTimes"];
+                    projectile = new BounceBullet(texture, color, movement, numberOfTimesToBounce);
                     break;
                 default:
                     throw new Exception("Invalid Projectile Type");

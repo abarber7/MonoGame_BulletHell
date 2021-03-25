@@ -23,8 +23,10 @@
         {
             for (int i = 0; i < this.entityAmount; i++)
             {
-                Entity entity = this.entityType;
+                Entity entity = (Entity)this.entityType.Clone();
                 entity.Movement = this.movementPatterns[i];
+                entity.Projectile.Movement.Parent = entity;
+                entity.Movement.Parent = entity;
                 sprites.Add(entity);
             }
         }

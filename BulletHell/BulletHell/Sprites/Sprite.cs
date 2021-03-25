@@ -11,20 +11,11 @@
         private bool isRemoved = false;
         private Color color = Color.White;
 
-        public Sprite(Dictionary<string, object> spriteProperties)
+        public Sprite(Texture2D texture, Color color, MovementPattern movement)
         {
-            string textureName = (string)spriteProperties["textureName"];
-            this.Texture = TextureFactory.GetTexture(textureName);
-
-            string colorName = (string)spriteProperties["color"];
-            this.Color = System.Drawing.Color.FromName(colorName).ToXNA();
-
-            if (spriteProperties.ContainsKey("movementPattern"))
-            {
-                this.Movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)spriteProperties["movementPattern"]);
-                this.Movement.Origin = new Vector2(this.Texture.Width / 2, this.Texture.Height / 2); // Orgin is based on texture
-                this.Movement.Parent = this;
-            }
+            this.Texture = texture;
+            this.Color = color;
+            this.Movement = movement;
         }
 
         public Texture2D Texture { get; set; }
