@@ -8,39 +8,24 @@
     internal class BackAndForth : MovementPattern
     {
         private Vector2 spawnPosition; // spawn position
-
         private Vector2 exitPosition; // position where the entity will exit from
-        private int exitSpeed; // speed when spawning
-
         private Vector2 startPosition;
         private Vector2 endPosition;
-        private int normalSpeed;
 
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exitTime = false; // bool for if it is time to exit
 
         private System.Timers.Timer timer = new System.Timers.Timer(15000); // timer for exit at 15000 mili seconds
 
-        public BackAndForth (Dictionary<string, object> backAndForthProperties)
-            : base(backAndForthProperties)
+        public BackAndForth (Vector2 spawnPosition, Vector2 startPosition, Vector2 endPosition, int speed)
+            : base()
         {
-            // spawning
-            this.spawnPosition.X = Convert.ToSingle((int)backAndForthProperties["xspawnPosition"]);
-            this.spawnPosition.Y = Convert.ToSingle((int)backAndForthProperties["yspawnPosition"]);
-            this.Speed = (int)backAndForthProperties["spawnSpeed"];
-
-            // movement pattern
-            this.startPosition.X = Convert.ToSingle((int)backAndForthProperties["xStartPosition"]);
-            this.startPosition.Y = Convert.ToSingle((int)backAndForthProperties["yStartPosition"]);
-            this.endPosition.X = Convert.ToSingle((int)backAndForthProperties["xEndPosition"]);
-            this.endPosition.Y = Convert.ToSingle((int)backAndForthProperties["yEndPosition"]);
-            this.normalSpeed = (int)backAndForthProperties["normalSpeed"];
-
-            // exit
-            this.exitSpeed = (int)backAndForthProperties["exitSpeed"];
-
+            this.spawnPosition = spawnPosition;
+            this.startPosition = startPosition;
+            this.endPosition = endPosition;
+            this.Speed = speed;
             this.Position = this.spawnPosition; // set position to spawn positions
-            this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.Speed); // set velocity to move towards start position
+            this.Velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.Speed); // set velocity to move towards start position
         }
 
         // method to call when timer has Elapsed
@@ -49,7 +34,7 @@
 
             this.exitTime = true; // change bool so the entity will exit
             this.exitPosition = this.Position; // save the position at the end of the timer so it can be used for calculating exit velocity
-            this.Speed = this.exitSpeed; // change to exit speed
+            this.CurrentSpeed = this.Speed * 2; // change to exit speed
         }
 
         public override void Move()
@@ -63,11 +48,11 @@
             if (this.reachedStart == false)
             {
                 // if start position reached
-                if (this.ExceededPosition(this.spawnPosition, this.startPosition, this.velocity))
+                if (this.ExceededPosition(this.spawnPosition, this.startPosition, this.Velocity))
                 {
                     this.reachedStart = true; // change bool so entity will move in the pattern
-                    this.Speed = this.normalSpeed;
-                    this.velocity = this.CalculateVelocity(this.startPosition, this.endPosition, this.Speed); // change velocity to match what the patterns velocity should be
+                    this.CurrentSpeed = this.Speed;
+                    this.Velocity = this.CalculateVelocity(this.startPosition, this.endPosition, this.Speed); // change velocity to match what the patterns velocity should be
                 }
             }
 
@@ -78,16 +63,16 @@
                 if (this.exitTime == false)
                 {
                     // when exceeding position reverse velocity to go back and fort
-                    if (this.ExceededPosition(this.startPosition, this.endPosition, this.velocity))
+                    if (this.ExceededPosition(this.startPosition, this.endPosition, this.Velocity))
                     {
-                        this.velocity = -this.velocity;
+                        this.Velocity = -this.Velocity;
                     }
                 }
 
                 // Otherwise exit
                 else
                 {
-                    this.velocity = this.CalculateVelocity(this.exitPosition, this.spawnPosition, this.Speed); // change velocity to exit out of the screen
+                    this.Velocity = this.CalculateVelocity(this.exitPosition, this.spawnPosition, this.Speed); // change velocity to exit out of the screen
                 }
             }
 

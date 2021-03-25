@@ -11,7 +11,7 @@
         private Input input;
 
         public PlayerInput(Dictionary<string, object> playerInputProperties)
-            : base(playerInputProperties)
+            : base()
         {
             this.input = new Input()
             {
@@ -23,8 +23,8 @@
             };
 
             this.Speed = (int)playerInputProperties["speed"];
-            this.Position.X = Convert.ToSingle((int)playerInputProperties["xPosition"]);
-            this.Position.Y = Convert.ToSingle((int)playerInputProperties["yPosition"]);
+            this.position.X = Convert.ToSingle((int)playerInputProperties["xPosition"]);
+            this.position.Y = Convert.ToSingle((int)playerInputProperties["yPosition"]);
         }
 
         public override void Move()

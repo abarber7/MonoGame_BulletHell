@@ -1,12 +1,10 @@
 ﻿namespace BulletHell
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using global::BulletHell.Game_Utilities;
     using global::BulletHell.Sprites;
-    using global::BulletHell.Sprites.Entities;
     using global::BulletHell.Utilities;
+    using global::BulletHell.Waves;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -25,7 +23,7 @@
             this.IsMouseVisible = true;
 
             UtlilityManager.Initialize(this.Content);
-            GameLoader.LoadGameDictionary("Test");
+            GameLoader.LoadGameDictionary("refactored");
         }
 
         public static GraphicsDeviceManager Graphics { get; set; }

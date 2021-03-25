@@ -28,7 +28,8 @@
 
         private new void Attack(List<Sprite> sprites)
         {
-            Projectile newProjectile = this.Projectile.Clone() as Projectile;
+            // TODO: needs refactoring and moved to Attack object
+            /*Projectile newProjectile = this.Projectile.Clone() as Projectile;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
             newProjectile.Movement.velocity = this.Movement.velocity;
             newProjectile.Movement.Position = this.Movement.Position;
@@ -68,7 +69,7 @@
             newProjectile.Movement.velocity.X -= 2;
             newProjectile.Parent = this;
 
-            sprites.Add(newProjectile);
+            sprites.Add(newProjectile);*/
         }
     }
 }

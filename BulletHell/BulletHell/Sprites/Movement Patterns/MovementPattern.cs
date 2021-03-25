@@ -6,19 +6,30 @@
 
     internal abstract class MovementPattern : ICloneable
     {
-        public Sprite Parent;
-        public Vector2 Position;
-        public Vector2 velocity;
-        public int Speed;
-        public int Rotation;
+        protected Vector2 velocity;
+        protected Vector2 position;
 
-        public MovementPattern(Dictionary<string, object> movementPatternProperties)
+        public Sprite Parent { get; set; }
+
+        public Vector2 Velocity { get => this.velocity; set => this.velocity = value; }
+
+        public Vector2 Position { get => this.position; set => this.position = value; }
+
+        public Vector2 Origin { get; set; }
+
+        public int Speed { get; set; }
+
+        public int CurrentSpeed { get; set; }
+
+        public int Rotation { get; set; }
+
+        public MovementPattern()
         {
         }
 
         public virtual void Move()
         {
-            this.Position += this.velocity;
+            this.Position += this.Velocity;
         }
 
         public object Clone()
@@ -29,9 +40,11 @@
         public bool IsTouchingBottomOfScreen()
         {
             int bottom = BulletHell.Graphics.PreferredBackBufferHeight - (this.Parent.Texture.Height / 2);
-            if (this.Position.Y + this.velocity.Y > bottom)
+            if (this.Position.Y + this.Velocity.Y > bottom)
             {
-                this.Position.Y = bottom;
+                Vector2 position = this.Position;
+                position.Y = bottom;
+                this.Position = position;
                 return true;
             }
             else
@@ -43,9 +56,11 @@
         public bool IsTouchingTopOfScreen()
         {
             int top = this.Parent.Texture.Height / 2;
-            if (this.Position.Y + this.velocity.Y < top)
+            if (this.Position.Y + this.Velocity.Y < top)
             {
-                this.Position.Y = top;
+                Vector2 position = this.Position;
+                position.Y = top;
+                this.Position = position;
                 return true;
             }
             else
@@ -57,9 +72,11 @@
         public bool IsTouchingRightOfScreen()
         {
             int right = BulletHell.Graphics.PreferredBackBufferWidth - (this.Parent.Texture.Width / 2);
-            if (this.Position.X + this.velocity.X > right)
+            if (this.Position.X + this.Velocity.X > right)
             {
-                this.Position.X = right;
+                Vector2 position = this.Position;
+                position.X = right;
+                this.Position = position;
                 return true;
             }
             else
@@ -71,9 +88,11 @@
         public bool IsTouchingLeftOfScreen()
         {
             int left = this.Parent.Texture.Width / 2;
-            if (this.Position.X + this.velocity.X < left)
+            if (this.Position.X + this.Velocity.X < left)
             {
-                this.Position.X = left;
+                Vector2 position = this.Position;
+                position.X = left;
+                this.Position = position;
                 return true;
             }
             else
@@ -140,7 +159,7 @@
             else if (velocity.X < 0)
             {
                 // Up to start
-                if ((this.Position.X + this.velocity.X - startPosition.X < this.Position.X - startPosition.X)
+                if ((this.Position.X + this.Velocity.X - startPosition.X < this.Position.X - startPosition.X)
                     && this.Position.X < startPosition.X
                     && startPosition.X - endPosition.X < 0)
                 {
@@ -148,7 +167,7 @@
                 }
 
                 // Up to end
-                if ((this.Position.X + velocity.X - endPosition.X < this.Position.X - endPosition.X)
+                if ((this.Position.X + this.Velocity.X - endPosition.X < this.Position.X - endPosition.X)
                     && this.Position.X < endPosition.X
                     && endPosition.X - startPosition.X < 0)
                 {
@@ -177,6 +196,26 @@
             }
 
             return false;
+        }
+
+        public void ZeroXVelocity()
+        {
+            this.velocity.X = 0;
+        }
+
+        public void ZeroYVelocity()
+        {
+            this.velocity.Y = 0;
+        }
+
+        public void InvertXVelocity()
+        {
+            this.velocity.X = -this.velocity.X;
+        }
+
+        public void InvertYVelocity()
+        {
+            this.velocity.Y = -this.velocity.Y;
         }
     }
 }

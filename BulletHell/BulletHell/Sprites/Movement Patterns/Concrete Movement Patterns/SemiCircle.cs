@@ -16,7 +16,7 @@
         private float count = 0;
 
         public Semicircle(Dictionary<string, object> semicircleProperties)
-            : base(semicircleProperties)
+            : base()
         {
             this.Speed = (int)semicircleProperties["speed"];
             this.startPosition.X = Convert.ToSingle((int)semicircleProperties["xStartPosition"]);

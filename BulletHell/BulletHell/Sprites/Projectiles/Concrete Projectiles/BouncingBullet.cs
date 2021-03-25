@@ -24,7 +24,7 @@
                 // when bullet is out of bounds reverse its velocity and reduce maxBounces
                 if (this.OutOfBounds())
                 {
-                    this.Movement.velocity = -this.Movement.velocity;
+                    this.Movement.Velocity = -this.Movement.Velocity;
                     this.maxBounces--;
                 }
             }
