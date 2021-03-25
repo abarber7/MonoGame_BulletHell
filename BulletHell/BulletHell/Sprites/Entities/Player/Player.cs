@@ -53,7 +53,7 @@
 
         public void SetInvincibility()
         {
-            if (this.currentKey.IsKeyDown(Keys.OemTilde))
+            if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
             {
                 if (this.invicible)
                 {

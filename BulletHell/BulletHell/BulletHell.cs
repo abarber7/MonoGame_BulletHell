@@ -77,9 +77,14 @@
                 if (sprite is Sprites.Entities.Player)
                 {
                     Sprites.Entities.Player player = (Sprites.Entities.Player)sprite;
+                    if (player.invicible)
+                    {
+                        this.DrawBoxAroundSprite(player, Color.Crimson);
+                    }
+
                     if (player.slowMode)
                     {
-                        this.DrawBoxAroundSprite(player);
+                        this.DrawBoxAroundSprite(player, Color.White);
                         player.slowMode = false;
                     }
                 }
@@ -90,7 +95,7 @@
             base.Draw(gameTime);
         }
 
-        private void DrawBoxAroundSprite(Sprite sprite)
+        private void DrawBoxAroundSprite(Sprite sprite, Color color)
         {
             Texture2D hitboxTexture = new Texture2D(Graphics.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
             Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
@@ -98,25 +103,25 @@
             {
                 if (i < sprite.Rectangle.Width)
                 {
-                    data[i] = Color.White;
+                    data[i] = color;
                 }
                 else if (i % sprite.Rectangle.Width == 0)
                 {
-                    data[i] = Color.White;
+                    data[i] = color;
                 }
                 else if (i % sprite.Rectangle.Width == sprite.Rectangle.Width - 1)
                 {
-                    data[i] = Color.White;
+                    data[i] = color;
                 }
                 else if (i > (sprite.Rectangle.Width * sprite.Rectangle.Height) - sprite.Rectangle.Width)
                 {
-                    data[i] = Color.White;
+                    data[i] = color;
                 }
             }
 
             hitboxTexture.SetData(data);
 
-            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Movement.Position.X - (hitboxTexture.Width / 2), sprite.Movement.Position.Y - (hitboxTexture.Height / 2)), Color.White);
+            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Movement.Position.X - (hitboxTexture.Width / 2), sprite.Movement.Position.Y - (hitboxTexture.Height / 2)), color);
         }
 
         private void PostUpdate()
