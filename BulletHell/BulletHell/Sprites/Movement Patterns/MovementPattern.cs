@@ -86,8 +86,11 @@
         protected Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
         {
             Vector2 velocity = new Vector2();
-            velocity.X = (endPosition.X - startPosition.X) == 0 ? 0 : speed / (endPosition.X - startPosition.X);
-            velocity.Y = (endPosition.Y - startPosition.Y) == 0 ? 0 : speed / (endPosition.Y - startPosition.Y);
+            velocity.X = endPosition.X - startPosition.X;
+            velocity.Y = endPosition.Y - startPosition.Y;
+            velocity.Normalize();
+            velocity.X *= speed;
+            velocity.Y *= speed;
 
             return velocity;
         }
