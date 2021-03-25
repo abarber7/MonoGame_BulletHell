@@ -1,20 +1,15 @@
-﻿using BulletHell.Controls;
-using BulletHell.Game_Utilities;
-using BulletHell.Player;
-using BulletHell.Sprites;
-using BulletHell.Sprites.Movement_Patterns;
-using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
-using BulletHell.States.Emitters;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.States
+﻿namespace BulletHell.States
 {
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Controls;
+    using global::BulletHell.Player;
+    using global::BulletHell.States.Emitters;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
     public class RebindKeys : State
     {
         private List<Component> _components;
@@ -22,6 +17,11 @@ namespace BulletHell.States
         private SpriteBatch spriteBatch;
         private Texture2D ConfigureControlsTexture;
 
+        private Button upButton;
+        private Button downButton;
+        private Button leftButton;
+        private Button rightButton;
+        private Button attackButton;
 
         public object GraphicsDevice { get; private set; }
 
@@ -30,69 +30,65 @@ namespace BulletHell.States
         {
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
-            ConfigureControlsTexture = _content.Load<Texture2D>("Titles/ConfigureControls");
+            this.ConfigureControlsTexture = _content.Load<Texture2D>("Titles/ConfigureControls");
 
-
-            var upButton = new Button(buttonTexture, buttonFont)
+            this.upButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(150, 150),
-                Text = "Up"
-                //  + PlayerInput.input.Attack,
+                Text = "Up | " + Input.Up.ToString(),
             };
 
-            upButton.Click += UpButton_Click;
+            this.upButton.Click += this.UpButton_Click;
 
-            var downButton = new Button(buttonTexture, buttonFont)
+            this.downButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(150, 250),
-                Text = "Down",
+                Text = "Down | " + Input.Down.ToString(),
             };
 
-            downButton.Click += DownButton_Click;
+            this.downButton.Click += this.DownButton_Click;
 
-            var leftButton = new Button(buttonTexture, buttonFont)
+            this.leftButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(50, 200),
-                Text = "Left",
+                Text = "Left | " + Input.Left.ToString(),
             };
 
-            leftButton.Click += LeftButton_Click;
+            this.leftButton.Click += this.LeftButton_Click;
 
-            var rightButton = new Button(buttonTexture, buttonFont)
+            this.rightButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(250, 200),
-                Text = "Right",
+                Text = "Right | " + Input.Right.ToString(),
             };
 
-            rightButton.Click += RightButton_Click;
-
+            this.rightButton.Click += this.RightButton_Click;
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 300),
-                Text = "Return",
+                Text = "Return to Main Menu",
             };
 
-            returnButton.Click += ReturnButton_Click;
+            returnButton.Click += this.ReturnButton_Click;
 
-            var fireButton = new Button(buttonTexture, buttonFont)
+            this.attackButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(500, 200),
-                Text = "Fire",
+                Text = "Attack | " + Input.Attack.ToString(),
             };
 
-            fireButton.Click += FireButton_Click;
+            this.attackButton.Click += this.AttackButton_Click;
 
-
-            _components = new List<Component>()
-      {
-        upButton,
-        downButton,
-        leftButton,
-        rightButton,
-        fireButton,
-        returnButton,
-      };
+            this._components = new List<Component>()
+              {
+                this.upButton,
+                this.downButton,
+                this.leftButton,
+                this.rightButton,
+                this.attackButton,
+                returnButton,
+              };
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -117,31 +113,86 @@ namespace BulletHell.States
 
         public override void Update(GameTime gameTime)
         {
+
             foreach (var component in _components)
+            {
+                if (this.rebinding)
+                {
+                    this.GetNewKey();
+                }
+
                 component.Update(gameTime);
+            }
 
             _snowEmitter.Update(gameTime);
         }
 
+        private KeyboardState preivousState;
+
+        private void GetNewKey()
+        {
+            KeyboardState newState = Keyboard.GetState();
+            if (this.preivousState.GetPressedKeyCount() == 0 && newState.GetPressedKeyCount() == 1)
+            {
+                Keys newKey = newState.GetPressedKeys()[0];
+
+                // Check if key is already binded.
+                if (Input.CheckIfAlreadyBinded(newKey) == false)
+                {
+                    Input.SetKey(this.functionToRebind, newKey);
+                    this.buttonToRebind.Text = this.functionToRebind + " | " + newKey.ToString();
+
+                    this.rebinding = false;
+                    this.functionToRebind = string.Empty;
+                    this.buttonToRebind = null;
+                }
+            }
+
+            this.preivousState = newState;
+        }
+
+        private bool rebinding = false;
+        private string functionToRebind;
+        private Button buttonToRebind;
+
         private void UpButton_Click(object sender, EventArgs e)
         {
-              //new Input() { Up = Keys.P };
+            this.rebinding = true;
+            this.functionToRebind = "Up";
+            this.buttonToRebind = sender as Button;
+            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
         }
 
         private void DownButton_Click(object sender, EventArgs e)
         {
+            this.rebinding = true;
+            this.functionToRebind = "Down";
+            this.buttonToRebind = sender as Button;
+            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
         }
 
         private void LeftButton_Click(object sender, EventArgs e)
         {
+            this.rebinding = true;
+            this.functionToRebind = "Left";
+            this.buttonToRebind = sender as Button;
+            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
         }
 
         private void RightButton_Click(object sender, EventArgs e)
         {
+            this.rebinding = true;
+            this.functionToRebind = "Right";
+            this.buttonToRebind = sender as Button;
+            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
         }
 
-        private void FireButton_Click(object sender, EventArgs e)
+        private void AttackButton_Click(object sender, EventArgs e)
         {
+            this.rebinding = true;
+            this.functionToRebind = "Attack";
+            this.buttonToRebind = sender as Button;
+            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
         }
 
         private void ReturnButton_Click(object sender, EventArgs e)
