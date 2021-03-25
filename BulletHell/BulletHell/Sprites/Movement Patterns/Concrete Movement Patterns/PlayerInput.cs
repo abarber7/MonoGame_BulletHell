@@ -13,15 +13,6 @@
         public PlayerInput(Dictionary<string, object> playerInputProperties)
             : base(playerInputProperties)
         {
-            this.input = new Input()
-            {
-                Left = Keys.A,
-                Right = Keys.D,
-                Up = Keys.W,
-                Down = Keys.S,
-                Attack = Keys.Space,
-            };
-
             this.Speed = (int)playerInputProperties["speed"];
             this.Position.X = Convert.ToSingle((int)playerInputProperties["xPosition"]);
             this.Position.Y = Convert.ToSingle((int)playerInputProperties["yPosition"]);
@@ -29,20 +20,20 @@
 
         public override void Move()
         {
-            if (Keyboard.GetState().IsKeyDown(this.input.Left))
+            if (Keyboard.GetState().IsKeyDown(Input.Left))
             {
                 this.velocity.X = -this.Speed;
             }
-            else if (Keyboard.GetState().IsKeyDown(this.input.Right))
+            else if (Keyboard.GetState().IsKeyDown(Input.Right))
             {
                 this.velocity.X = this.Speed;
             }
 
-            if (Keyboard.GetState().IsKeyDown(this.input.Up))
+            if (Keyboard.GetState().IsKeyDown(Input.Up))
             {
                 this.velocity.Y = -this.Speed;
             }
-            else if (Keyboard.GetState().IsKeyDown(this.input.Down))
+            else if (Keyboard.GetState().IsKeyDown(Input.Down))
             {
                 this.velocity.Y = this.Speed;
             }
