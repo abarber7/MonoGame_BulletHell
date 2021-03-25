@@ -8,13 +8,23 @@
     {
         public static Projectile CreateProjectile(Dictionary<string, object> projectileProperties)
         {
-            return projectileProperties["projectileType"] switch
+            Projectile projectile = null;
+            switch (projectileProperties["projectileType"])
             {
-                "bullet" => new Bullet(projectileProperties),
-                "bouncingBullet" => new BouncingBullet(projectileProperties),
-                "bounceBullet" => new BounceBullet(projectileProperties),
-                _ => throw new Exception("Invalid Projectile Type"),
-            };
+                case "bullet":
+                    projectile = new Bullet(projectileProperties);
+                    break;
+                case "bouncingBullet":
+                    projectile = new BouncingBullet(projectileProperties);
+                    break;
+                case "bounceBullet":
+                    projectile = new BounceBullet(projectileProperties);
+                    break;
+                default:
+                    throw new Exception("Invalid Projectile Type");
+            }
+
+            return projectile;
         }
     }
 }

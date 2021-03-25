@@ -9,18 +9,35 @@
         public static MovementPattern CreateMovementPattern(Dictionary<string, object> movementPatternProperties)
         {
             MovementPattern movementPattern = null;
-            movementPattern = movementPatternProperties["movementPatternType"] switch
+            switch (movementPatternProperties["movementPatternType"])
             {
-                "playerInput" => new PlayerInput(movementPatternProperties),
-                "linear" => new Linear(movementPatternProperties),
-                "backAndForth" => new BackAndForth(movementPatternProperties),
-                "static" => new Static(movementPatternProperties),
-                "pattern" => new Pattern(movementPatternProperties),
-                "semicircle" => new Semicircle(movementPatternProperties),
-                "runAndGun" => new RunAndGun(movementPatternProperties),
-                "bounce" => new Bounce(movementPatternProperties),
-                _ => throw new Exception("Invalid Entity"),
-            };
+                case "playerInput":
+                    movementPattern = new PlayerInput(movementPatternProperties);
+                    break;
+                case "linear":
+                    movementPattern = new Linear(movementPatternProperties);
+                    break;
+                case "backAndForth":
+                    movementPattern = new BackAndForth(movementPatternProperties);
+                    break;
+                case "static":
+                    movementPattern = new Static(movementPatternProperties);
+                    break;
+                case "pattern":
+                    movementPattern = new Pattern(movementPatternProperties);
+                    break;
+                case "semicircle":
+                    movementPattern = new Semicircle(movementPatternProperties);
+                    break;
+                case "runAndGun":
+                    movementPattern = new RunAndGun(movementPatternProperties);
+                    break;
+                case "bounce":
+                    movementPattern = new Bounce(movementPatternProperties);
+                    break;
+                default:
+                    throw new Exception("Invalid Entity");
+            }
 
             return movementPattern;
         }
