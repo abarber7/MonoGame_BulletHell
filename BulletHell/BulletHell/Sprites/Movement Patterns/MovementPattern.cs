@@ -7,7 +7,6 @@
     internal abstract class MovementPattern : ICloneable
     {
         public Sprite Parent;
-        public Vector2 Origin;
         public Vector2 Position;
         public Vector2 velocity;
         public int Speed;

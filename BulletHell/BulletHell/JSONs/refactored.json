@@ -41,9 +41,7 @@
                   "lifeSpan": 30,
                   "movementPattern": {
                     "movementPatternType": "backAndForth",
-                    "spawnSpeed": 900,
-                    "normalSpeed": 900,
-                    "exitSpeed": 600
+                    "speed": 900,
                   },
                   "projectile": {
                     "projectileType": "bullet",
@@ -81,9 +79,7 @@
                   "lifeSpan": 30,
                   "movementPattern": {
                     "movementPatternType": "backAndForth",
-                    "spawnSpeed": 900,
-                    "normalSpeed": 800,
-                    "exitSpeed": 200
+                    "speed": 900,
                   },
                   "projectile": {
                     "projectileType": "bullet",
@@ -121,9 +117,7 @@
                   "lifeSpan": 15,
                   "movementPattern": {
                     "movementPatternType": "backAndForth",
-                    "spawnSpeed": 900,
-                    "normalSpeed": 900,
-                    "exitSpeed": 600
+                    "speed": 900,
                   },
                   "projectile": {
                     "projectileType": "bullet",
@@ -161,10 +155,8 @@
                   "lifeSpan": 30,
                   "movementPattern": {
                     "movementPatternType": "runAndGun",
-                    "spawnSpeed": 900,
-                    "normalSpeed": 900,
-                    "exitSpeed": 600,
-                    "timer": 5000
+                    "speed": 900,
+                    "timeBeforeExit": 5
                   },
                   "projectile": {
                     "projectileType": "bounceBullet",
@@ -203,10 +195,8 @@
                   "lifeSpan": 30,
                   "movementPattern": {
                     "movementPatternType": "runAndGun",
-                    "spawnSpeed": 900,
-                    "normalSpeed": 900,
-                    "exitSpeed": 600,
-                    "timer": 5000
+                    "speed": 900,
+                    "timeBeforeExit": 5
                   },
                   "projectile": {
                     "projectileType": "bounceBullet",
