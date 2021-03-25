@@ -72,6 +72,8 @@
                 "startingYPositoins": [ 75, 75, 75, 75, 150, 150, 150, 150, 100, 100, 100, 100 ],
                 "endXPositions": [ 750, 750, 50, 50, 300, 500, 500, 300, 200, 600, 700, 100 ],
                 "endYPositions": [ 75, 75, 75, 75, 150, 150, 150, 150, 100, 100, 100, 100 ],
+                "exitXPosition": [ 400, 400, 400, 400, -300, -100, 1100, 900, 400, 400, 400, 400 ],
+                "exitYPosition": [ -275, -200, -275, -200, 150, 150, 150, 150, -275, -275, -275, -275 ],
                 "entityProperties": {
                   "entityType": "simpleGrunt",
                   "textureName": "Block",
@@ -110,6 +112,8 @@
                 "startingYPositoins": [ 50, 50, 150, 150, 175, 175 ],
                 "endXPositions": [ 800, 0, 300, 500, 300, 500 ],
                 "endYPositions": [ 50, 50, 150, 150, 175, 175 ],
+                "exitXPosition": [ 400, 400, 900, -100, -400, 1200 ],
+                "exitYPosition": [ -275, -275, 150, 150, 175, 175 ],
                 "entityProperties": {
                   "entityType": "simpleGrunt",
                   "textureName": "Block",
@@ -142,14 +146,14 @@
             "entityGroups": [
               {
                 "entityAmount": 3,
-                "spawnXPositoins": [ -100, -200, -300],
-                "spawnYPositoins": [ -100, -100, -100],
-                "startingXPositoins": [ 0, 0, 0],
-                "startingYPositoins": [ 150, 150, 150],
-                "endXPositions": [ 350, 250, 150],
-                "endYPositions": [ 150, 150, 150],
-                "xExitPosition": [ 1000, 1000, 1000],
-                "yExitPosition": [ -100, -100, -100],
+                "spawnXPositoins": [ -100, -200, -300 ],
+                "spawnYPositoins": [ -100, -100, -100 ],
+                "startingXPositoins": [ 0, 0, 0 ],
+                "startingYPositoins": [ 150, 150, 150 ],
+                "endXPositions": [ 350, 250, 150 ],
+                "endYPositions": [ 150, 150, 150 ],
+                "exitXPosition": [ 1000, 1000, 1000 ],
+                "exitYPosition": [ -100, -100, -100 ],
                 "entityProperties": {
                   "entityType": "complexGrunt",
                   "textureName": "Block",
@@ -190,8 +194,8 @@
                 "startingYPositoins": [ 150, 150, 150 ],
                 "endXPositions": [ 450, 550, 650 ],
                 "endYPositions": [ 150, 150, 150 ],
-                "xExitPosition": [ -100, -100, -100 ],
-                "yExitPosition": [ -100, -100, -100 ],
+                "exitXPosition": [ -100, -100, -100 ],
+                "exitYPosition": [ -100, -100, -100 ],
                 "entityProperties": {
                   "entityType": "complexGrunt",
                   "textureName": "Block",
