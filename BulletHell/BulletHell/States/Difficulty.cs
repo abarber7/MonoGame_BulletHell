@@ -11,20 +11,17 @@
 
     public class DifficultyState : State
     {
-        private List<Component> _components;
-        private SnowEmitter _snowEmitter;
+        private List<Component> components;
+        private SnowEmitter snowEmitter;
         private SpriteBatch spriteBatch;
         private Texture2D selectDifficultyTexture;
-
-
-        public object GraphicsDevice { get; private set; }
 
         public DifficultyState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
-            selectDifficultyTexture = _content.Load<Texture2D>("Titles/SelectDifficulty");
+            var buttonTexture = content.Load<Texture2D>("Controls/Button");
+            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
+            this.selectDifficultyTexture = content.Load<Texture2D>("Titles/SelectDifficulty");
 
             var newGameEasyButton = new Button(buttonTexture, buttonFont)
             {
@@ -32,7 +29,7 @@
                 Text = "Easy",
             };
 
-            newGameEasyButton.Click += NewGameEasyButton_Click;
+            newGameEasyButton.Click += this.NewGameEasyButton_Click;
 
             var newGameNormalButton = new Button(buttonTexture, buttonFont)
             {
@@ -40,7 +37,7 @@
                 Text = "Normal",
             };
 
-            newGameNormalButton.Click += NewGameNormalButton_Click;
+            newGameNormalButton.Click += this.NewGameNormalButton_Click;
 
             var newGameHardButton = new Button(buttonTexture, buttonFont)
             {
@@ -48,7 +45,7 @@
                 Text = "Hard",
             };
 
-            newGameHardButton.Click += NewGameHardButton_Click;
+            newGameHardButton.Click += this.NewGameHardButton_Click;
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
@@ -56,51 +53,55 @@
                 Text = "Main Menu",
             };
 
-            returnButton.Click += QuitGameButton_Click;
+            returnButton.Click += this.QuitGameButton_Click;
 
-            _components = new List<Component>()
-      {
-        newGameEasyButton,
-        newGameNormalButton,
-        newGameHardButton,
-        returnButton,
-      };
+            this.components = new List<Component>()
+              {
+                newGameEasyButton,
+                newGameNormalButton,
+                newGameHardButton,
+                returnButton,
+              };
         }
+
+        public object GraphicsDevice { get; private set; }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.Green);
+            this.game.GraphicsDevice.Clear(Color.Green);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(selectDifficultyTexture, new Vector2(40, 50), Color.Black);
+            spriteBatch.Draw(this.selectDifficultyTexture, new Vector2(40, 50), Color.Black);
 
-            foreach (var component in _components)
+            foreach (var component in this.components)
+            {
                 component.Draw(gameTime, spriteBatch);
+            }
 
-            _snowEmitter.Draw(gameTime, spriteBatch);
+            this.snowEmitter.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
 
-        private void NewGameHardButton_Click(object sender, EventArgs e)
+        public override void Update(GameTime gameTime)
         {
-            GameLoader.LoadGameDictionary("demo");
+            foreach (var component in this.components)
+            {
+                component.Update(gameTime);
+            }
 
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            this.snowEmitter.Update(gameTime);
         }
 
-        private void NewGameNormalButton_Click(object sender, EventArgs e)
+        public override void LoadContent()
         {
-            GameLoader.LoadGameDictionary("demo");
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
 
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
         }
 
-        private void NewGameEasyButton_Click(object sender, EventArgs e)
+        public override void Draw(GameTime gameTime)
         {
-            GameLoader.LoadGameDictionary("demo");
-
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -108,28 +109,30 @@
             // remove sprites if they're not needed
         }
 
-        public override void Update(GameTime gameTime)
+        private void NewGameHardButton_Click(object sender, EventArgs e)
         {
-            foreach (var component in _components)
-                component.Update(gameTime);
+            GameLoader.LoadGameDictionary("demo");
 
-            _snowEmitter.Update(gameTime);
+            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
+        }
+
+        private void NewGameNormalButton_Click(object sender, EventArgs e)
+        {
+            GameLoader.LoadGameDictionary("demo");
+
+            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
+        }
+
+        private void NewGameEasyButton_Click(object sender, EventArgs e)
+        {
+            GameLoader.LoadGameDictionary("demo");
+
+            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
-        }
-
-        public override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(_game.GraphicsDevice);
-
-            _snowEmitter = new SnowEmitter(new Emitters.SpriteLike(_content.Load<Texture2D>("Particles/Snow")));
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
+            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
         }
     }
 }

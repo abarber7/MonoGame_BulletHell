@@ -1,21 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.States.Emitters
+﻿namespace BulletHell.States.Emitters
 {
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     public abstract class Emitter : Component
     {
-        private float _generateTimer;
-
-        private float _swayTimer;
-
-        protected SpriteLike _particlePrefab;
-
-        protected List<SpriteLike> _particles;
-
         /// <summary>
         /// How often a particle is produced
         /// </summary>
@@ -28,66 +18,76 @@ namespace BulletHell.States.Emitters
 
         public int MaxParticles = 1000;
 
+        protected SpriteLike particlePrefab;
+        protected List<SpriteLike> particles;
+
+        private float generateTimer;
+        private float swayTimer;
+
         public Emitter(SpriteLike particle)
         {
-            _particlePrefab = particle;
+            this.particlePrefab = particle;
 
-            _particles = new List<SpriteLike>();
+            this.particles = new List<SpriteLike>();
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (var particle in this.particles)
+            {
+                particle.Draw(gameTime, spriteBatch);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-            _generateTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _swayTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.generateTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.swayTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            AddParticle();
+            this.AddParticle();
 
-            if (_swayTimer > GlobalVelocitySpeed)
+            if (this.swayTimer > this.GlobalVelocitySpeed)
             {
-                _swayTimer = 0;
+                this.swayTimer = 0;
 
-                ApplyGlobalVelocity();
+                this.ApplyGlobalVelocity();
             }
 
-            foreach (var particle in _particles)
+            foreach (var particle in this.particles)
+            {
                 particle.Update(gameTime);
-
-            RemovedFinishedParticles();
-        }
-
-        private void AddParticle()
-        {
-            if (_generateTimer > GenerateSpeed)
-            {
-                _generateTimer = 0;
-
-                if (_particles.Count < MaxParticles)
-                {
-                    _particles.Add(GenerateParticle());
-                }
             }
+
+            this.RemovedFinishedParticles();
         }
 
         protected abstract void ApplyGlobalVelocity();
 
-        private void RemovedFinishedParticles()
+        protected abstract SpriteLike GenerateParticle();
+
+        private void AddParticle()
         {
-            for (int i = 0; i < _particles.Count; i++)
+            if (this.generateTimer > this.GenerateSpeed)
             {
-                if (_particles[i].IsRemoved)
+                this.generateTimer = 0;
+
+                if (this.particles.Count < this.MaxParticles)
                 {
-                    _particles.RemoveAt(i);
-                    i--;
+                    this.particles.Add(this.GenerateParticle());
                 }
             }
         }
 
-        protected abstract SpriteLike GenerateParticle();
-
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        private void RemovedFinishedParticles()
         {
-            foreach (var particle in _particles)
-                particle.Draw(gameTime, spriteBatch);
+            for (int i = 0; i < this.particles.Count; i++)
+            {
+                if (this.particles[i].IsRemoved)
+                {
+                    this.particles.RemoveAt(i);
+                    i--;
+                }
+            }
         }
     }
 }

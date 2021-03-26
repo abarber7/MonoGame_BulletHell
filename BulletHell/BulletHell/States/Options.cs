@@ -1,32 +1,26 @@
-﻿using BulletHell.Controls;
-using BulletHell.Game_Utilities;
-using BulletHell.States.Emitters;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.States
+﻿namespace BulletHell.States
 {
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Controls;
+    using global::BulletHell.States.Emitters;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class Options : State
     {
-        private List<Component> _components;
-        private SnowEmitter _snowEmitter;
+        private List<Component> components;
+        private SnowEmitter snowEmitter;
         private SpriteBatch spriteBatch;
         private Texture2D optionsTexture;
-
-
-        public object GraphicsDevice { get; private set; }
 
         public Options(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
-            optionsTexture = _content.Load<Texture2D>("Titles/options");
-
+            var buttonTexture = content.Load<Texture2D>("Controls/Button");
+            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
+            this.optionsTexture = content.Load<Texture2D>("Titles/options");
 
             var configureKeysButton = new Button(buttonTexture, buttonFont)
             {
@@ -34,7 +28,7 @@ namespace BulletHell.States
                 Text = "Configure Controls",
             };
 
-            configureKeysButton.Click += ConfigureKeysButton_Click;
+            configureKeysButton.Click += this.ConfigureKeysButton_Click;
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
@@ -42,26 +36,31 @@ namespace BulletHell.States
                 Text = "Main Menu",
             };
 
-            returnButton.Click += ReturnButton_Click;
+            returnButton.Click += this.ReturnButton_Click;
 
-            _components = new List<Component>()
-      {
-        configureKeysButton,
-        returnButton,
-      };
+            this.components = new List<Component>()
+            {
+                configureKeysButton,
+                returnButton,
+            };
         }
+
+        public object GraphicsDevice { get; private set; }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.DarkGray);
+            this.game.GraphicsDevice.Clear(Color.DarkGray);
 
             spriteBatch.Begin();
 
-            foreach (var component in _components)
+            foreach (var component in this.components)
+            {
                 component.Draw(gameTime, spriteBatch);
-            spriteBatch.Draw(optionsTexture, new Vector2(220, 50), Color.Black);
+            }
 
-            _snowEmitter.Draw(gameTime, spriteBatch);
+            spriteBatch.Draw(this.optionsTexture, new Vector2(220, 50), Color.Black);
+
+            this.snowEmitter.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -73,31 +72,33 @@ namespace BulletHell.States
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var component in _components)
+            foreach (var component in this.components)
+            {
                 component.Update(gameTime);
+            }
 
-            _snowEmitter.Update(gameTime);
-        }
-
-        private void ConfigureKeysButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new RebindKeys(_game, _graphicsDevice, _content));
-        }
-
-        private void ReturnButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+            this.snowEmitter.Update(gameTime);
         }
 
         public override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(_game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
 
-            _snowEmitter = new SnowEmitter(new Emitters.SpriteLike(_content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
         {
+        }
+
+        private void ConfigureKeysButton_Click(object sender, EventArgs e)
+        {
+            this.game.ChangeState(new RebindKeys(this.game, this.graphicsDevice, this.content));
+        }
+
+        private void ReturnButton_Click(object sender, EventArgs e)
+        {
+            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
         }
     }
 }

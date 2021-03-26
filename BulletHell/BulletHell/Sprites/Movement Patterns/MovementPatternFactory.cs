@@ -51,7 +51,8 @@
                     // Vector2 spawnPosition;
                     spawnPosition.X = Convert.ToSingle((int)movementPatternProperties["spawnXPosition"]);
                     spawnPosition.Y = Convert.ToSingle((int)movementPatternProperties["spawnYPosition"]);
-                    /*int*/ speed = (int)movementPatternProperties["speed"];
+                    /*int*/
+                    speed = (int)movementPatternProperties["speed"];
 
                     // movement pattern
                     // Vector2 startPosition;
@@ -91,9 +92,9 @@
                 Dictionary<string, object> properties = new Dictionary<string, object>();
                 foreach (string key in movementPatternProperties.Keys)
                 {
-                    if (movementPatternProperties[key] is List<object>)
+                    if (movementPatternProperties[key] is List<object> list)
                     {
-                        properties.Add(key, (int)((List<object>)movementPatternProperties[key])[i]);
+                        properties.Add(key, (int)list[i]);
                     }
                     else
                     {

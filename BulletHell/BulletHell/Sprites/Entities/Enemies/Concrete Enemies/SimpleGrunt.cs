@@ -8,7 +8,6 @@
 
     internal class SimpleGrunt : Enemy
     {
-        private int previousTime = 0;
         private float timer2;
 
         public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
@@ -18,11 +17,11 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-           /* if (this.previousTime != (int)gameTime.TotalGameTime.TotalSeconds)
-            {
-                this.Attack(sprites);
-            }
-           */
+            /* if (this.previousTime != (int)gameTime.TotalGameTime.TotalSeconds)
+             {
+                 this.Attack(sprites);
+             }
+            */
 
             this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -32,7 +31,7 @@
                 this.Attack(sprites);
             }
 
-            ///this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
+            /// this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
             base.Update(gameTime, sprites);
         }
     }

@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using global::BulletHell.Controls;
-    using global::BulletHell.The_Player;
     using global::BulletHell.States.Emitters;
+    using global::BulletHell.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
@@ -12,10 +12,14 @@
 
     public class RebindKeys : State
     {
-        private List<Component> _components;
-        private SnowEmitter _snowEmitter;
+        private List<Component> components;
+        private SnowEmitter snowEmitter;
         private SpriteBatch spriteBatch;
-        private Texture2D ConfigureControlsTexture;
+        private Texture2D configureControlsTexture;
+        private KeyboardState preivousState;
+        private bool rebinding = false;
+        private string functionToRebind;
+        private Button buttonToRebind;
 
         private Button upButton;
         private Button downButton;
@@ -23,14 +27,12 @@
         private Button rightButton;
         private Button attackButton;
 
-        public object GraphicsDevice { get; private set; }
-
         public RebindKeys(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
-            this.ConfigureControlsTexture = _content.Load<Texture2D>("Titles/ConfigureControls");
+            var buttonTexture = content.Load<Texture2D>("Controls/Button");
+            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
+            this.configureControlsTexture = content.Load<Texture2D>("Titles/ConfigureControls");
 
             this.upButton = new Button(buttonTexture, buttonFont)
             {
@@ -80,7 +82,7 @@
 
             this.attackButton.Click += this.AttackButton_Click;
 
-            this._components = new List<Component>()
+            this.components = new List<Component>()
               {
                 this.upButton,
                 this.downButton,
@@ -91,30 +93,28 @@
               };
         }
 
+        public object GraphicsDevice { get; private set; }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.DarkGray);
+            this.game.GraphicsDevice.Clear(Color.DarkGray);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(ConfigureControlsTexture, new Vector2(-7, 0), Color.Black);
+            spriteBatch.Draw(this.configureControlsTexture, new Vector2(-7, 0), Color.Black);
 
-            foreach (var component in _components)
+            foreach (var component in this.components)
+            {
                 component.Draw(gameTime, spriteBatch);
+            }
 
-            _snowEmitter.Draw(gameTime, spriteBatch);
+            this.snowEmitter.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
 
-        public override void PostUpdate(GameTime gameTime)
-        {
-            // remove sprites if they're not needed
-        }
-
         public override void Update(GameTime gameTime)
         {
-
-            foreach (var component in _components)
+            foreach (var component in this.components)
             {
                 if (this.rebinding)
                 {
@@ -124,10 +124,24 @@
                 component.Update(gameTime);
             }
 
-            _snowEmitter.Update(gameTime);
+            this.snowEmitter.Update(gameTime);
         }
 
-        private KeyboardState preivousState;
+        public override void PostUpdate(GameTime gameTime)
+        {
+            // remove sprites if they're not needed
+        }
+
+        public override void LoadContent()
+        {
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+
+            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+        }
 
         private void GetNewKey()
         {
@@ -150,10 +164,6 @@
 
             this.preivousState = newState;
         }
-
-        private bool rebinding = false;
-        private string functionToRebind;
-        private Button buttonToRebind;
 
         private void UpButton_Click(object sender, EventArgs e)
         {
@@ -212,24 +222,12 @@
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new Options(_game, _graphicsDevice, _content));
+            this.game.ChangeState(new Options(this.game, this.graphicsDevice, this.content));
         }
 
         private void ExitGameButton_Click(object sender, EventArgs e)
         {
-            _game.Exit();
-        }
-
-
-        public override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(_game.GraphicsDevice);
-
-            _snowEmitter = new SnowEmitter(new Emitters.SpriteLike(_content.Load<Texture2D>("Particles/Snow")));
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
+            this.game.Exit();
         }
     }
 }

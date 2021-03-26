@@ -1,8 +1,6 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
