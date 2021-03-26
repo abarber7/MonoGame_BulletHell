@@ -20,15 +20,10 @@ namespace BulletHell.States
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
-
-        
-      private State _currentState;
-
+        private State _currentState;
         private State _nextState;
-
         private int lives = 3;
         private bool finalBossDefeated = false;
-
 
         public GameState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)

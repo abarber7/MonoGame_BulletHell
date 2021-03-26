@@ -15,12 +15,9 @@
     public class BulletHell : Game
     {
         private SpriteBatch spriteBatch;
-        private SpriteFont font;
         private List<Sprite> sprites;
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
-        private int lives = 3;
-        private bool finalBossDefeated = false;
 
         private State _currentState;
 
@@ -87,11 +84,6 @@
 
             _currentState.Update(gameTime);
             _currentState.PostUpdate(gameTime);
-
-            if (this.lives == 0 || this.finalBossDefeated)
-            {
-                this.EndGamePrompt();
-            }
 
             base.Update(gameTime);
         }

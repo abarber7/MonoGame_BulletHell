@@ -12,6 +12,8 @@
     {
         public bool slowMode;
         public bool invicible;
+        private bool spawn;
+        private double initialSpawnTime;
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
@@ -19,14 +21,22 @@
             : base(entityProperties)
         {
             this.Movement.Speed = 5;
+            this.spawn = true;
+            this.invicible = true;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            if (this.spawn == true)
+            {
+                this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
+                this.spawn = false;
+            }
+
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
 
-            this.SetInvincibility();
+            this.SetInvincibility(gameTime);
 
             this.Attack(sprites);
             this.Collision(sprites);
@@ -51,7 +61,7 @@
             return false;
         }
 
-        public void SetInvincibility()
+        public void SetInvincibility(GameTime gameTime)
         {
             if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
             {
@@ -63,6 +73,11 @@
                 {
                     this.invicible = true;
                 }
+            }
+
+            if ((gameTime.TotalGameTime.TotalSeconds - this.initialSpawnTime) >= 2)
+            {
+                this.invicible = false;
             }
         }
 
