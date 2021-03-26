@@ -10,7 +10,6 @@
         private Vector2 startPosition;
         private Vector2 stopPosition;
 
-        private bool run = true; // bool to switch between moving or stopping
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exitTime = false; // bool for if it is time to exit
 
