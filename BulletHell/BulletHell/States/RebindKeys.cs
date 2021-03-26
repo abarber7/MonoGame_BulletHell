@@ -157,42 +157,57 @@
 
         private void UpButton_Click(object sender, EventArgs e)
         {
-            this.rebinding = true;
-            this.functionToRebind = "Up";
-            this.buttonToRebind = sender as Button;
-            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            if (!this.rebinding)
+            {
+                this.rebinding = true;
+                this.functionToRebind = "Up";
+                this.buttonToRebind = sender as Button;
+                this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            }
         }
 
         private void DownButton_Click(object sender, EventArgs e)
         {
-            this.rebinding = true;
-            this.functionToRebind = "Down";
-            this.buttonToRebind = sender as Button;
-            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            if (!this.rebinding)
+            {
+                this.rebinding = true;
+                this.functionToRebind = "Down";
+                this.buttonToRebind = sender as Button;
+                this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            }
         }
 
         private void LeftButton_Click(object sender, EventArgs e)
         {
-            this.rebinding = true;
-            this.functionToRebind = "Left";
-            this.buttonToRebind = sender as Button;
-            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            if (!this.rebinding)
+            {
+                this.rebinding = true;
+                this.functionToRebind = "Left";
+                this.buttonToRebind = sender as Button;
+                this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            }
         }
 
         private void RightButton_Click(object sender, EventArgs e)
         {
-            this.rebinding = true;
-            this.functionToRebind = "Right";
-            this.buttonToRebind = sender as Button;
-            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            if (!this.rebinding)
+            {
+                this.rebinding = true;
+                this.functionToRebind = "Right";
+                this.buttonToRebind = sender as Button;
+                this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            }
         }
 
         private void AttackButton_Click(object sender, EventArgs e)
         {
-            this.rebinding = true;
-            this.functionToRebind = "Attack";
-            this.buttonToRebind = sender as Button;
-            this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            if (!this.rebinding)
+            {
+                this.rebinding = true;
+                this.functionToRebind = "Attack";
+                this.buttonToRebind = sender as Button;
+                this.buttonToRebind.Text = this.functionToRebind + " | Rebinding";
+            }
         }
 
         private void ReturnButton_Click(object sender, EventArgs e)
