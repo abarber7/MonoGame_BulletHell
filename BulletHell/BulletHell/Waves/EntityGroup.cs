@@ -24,9 +24,14 @@
             for (int i = 0; i < this.entityAmount; i++)
             {
                 Entity entity = (Entity)this.entityType.Clone();
-                entity.Movement = this.movementPatterns[i];
-                entity.Projectile.Movement.Parent = entity;
-                entity.Movement.Parent = entity;
+
+                if (this.entityAmount > 1)
+                {
+                    entity.Movement = this.movementPatterns[i];
+                    entity.Projectile.Movement.Parent = entity;
+                    entity.Movement.Parent = entity;
+                }
+
                 sprites.Add(entity);
             }
         }
