@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using global::BulletHell.Controls;
-    using global::BulletHell.Player;
+    using global::BulletHell.The_Player;
     using global::BulletHell.States.Emitters;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;

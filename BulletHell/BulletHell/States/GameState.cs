@@ -1,19 +1,16 @@
-﻿using BulletHell.Game_Utilities;
-using BulletHell.Sprites;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using global::BulletHell.Utilities;
-using Microsoft.Xna.Framework.Input;
-using BulletHell.Sprites.Projectiles;
-using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-using BulletHell.Waves;
-
-namespace BulletHell.States
+﻿namespace BulletHell.States
 {
+    using System.Collections.Generic;
+    using global::BulletHell.Game_Utilities;
+    using global::BulletHell.Sprites;
+    using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using global::BulletHell.Sprites.Projectiles;
+    using global::BulletHell.Waves;
+    using global::BulletHell.Sprites.The_Player;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class GameState : State
     {
         private SpriteBatch spriteBatch;
@@ -21,10 +18,7 @@ namespace BulletHell.States
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
-
-        
-      private State _currentState;
-
+        private State _currentState;
         private State _nextState;
 
         private int lives = 3;
@@ -44,10 +38,9 @@ namespace BulletHell.States
             {
                 sprite.Draw(this.spriteBatch);
 
-                if (sprite is Sprites.Entities.Player)
+                if (sprite is Player player)
                 {
-                    Sprites.Entities.Player player = (Sprites.Entities.Player)sprite;
-                    if (player.invicible)
+                    if (player.invincible)
                     {
                         this.DrawBoxAroundSprite(player, Color.Crimson);
                     }
@@ -96,7 +89,7 @@ namespace BulletHell.States
             }
 
 
-            this.PostUpdate();
+            this.CustomPostUpdate(gameTime);
         }
 
         private void CreatePlayer()
@@ -149,24 +142,27 @@ namespace BulletHell.States
             this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Movement.Position.X - (hitboxTexture.Width / 2), sprite.Movement.Position.Y - (hitboxTexture.Height / 2)), color);
         }
 
-        private void PostUpdate()
+        private void CustomPostUpdate (GameTime gameTime)
         {
             for (int i = this.sprites.Count - 1; i >= 0; i--)
             {
                 if (this.sprites[i].IsRemoved)
                 {
-                    if (this.sprites[i] is Sprites.Entities.Player)
+                    if (this.sprites[i] is Player)
                     {
                         this.lives--;
                         this.RemoveAllProjectiles();
-                        this.CreatePlayer();
+                        ((Player)this.sprites[i]).Respawn(gameTime);
                     }
                     else if (this.sprites[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
+                        this.sprites.RemoveAt(i);
                     }
-
-                    this.sprites.RemoveAt(i);
+                    else
+                    {
+                        this.sprites.RemoveAt(i);
+                    }
                 }
             }
         }

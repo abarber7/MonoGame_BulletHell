@@ -1,10 +1,12 @@
-﻿namespace BulletHell.Sprites.Entities
+﻿namespace BulletHell.Sprites.The_Player
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using global::BulletHell.Sprites.Entities;
     using global::BulletHell.Sprites.Entities.Enemies;
     using global::BulletHell.Sprites.Movement_Patterns;
+    using global::BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -13,22 +15,34 @@
     internal class Player : Entity
     {
         public bool slowMode;
-        public bool invicible;
+        public bool invincible;
+        private double initialSpawnTime;
+        private bool spawning;
+
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
         public Player(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
             : base(texture, color, movement, projectile)
         {
-            this.Movement.Speed = 5;
+            this.spawning = true;
+            this.invincible = true;
         }
+
+        private bool resetGameTime = true;
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            if (this.resetGameTime)
+            {
+                this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
+                this.resetGameTime = !this.resetGameTime;
+            }
+
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
 
-            this.SetInvincibility();
+            this.SetInvincibility(gameTime);
 
             this.Attack(sprites);
             this.Collision(sprites);
@@ -46,26 +60,39 @@
         {
             if (this.currentKey.IsKeyDown(Keys.LeftShift))
             {
-                this.Movement.Speed /= 2;
+                this.Movement.CurrentSpeed = this.Movement.Speed / 2;
                 return true;
             }
 
             return false;
         }
 
-        public void SetInvincibility()
+        private void SetInvincibility(GameTime gameTime)
         {
-            if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+            if (this.spawning == true)
             {
-                if (this.invicible)
+                if ((gameTime.TotalGameTime.TotalSeconds - this.initialSpawnTime) >= 2)
                 {
-                    this.invicible = false;
-                }
-                else
-                {
-                    this.invicible = true;
+                    this.invincible = false;
+                    this.spawning = false;
                 }
             }
+            else
+            {
+                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                {
+                    this.invincible = !this.invincible;
+                }
+            }
+        }
+
+        public void Respawn(GameTime gameTime)
+        {
+            ((PlayerInput)this.Movement).Respawn();
+            this.IsRemoved = false;
+            this.spawning = true;
+            this.invincible = true;
+            this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
         private new void Attack(List<Sprite> sprites)
@@ -104,7 +131,7 @@
                 {
                     if (projectile.Parent is Enemy && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
                     {
-                        if (this.invicible == false)
+                        if (this.invincible == false)
                         {
                             this.IsRemoved = true;
                         }

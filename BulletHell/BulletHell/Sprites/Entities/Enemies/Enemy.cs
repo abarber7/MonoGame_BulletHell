@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
+    using global::BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 

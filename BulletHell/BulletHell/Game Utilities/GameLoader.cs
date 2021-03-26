@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities;
+    using global::BulletHell.Sprites.The_Player;
     using global::BulletHell.Waves;
     using Newtonsoft.Json.Linq;
 

@@ -37,7 +37,6 @@
 
             UtlilityManager.Initialize(this.Content);
             Random = new Random();
-            GameLoader.LoadGameDictionary("refactored");
         }
 
         public static GraphicsDeviceManager Graphics { get; set; }

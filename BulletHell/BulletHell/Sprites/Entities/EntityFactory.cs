@@ -5,6 +5,7 @@
     using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
+    using global::BulletHell.Sprites.The_Player;
     using global::BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;

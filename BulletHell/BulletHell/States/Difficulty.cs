@@ -84,21 +84,21 @@
 
         private void NewGameHardButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGameDictionary("Test2");
+            GameLoader.LoadGameDictionary("demo");
 
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
         private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGameDictionary("Test");
+            GameLoader.LoadGameDictionary("demo");
 
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGameDictionary("refactored");
+            GameLoader.LoadGameDictionary("demo");
 
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }

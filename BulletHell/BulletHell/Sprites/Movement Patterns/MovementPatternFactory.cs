@@ -68,7 +68,7 @@
                     exitPosition.Y = Convert.ToSingle((int)movementPatternProperties["exitYPosition"]);
 
                     // timer
-                    System.Timers.Timer timer = new System.Timers.Timer((int)movementPatternProperties["timeBeforeExit"] * 1000);
+                    System.Timers.Timer timer = new System.Timers.Timer((double)movementPatternProperties["timeBeforeExit"] * 1000);
 
                     movementPattern = new RunAndGun(spawnPosition, startPosition, stopPosition, exitPosition, speed, timer);
                     break;
