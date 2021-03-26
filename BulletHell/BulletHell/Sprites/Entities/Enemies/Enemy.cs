@@ -1,17 +1,20 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies
 {
     using System.Collections.Generic;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
+    using global::BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Enemy : Entity
     {
         private double timer;
 
-        public Enemy(Dictionary<string, object> enemyProperties)
-            : base(enemyProperties)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
+            : base(texture, color, movement, projectile)
         {
-            this.LifeSpan = (int)enemyProperties["lifeSpan"];
+            this.LifeSpan = lifeSpan;
             this.timer = 0;
         }
 

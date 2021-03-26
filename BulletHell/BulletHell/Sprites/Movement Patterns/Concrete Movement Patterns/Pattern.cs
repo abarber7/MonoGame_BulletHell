@@ -10,7 +10,7 @@
         private int nextTargetPointIndex;
 
         public Pattern(Dictionary<string, object> patternProperties)
-            : base(patternProperties)
+            : base()
         {
             this.Speed = (int)patternProperties["speed"];
             this.points = new List<Vector2>();

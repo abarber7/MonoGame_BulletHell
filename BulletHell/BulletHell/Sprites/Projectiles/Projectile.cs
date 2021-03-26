@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Projectile : Sprite, ICloneable
     {
-        public Projectile(Dictionary<string, object> projectileProperties)
-            : base(projectileProperties)
+        public Projectile(Texture2D texture, Color color, MovementPattern movement)
+            : base(texture, color, movement)
         {
 
         }
