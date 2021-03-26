@@ -1,18 +1,18 @@
 ﻿namespace BulletHell.Waves
 {
-    using global::BulletHell.Sprites;
     using System.Collections.Generic;
+    using global::BulletHell.Sprites;
 
     internal class Wave
     {
-        public int waveNumber;
-        public int waveDuration;
+        public int WaveNumber;
+        public int WaveDuration;
         private List<EntityGroup> entityGroups = new List<EntityGroup>();
 
         public Wave(Dictionary<string, object> waveProperties)
         {
-            this.waveNumber = (int)waveProperties["waveNumber"];
-            this.waveDuration = (int)waveProperties["waveDuration"];
+            this.WaveNumber = (int)waveProperties["waveNumber"];
+            this.WaveDuration = (int)waveProperties["waveDuration"];
 
             foreach (object entityGroupProperties in (List<object>)waveProperties["entityGroups"])
             {

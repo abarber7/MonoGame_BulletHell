@@ -1,30 +1,26 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-
-namespace BulletHell.States.Emitters
+﻿namespace BulletHell.States.Emitters
 {
+    using Microsoft.Xna.Framework;
+
     public class SnowEmitter : Emitter
     {
-
         public SnowEmitter(SpriteLike particle)
           : base(particle)
         {
-
         }
 
         protected override void ApplyGlobalVelocity()
         {
             var xSway = (float)BulletHell.Random.Next(-2, 2);
-            foreach (var particle in _particles)
+            foreach (var particle in this.particles)
+            {
                 particle.Velocity.X = (xSway * particle.Scale) / 50;
+            }
         }
 
         protected override SpriteLike GenerateParticle()
         {
-            var sprite = _particlePrefab.Clone() as SpriteLike;
+            var sprite = this.particlePrefab.Clone() as SpriteLike;
 
             var xPosition = BulletHell.Random.Next(0, BulletHell.ScreenWidth);
             var ySpeed = BulletHell.Random.Next(10, 100) / 100f;

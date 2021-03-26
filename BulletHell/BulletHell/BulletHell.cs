@@ -1,32 +1,21 @@
 ﻿namespace BulletHell
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using global::BulletHell.Game_Utilities;
-    using global::BulletHell.Sprites;
     using global::BulletHell.States;
     using global::BulletHell.Utilities;
-    using global::BulletHell.Waves;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
     public class BulletHell : Game
     {
-        private SpriteBatch spriteBatch;
-        private List<Sprite> sprites;
-        private List<Wave> waves;
-        private double timeUntilNextWave = 0;
-
-        private State _currentState;
-
-        private State _nextState;
-
         public static Random Random;
-
         public static int ScreenWidth = 800;
         public static int ScreenHeight = 480;
+
+        private SpriteBatch spriteBatch;
+        private State currentState;
+        private State nextState;
 
         // Initialize screensize and other game properties
         public BulletHell()
@@ -41,10 +30,48 @@
 
         public static GraphicsDeviceManager Graphics { get; set; }
 
+        public void ChangeState(State state)
+        {
+            this.nextState = state;
+        }
+
+        // Update is called 60 times per second (60 FPS). Put all game logic here.
+        protected override void Update(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                this.currentState = new MenuState(this, Graphics.GraphicsDevice, this.Content);
+                this.nextState = null;
+                this.currentState.LoadContent();
+            }
+
+            if (this.nextState != null)
+            {
+                this.currentState = this.nextState;
+                this.nextState = null;
+                this.currentState.LoadContent();
+            }
+
+            this.currentState.Update(gameTime);
+            this.currentState.PostUpdate(gameTime);
+
+            base.Update(gameTime);
+        }
+
+        // This is called when the game should draw itself
+        protected override void Draw(GameTime gameTime)
+        {
+            this.GraphicsDevice.Clear(Color.CornflowerBlue);
+            this.currentState.Draw(gameTime, this.spriteBatch);
+
+            base.Draw(gameTime);
+        }
+
         // Set any values that weren't set in the constructor for BulletHell
         protected override void Initialize()
         {
-            IsMouseVisible = true;
+            this.IsMouseVisible = true;
+
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -54,50 +81,8 @@
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            _currentState = new MenuState(this, Graphics.GraphicsDevice, Content);
-            _currentState.LoadContent();
-
+            this.currentState = new MenuState(this, Graphics.GraphicsDevice, this.Content);
+            this.currentState.LoadContent();
         }
-
-        public void ChangeState(State state)
-        {
-            _nextState = state;
-        }
-
-        // Update is called 60 times per second (60 FPS). Put all game logic here.
-        protected override void Update(GameTime gameTime)
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                _currentState = new MenuState(this, Graphics.GraphicsDevice, Content);
-                _nextState = null;
-                _currentState.LoadContent();
-            }
-
-            if (_nextState != null)
-            {
-                _currentState = _nextState;
-                _currentState.LoadContent();
-
-                _nextState = null;
-            }
-
-            _currentState.Update(gameTime);
-            _currentState.PostUpdate(gameTime);
-
-            base.Update(gameTime);
-        }
-
-        // This is called when the game should draw itself
-        protected override void Draw(GameTime gameTime)
-        {
-            this.GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
-            _currentState.Draw(gameTime, spriteBatch);
-
-            base.Draw(gameTime);
-        }
-
     }
 }

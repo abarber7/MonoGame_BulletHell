@@ -6,26 +6,20 @@
 
     public abstract class State
     {
-        #region Fields
+        protected ContentManager content;
 
-        protected ContentManager _content;
+        protected GraphicsDevice graphicsDevice;
 
-        protected GraphicsDevice _graphicsDevice;
-
-        protected BulletHell _game;
-
-        #endregion
+        protected BulletHell game;
 
         public State(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
         {
-            _game = game;
+            this.game = game;
 
-            _graphicsDevice = graphicsDevice;
+            this.graphicsDevice = graphicsDevice;
 
-            _content = content;
+            this.content = content;
         }
-
-        #region Methods
 
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
@@ -36,7 +30,5 @@
         public abstract void Update(GameTime gameTime);
 
         public abstract void Draw(GameTime gameTime);
-
-        #endregion
     }
 }

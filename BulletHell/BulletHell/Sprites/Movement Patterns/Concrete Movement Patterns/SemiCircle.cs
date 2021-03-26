@@ -33,6 +33,18 @@
             this.velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.Speed);
         }
 
+        public override void Move()
+        {
+            if (this.ExceededPosition(this.previousPosition, this.nextPosition, this.velocity))
+            {
+                this.previousPosition = new Vector2(this.nextPosition.X, this.nextPosition.Y);
+                this.nextPosition = this.CalculateNextPosition();
+                this.velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.Speed);
+            }
+
+            base.Move();
+        }
+
         private void SetCenter()
         {
             double radsq = (double)(this.radius * this.radius);
@@ -62,7 +74,10 @@
             float nextX;
             float nextY;
 
-            if (this.count > 6) { this.count = 1; }
+            if (this.count > 6)
+            {
+                this.count = 1;
+            }
 
             if (this.half1Or2)
             {
@@ -72,23 +87,10 @@
             }
             else
             {
-
                 nextX = this.centerPosition.X + (this.radius * (float)Math.Cos(30 * this.count));
                 nextY = this.centerPosition.Y + (this.radius * (float)Math.Sin(30 * this.count)); // (float)Math.Sqrt(Math.Abs((double)((this.radius * this.radius) - (nextX * nextX))));
                 return new Vector2(nextX, nextY);
             }
-        }
-
-        public override void Move()
-        {
-            if (this.ExceededPosition(this.previousPosition, this.nextPosition, this.velocity))
-            {
-                this.previousPosition = new Vector2(this.nextPosition.X, this.nextPosition.Y);
-                this.nextPosition = this.CalculateNextPosition();
-                this.velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.Speed);
-            }
-
-            base.Move();
         }
     }
 }

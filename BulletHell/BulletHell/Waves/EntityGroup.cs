@@ -4,7 +4,6 @@
     using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities;
     using global::BulletHell.Sprites.Movement_Patterns;
-    using Microsoft.Xna.Framework;
 
     internal class EntityGroup
     {

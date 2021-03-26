@@ -1,13 +1,16 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns
 {
     using System;
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
     internal abstract class MovementPattern : ICloneable
     {
-        public Vector2 velocity; // should be protected
-        public Vector2 position; // should be protected
+        protected Vector2 velocity;
+        protected Vector2 position;
+
+        public MovementPattern()
+        {
+        }
 
         public Sprite Parent { get; set; }
 
@@ -22,10 +25,6 @@
         public int CurrentSpeed { get; set; }
 
         public int Rotation { get; set; }
-
-        public MovementPattern()
-        {
-        }
 
         public virtual void Move()
         {
@@ -101,9 +100,29 @@
             }
         }
 
+        public void ZeroXVelocity()
+        {
+            this.velocity.X = 0;
+        }
+
+        public void ZeroYVelocity()
+        {
+            this.velocity.Y = 0;
+        }
+
+        public void InvertXVelocity()
+        {
+            this.velocity.X = -this.velocity.X;
+        }
+
+        public void InvertYVelocity()
+        {
+            this.velocity.Y = -this.velocity.Y;
+        }
+
         protected Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
         {
-            Vector2 velocity = new Vector2();
+            Vector2 velocity;
             velocity.X = endPosition.X - startPosition.X;
             velocity.Y = endPosition.Y - startPosition.Y;
             velocity.Normalize();
@@ -196,26 +215,6 @@
             }
 
             return false;
-        }
-
-        public void ZeroXVelocity()
-        {
-            this.velocity.X = 0;
-        }
-
-        public void ZeroYVelocity()
-        {
-            this.velocity.Y = 0;
-        }
-
-        public void InvertXVelocity()
-        {
-            this.velocity.X = -this.velocity.X;
-        }
-
-        public void InvertYVelocity()
-        {
-            this.velocity.Y = -this.velocity.Y;
         }
     }
 }

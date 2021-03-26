@@ -11,7 +11,6 @@
         public Projectile(Texture2D texture, Color color, MovementPattern movement)
             : base(texture, color, movement)
         {
-
         }
 
         public Sprite Parent { get; set; }
