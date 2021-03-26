@@ -44,13 +44,13 @@
             this.Attack(sprites);
             this.Collision(sprites);
 
-            int previousSpeed = this.Movement.Speed;
+            int previousSpeed = this.Movement.CurrentSpeed;
 
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
 
             this.Move();
-            this.Movement.Speed = previousSpeed;
+            this.Movement.CurrentSpeed = previousSpeed;
         }
 
         public bool IsSlowPressed()

@@ -11,10 +11,5 @@
             : base(texture, color, movement)
         {
         }
-
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
-        {
-            base.Update(gameTime, sprites);
-        }
     }
 }

@@ -11,14 +11,12 @@
         private Vector2 startPosition;
         private bool respawning;
 
-        public PlayerInput(Dictionary<string, object> playerInputProperties)
+        public PlayerInput(Vector2 spawnPosition, Vector2 startPosition, int speed)
             : base()
         {
-            this.Speed = (int)playerInputProperties["speed"];
-            this.spawnPosition.X = 400;
-            this.spawnPosition.Y = 650;
-            this.startPosition.X = 400;
-            this.startPosition.Y = 300;
+            this.spawnPosition = spawnPosition;
+            this.startPosition = startPosition;
+            this.Speed = speed;
             this.Respawn();
         }
 
@@ -49,20 +47,20 @@
             {
                 if (Keyboard.GetState().IsKeyDown(Input.Left))
                 {
-                    this.velocity.X = -this.Speed;
+                    this.velocity.X = -this.CurrentSpeed;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Input.Right))
                 {
-                    this.velocity.X = this.Speed;
+                    this.velocity.X = this.CurrentSpeed;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Input.Up))
                 {
-                    this.velocity.Y = -this.Speed;
+                    this.velocity.Y = -this.CurrentSpeed;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Input.Down))
                 {
-                    this.velocity.Y = this.Speed;
+                    this.velocity.Y = this.CurrentSpeed;
                 }
 
                 if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())

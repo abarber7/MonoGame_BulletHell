@@ -5,8 +5,10 @@
     "color": "Blue",
     "movementPattern": {
       "movementPatternType": "playerInput",
-      "xPosition": 400,
-      "yPosition": 300,
+      "spawnXPosition": 400,
+      "spawnYPosition": 550,
+      "startXPosition": 400,
+      "startYPosition": 350,
       "speed": 2
     },
     "projectile": {
@@ -236,8 +238,8 @@
               "movementPatternType": "bounce",
               "xVelocity": -1,
               "yVelocity": -1,
-              "xPosition": 0,
-              "yPosition": 0,
+              "startXPosition": 0,
+              "startYPosition": 0,
               "speed": 5
             },
             "projectile": {
@@ -249,8 +251,8 @@
                 "movementPatternType": "bounce",
                 "xVelocity": 0,
                 "yVelocity": 0,
-                "xPosition": 0,
-                "yPosition": 0,
+                "startXPosition": 0,
+                "startYPosition": 0,
                 "speed": 10
               }
             }
