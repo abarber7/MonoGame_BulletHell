@@ -9,47 +9,78 @@
     internal class PlayerInput : MovementPattern
     {
         private Input input;
+        private Vector2 spawnPosition;
+        private Vector2 startPosition;
+        private bool respawning;
 
         public PlayerInput(Dictionary<string, object> playerInputProperties)
-            : base(playerInputProperties)
+            : base()
         {
             this.Speed = (int)playerInputProperties["speed"];
-            this.Position.X = Convert.ToSingle((int)playerInputProperties["xPosition"]);
-            this.Position.Y = Convert.ToSingle((int)playerInputProperties["yPosition"]);
+            this.spawnPosition.X = 400;
+            this.spawnPosition.Y = 800;
+            this.startPosition.X = 400;
+            this.startPosition.Y = 300;
+            this.Respawn();
+        }
+
+        public void Respawn()
+        {
+            this.respawning = true;
+            this.position = this.spawnPosition;
+            this.CurrentSpeed = this.Speed * 2;
+            this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
         }
 
         public override void Move()
         {
-            if (Keyboard.GetState().IsKeyDown(Input.Left))
+            if (this.respawning)
             {
-                this.velocity.X = -this.Speed;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Input.Right))
-            {
-                this.velocity.X = this.Speed;
-            }
+                // if start position reached
+                if (this.ExceededPosition(this.spawnPosition, this.startPosition, this.Velocity))
+                {
+                    this.respawning = false; // change bool so entity will move in the pattern
+                    this.CurrentSpeed = this.Speed;
+                    this.ZeroXVelocity();
+                    this.ZeroYVelocity();
+                }
 
-            if (Keyboard.GetState().IsKeyDown(Input.Up))
-            {
-                this.velocity.Y = -this.Speed;
+                base.Move();
             }
-            else if (Keyboard.GetState().IsKeyDown(Input.Down))
+            else
             {
-                this.velocity.Y = this.Speed;
-            }
+                
+                if (Keyboard.GetState().IsKeyDown(Input.Left))
+                {
+                    this.velocity.X = -this.Speed;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Input.Right))
+                {
+                    this.velocity.X = this.Speed;
+                }
 
-            if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())
-            {
-                this.velocity.X = 0;
-            }
+                if (Keyboard.GetState().IsKeyDown(Input.Up))
+                {
+                    this.velocity.Y = -this.Speed;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Input.Down))
+                {
+                    this.velocity.Y = this.Speed;
+                }
 
-            if (this.IsTouchingBottomOfScreen() || this.IsTouchingTopOfScreen())
-            {
-                this.velocity.Y = 0;
-            }
+                if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())
+                {
+                    this.velocity.X = 0;
+                }
 
-            base.Move();
-            this.velocity = Vector2.Zero;
+                if (this.IsTouchingBottomOfScreen() || this.IsTouchingTopOfScreen())
+                {
+                    this.velocity.Y = 0;
+                }
+
+                base.Move();
+                this.velocity = Vector2.Zero;
+            }
         }
     }
 }

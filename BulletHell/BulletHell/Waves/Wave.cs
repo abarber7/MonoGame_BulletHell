@@ -1,5 +1,6 @@
-﻿namespace BulletHell.Sprites
+﻿namespace BulletHell.Waves
 {
+    using global::BulletHell.Sprites;
     using System.Collections.Generic;
 
     internal class Wave
@@ -15,7 +16,7 @@
 
             foreach (object entityGroupProperties in (List<object>)waveProperties["entityGroups"])
             {
-                this.entityGroups.Add(new EntityGroup((Dictionary<string, object>)entityGroupProperties));
+                this.entityGroups.Add(EntityGroupBuilder.CreateEntityGroup((Dictionary<string, object>)entityGroupProperties));
             }
         }
 

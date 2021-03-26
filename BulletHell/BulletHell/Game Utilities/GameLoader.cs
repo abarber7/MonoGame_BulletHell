@@ -6,6 +6,7 @@
     using System.Linq;
     using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities;
+    using global::BulletHell.Waves;
     using Newtonsoft.Json.Linq;
 
     internal class GameLoader
@@ -36,7 +37,7 @@
 
         public static Player LoadPlayer()
         {
-            return new Player((Dictionary<string, object>)gameDictionary["player"]);
+            return (Player)EntityFactory.CreateEntity((Dictionary<string, object>)gameDictionary["player"]);
         }
 
         // Source: https://stackoverflow.com/questions/14886800/convert-jobject-into-dictionarystring-object-is-it-possible

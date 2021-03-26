@@ -7,10 +7,10 @@
     internal class Static : MovementPattern
     {
         public Static(Dictionary<string, object> staticProperties)
-            : base(staticProperties)
+            : base()
         {
-            this.Position.X = Convert.ToSingle((int)staticProperties["xPosition"]);
-            this.Position.Y = Convert.ToSingle((int)staticProperties["yPosition"]);
+            this.position.X = Convert.ToSingle((int)staticProperties["xPosition"]);
+            this.position.Y = Convert.ToSingle((int)staticProperties["yPosition"]);
         }
     }
 }

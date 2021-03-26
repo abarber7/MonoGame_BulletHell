@@ -10,6 +10,7 @@ using global::BulletHell.Utilities;
 using Microsoft.Xna.Framework.Input;
 using BulletHell.Sprites.Projectiles;
 using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+using BulletHell.Waves;
 
 namespace BulletHell.States
 {

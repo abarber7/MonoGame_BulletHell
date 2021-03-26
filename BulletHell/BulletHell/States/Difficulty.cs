@@ -1,15 +1,14 @@
-﻿using BulletHell.Controls;
-using BulletHell.Game_Utilities;
-using BulletHell.States.Emitters;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.States
+﻿namespace BulletHell.States
 {
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Controls;
+    using global::BulletHell.Game_Utilities;
+    using global::BulletHell.States.Emitters;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class DifficultyState : State
     {
         private List<Component> _components;
@@ -99,7 +98,7 @@ namespace BulletHell.States
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGameDictionary("Test");
+            GameLoader.LoadGameDictionary("refactored");
 
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }

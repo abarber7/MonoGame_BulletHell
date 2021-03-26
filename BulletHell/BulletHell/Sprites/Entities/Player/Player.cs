@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using global::BulletHell.Sprites.Entities.Enemies;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
     internal class Player : Entity
@@ -15,8 +17,8 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Dictionary<string, object> entityProperties)
-            : base(entityProperties)
+        public Player(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
+            : base(texture, color, movement, projectile)
         {
             this.Movement.Speed = 5;
         }
@@ -88,14 +90,14 @@
                     continue;
                 }
 
-                if ((this.Movement.velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.Movement.velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)))
+                if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)))
                 {
-                    this.Movement.velocity.X = 0;
+                    this.Movement.ZeroXVelocity();
                 }
 
-                if ((this.Movement.velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.Movement.velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
+                if ((this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
                 {
-                    this.Movement.velocity.Y = 0;
+                    this.Movement.ZeroYVelocity();
                 }
 
                 if (sprite is Projectile projectile)

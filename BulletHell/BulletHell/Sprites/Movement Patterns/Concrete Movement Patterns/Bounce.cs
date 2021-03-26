@@ -6,25 +6,25 @@
     internal class Bounce : MovementPattern
     {
         public Bounce(Dictionary<string, object> bounceProperties)
-            : base(bounceProperties)
+            : base()
         {
             this.Speed = (int)bounceProperties["speed"];
             this.velocity.X = Convert.ToSingle((int)bounceProperties["xVelocity"]) * this.Speed;
             this.velocity.Y = Convert.ToSingle((int)bounceProperties["yVelocity"]) * this.Speed;
-            this.Position.X = Convert.ToSingle((int)bounceProperties["xPosition"]);
-            this.Position.Y = Convert.ToSingle((int)bounceProperties["yPosition"]);
+            this.position.X = Convert.ToSingle((int)bounceProperties["xPosition"]);
+            this.position.Y = Convert.ToSingle((int)bounceProperties["yPosition"]);
         }
 
         public override void Move()
         {
             if (this.IsTouchingTopOfScreen() || this.IsTouchingBottomOfScreen())
             {
-                this.velocity.Y = -this.velocity.Y;
+                this.InvertYVelocity();
             }
 
             if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())
             {
-                this.velocity.X = -this.velocity.X;
+                this.InvertXVelocity();
             }
 
             base.Move();

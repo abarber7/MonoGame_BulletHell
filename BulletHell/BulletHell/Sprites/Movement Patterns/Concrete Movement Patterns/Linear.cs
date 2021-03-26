@@ -6,7 +6,7 @@
     internal class Linear : MovementPattern
     {
         public Linear(Dictionary<string, object> linearProperties)
-            : base(linearProperties)
+            : base()
         {
             this.Speed = (int)linearProperties["speed"];
             this.velocity.X = Convert.ToSingle((int)linearProperties["xVelocity"]);

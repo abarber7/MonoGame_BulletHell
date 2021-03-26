@@ -5,9 +5,9 @@
     using System.Diagnostics;
     using global::BulletHell.Game_Utilities;
     using global::BulletHell.Sprites;
-    using global::BulletHell.Sprites.Entities;
     using global::BulletHell.States;
     using global::BulletHell.Utilities;
+    using global::BulletHell.Waves;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -37,6 +37,7 @@
 
             UtlilityManager.Initialize(this.Content);
             Random = new Random();
+            GameLoader.LoadGameDictionary("refactored");
         }
 
         public static GraphicsDeviceManager Graphics { get; set; }
@@ -95,7 +96,7 @@
 
 
             _currentState.Draw(gameTime, spriteBatch);
-            
+
             base.Draw(gameTime);
         }
 
