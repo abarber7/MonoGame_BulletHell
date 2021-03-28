@@ -52,7 +52,7 @@
 
         // A translation matrix for collision
         // Source: https://github.com/Oyyou/MonoGame_Tutorials/blob/master/MonoGame_Tutorials/Tutorial019/Sprites/Sprite.cs
-        public virtual Matrix Transform
+        public Matrix Transform
         {
             get
             {
@@ -67,10 +67,13 @@
             get
             {
                 return new Rectangle(
-                    (int)this.Movement.Position.X - (this.Texture.Width / 2),
-                    (int)this.Movement.Position.Y - (this.Texture.Height / 2),
-                    this.Texture.Width,
-                    this.Texture.Height);
+                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+                    new Point(this.Texture.Width, this.Texture.Height));
+                //return new Rectangle(
+                //    (int)this.Movement.Position.X - (this.Texture.Width / 2),
+                //    (int)this.Movement.Position.Y - (this.Texture.Height / 2),
+                //    this.Texture.Width,
+                //    this.Texture.Height);
             }
         }
 

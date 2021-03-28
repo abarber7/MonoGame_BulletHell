@@ -20,22 +20,14 @@
         {
             get
             {
+                //return new Rectangle(
+                //    (int)this.Movement.Position.X,
+                //    (int)this.Movement.Position.Y + (this.Texture.Height / 2),
+                //    (int)Math.Round(this.Texture.Width * 1.5),
+                //    (int)Math.Round(this.Texture.Height * 3.5));
                 return new Rectangle(
-                    (int)this.Movement.Position.X - (this.Texture.Width / 2),
-                    (int)this.Movement.Position.Y - (this.Texture.Height / 2),
-                    (int)Math.Round(this.Texture.Width * 1.5),
-                    (int)Math.Round(this.Texture.Height * 3.5));
-            }
-        }
-
-        // A translation matrix for collision
-        // Source: https://github.com/Oyyou/MonoGame_Tutorials/blob/master/MonoGame_Tutorials/Tutorial019/Sprites/Sprite.cs
-        public override Matrix Transform
-        {
-            get
-            {
-                return Matrix.CreateTranslation(new Vector3(-new Vector2(this.Rectangle.Width / 2, this.Rectangle.Height / 2), 0)) * // Rectangle width and height standing in for origin
-                  Matrix.CreateTranslation(new Vector3(new Vector2(this.Movement.Position.X, this.Movement.Position.Y), 0)); // Position represented by movement pattern position
+                    new Point((int)this.Movement.Position.X - this.Texture.Width, (int)this.Movement.Position.Y - (int)Math.Round(this.Texture.Height * 2.5)),
+                    new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
             }
         }
 
@@ -49,7 +41,12 @@
             // Ignore collision if sprite is one who fired or if sprite is another projectile (for now)
             if (sprite != this.Parent && !(sprite is Projectile))
             {
-                this.IsRemoved = true;
+                // Allow projectiles to pass through friendlies
+                if ((!sprite.GetType().IsSubclassOf(this.Parent.GetType()) || !this.Parent.GetType().IsSubclassOf(sprite.GetType()))
+                    && sprite.GetType() != this.Parent.GetType())
+                {
+                    this.IsRemoved = true;
+                }
             }
         }
 

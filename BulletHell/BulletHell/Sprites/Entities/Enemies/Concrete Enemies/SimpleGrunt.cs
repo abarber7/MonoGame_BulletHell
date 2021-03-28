@@ -23,6 +23,8 @@
              }
             */
 
+            base.Update(gameTime, sprites);
+
             this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.timer2 > 1f)
@@ -32,7 +34,6 @@
             }
 
             /// this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
-            base.Update(gameTime, sprites);
         }
     }
 }
