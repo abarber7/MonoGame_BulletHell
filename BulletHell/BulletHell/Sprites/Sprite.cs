@@ -152,8 +152,7 @@
         public bool IsHitboxIntersecting(Sprite sprite)
         {
             // To check if either rectangle is actually a line
-            // For example :  l1 ={-1,0}  r1={1,1}  l2={0,-1}
-            // r2={0,1}
+            // For example :  l1 ={-1,0}  r1={1,1}  l2={0,-1} r2={0,1}
             if (this.Rectangle.Left == this.Rectangle.Right ||
                 this.Rectangle.Top == sprite.Rectangle.Bottom ||
                 sprite.Rectangle.Left == sprite.Rectangle.Right ||

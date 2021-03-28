@@ -33,7 +33,7 @@
             {
                 sprite.Draw(this.spriteBatch);
 
-                // this.DrawBoxAroundSprite(sprite, Color.Chartreuse); // rectangle/hitbox visual testing
+                this.DrawBoxAroundSprite(sprite, Color.Chartreuse); // rectangle/hitbox visual testing
 
                 if (sprite is Player player)
                 {
@@ -98,25 +98,19 @@
                     {
                         continue;
                     }
-                    
+
                     if (this.sprites[i].IsHitboxIntersecting(this.sprites[j]))
                     {
-                        // If potential collision, do more precise check
+                        // If buffer box collision, do more precise check only if both objects aren't projectiles
                         if (this.sprites[i] is Projectile projectilei && !(this.sprites[j] is Projectile))
                         {
-                            if (projectilei.IsTextureIntersecting(this.sprites[j]))
-                            {
-                                projectilei.OnCollision(this.sprites[j]);
-                                this.sprites[j].OnCollision(projectilei);
-                            }
+                            projectilei.OnCollision(this.sprites[j]);
+                            this.sprites[j].OnCollision(projectilei);
                         }
                         else if (this.sprites[j] is Projectile projectilej && !(this.sprites[i] is Projectile))
                         {
-                            if (projectilej.IsTextureIntersecting(this.sprites[i]))
-                            {
-                                this.sprites[i].OnCollision(projectilej);
-                                projectilej.OnCollision(this.sprites[i]);
-                            }
+                            this.sprites[i].OnCollision(projectilej);
+                            projectilej.OnCollision(this.sprites[i]);
                         }
                         else if (!(this.sprites[i] is Projectile) && !(!(this.sprites[j] is Projectile)))
                         {

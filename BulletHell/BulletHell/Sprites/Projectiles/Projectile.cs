@@ -102,10 +102,10 @@
                         yB >= 0 && yB < sprite.Rectangle.Height)
                     {
                         // Get the color of the overlapping pixel from sprite
-                        Color colourB = sprite.TextureData[xB + (yB * sprite.Rectangle.Width)];
+                        Color colorB = sprite.TextureData[xB + (yB * sprite.Rectangle.Width)];
 
                         // If sprite pixel isn't completely transparent
-                        if (colourB.A != 0)
+                        if (colorB.A != 0)
                         {
                             return true;
                         }
