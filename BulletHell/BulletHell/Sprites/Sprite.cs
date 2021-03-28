@@ -7,7 +7,7 @@
 
     internal abstract class Sprite
     {
-        public readonly Color[] TextureData;
+        private readonly Color[] textureData;
         private bool isRemoved = false;
         private Color color = Color.White;
 
@@ -16,8 +16,8 @@
             this.Texture = texture;
             this.Color = color;
             this.Movement = movement;
-            this.TextureData = new Color[texture.Width * texture.Height]; // array size is pixel amount in the texture
-            this.Texture.GetData(this.TextureData);
+            this.textureData = new Color[texture.Width * texture.Height]; // array size is pixel amount in the texture
+            this.Texture.GetData(this.textureData);
         }
 
         public Texture2D Texture { get; set; }
@@ -76,7 +76,7 @@
 
         // Check against other sprites for pixel overlaps (collision)
         // Source: https://github.com/Oyyou/MonoGame_Tutorials/blob/master/MonoGame_Tutorials/Tutorial019/Sprites/Sprite.cs
-        public virtual bool IsTextureIntersecting(Sprite sprite)
+        public bool IsTextureIntersecting(Sprite sprite)
         {
             if (sprite == this)
             {
@@ -114,8 +114,8 @@
                         yB >= 0 && yB < sprite.Rectangle.Height)
                     {
                         // Get the colors of the overlapping pixels
-                        Color colourA = this.TextureData[xA + (yA * this.Rectangle.Width)];
-                        Color colourB = sprite.TextureData[xB + (yB * sprite.Rectangle.Width)];
+                        Color colourA = this.textureData[xA + (yA * this.Rectangle.Width)];
+                        Color colourB = sprite.textureData[xB + (yB * sprite.Rectangle.Width)];
 
                         // If both pixels are not completely transparent
                         if (colourA.A != 0 && colourB.A != 0)
@@ -175,21 +175,9 @@
             }
 
             return true;
-
-            //if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfBox(sprite)) ||
-            //    (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfBox(sprite)) ||
-            //    (this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfBox(sprite)) ||
-            //    (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfBox(sprite)))
-            //{
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
         }
 
-        protected bool IsTouchingLeftSideOfBox(Sprite sprite)
+        protected bool IsTouchingLeftSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Right + this.Movement.Velocity.X > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Left &&
@@ -197,7 +185,7 @@
               this.Rectangle.Top < sprite.Rectangle.Bottom;
         }
 
-        protected bool IsTouchingRightSideOfBox(Sprite sprite)
+        protected bool IsTouchingRightSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Left + this.Movement.Velocity.X < sprite.Rectangle.Right &&
               this.Rectangle.Right > sprite.Rectangle.Right &&
@@ -205,7 +193,7 @@
               this.Rectangle.Top < sprite.Rectangle.Bottom;
         }
 
-        protected bool IsTouchingTopSideOfBox(Sprite sprite)
+        protected bool IsTouchingTopSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Bottom + this.Movement.Velocity.Y > sprite.Rectangle.Top &&
               this.Rectangle.Top < sprite.Rectangle.Top &&
@@ -213,12 +201,25 @@
               this.Rectangle.Left < sprite.Rectangle.Right;
         }
 
-        protected bool IsTouchingBottomSideOfBox(Sprite sprite)
+        protected bool IsTouchingBottomSideOfSprite(Sprite sprite)
         {
             return this.Rectangle.Top + this.Movement.Velocity.Y < sprite.Rectangle.Bottom &&
               this.Rectangle.Bottom > sprite.Rectangle.Bottom &&
               this.Rectangle.Right > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Right;
         }
+
+        protected bool HasCollidedWithASprite(Sprite sprite)
+        {
+            if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)) || (this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
