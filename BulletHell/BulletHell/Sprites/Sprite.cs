@@ -151,42 +151,43 @@
 
         public bool IsHitboxIntersecting(Sprite sprite)
         {
-            //// To check if either rectangle is actually a line
-            //// For example :  l1 ={-1,0}  r1={1,1}  l2={0,-1}
-            //// r2={0,1}
-            //if (this.Rectangle.Left == this.Rectangle.Right ||
-            //    this.Rectangle.Top == sprite.Rectangle.Bottom ||
-            //    sprite.Rectangle.Left == sprite.Rectangle.Right ||
-            //    sprite.Rectangle.Top == sprite.Rectangle.Bottom)
-            //{
-            //    // the line cannot have positive overlap
-            //    return false;
-            //}
-
-            //// If one rectangle is on left side of other
-            //if (this.Rectangle.Left >= sprite.Rectangle.Right || sprite.Rectangle.Left >= this.Rectangle.Right)
-            //{
-            //    return false;
-            //}
-
-            //// If one rectangle is above other
-            //if (this.Rectangle.Top <= sprite.Rectangle.Bottom || sprite.Rectangle.Top <= this.Rectangle.Bottom)
-            //{
-            //    return false;
-            //}
-
-            //return true;
-            if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfBox(sprite)) ||
-                (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfBox(sprite)) ||
-                (this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfBox(sprite)) ||
-                (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfBox(sprite)))
+            // To check if either rectangle is actually a line
+            // For example :  l1 ={-1,0}  r1={1,1}  l2={0,-1}
+            // r2={0,1}
+            if (this.Rectangle.Left == this.Rectangle.Right ||
+                this.Rectangle.Top == sprite.Rectangle.Bottom ||
+                sprite.Rectangle.Left == sprite.Rectangle.Right ||
+                sprite.Rectangle.Top == sprite.Rectangle.Bottom)
             {
-                return true;
+                // the line cannot have positive overlap
+                return false;
             }
-            else
+
+            // If one rectangle is on left side of other
+            if (this.Rectangle.Left >= sprite.Rectangle.Right || sprite.Rectangle.Left >= this.Rectangle.Right)
             {
                 return false;
             }
+
+            // If one rectangle is above other
+            if (this.Rectangle.Top >= sprite.Rectangle.Bottom || sprite.Rectangle.Top >= this.Rectangle.Bottom)
+            {
+                return false;
+            }
+
+            return true;
+
+            //if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfBox(sprite)) ||
+            //    (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfBox(sprite)) ||
+            //    (this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfBox(sprite)) ||
+            //    (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfBox(sprite)))
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
         protected bool IsTouchingLeftSideOfBox(Sprite sprite)
