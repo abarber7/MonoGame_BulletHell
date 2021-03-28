@@ -65,7 +65,7 @@
 
         // Check against other sprites for pixel overlaps (collision)
         // Source: https://github.com/Oyyou/MonoGame_Tutorials/blob/master/MonoGame_Tutorials/Tutorial019/Sprites/Sprite.cs
-        public override bool IsIntersecting(Sprite sprite)
+        public override bool IsTextureIntersecting(Sprite sprite)
         {
             if (sprite == this)
             {

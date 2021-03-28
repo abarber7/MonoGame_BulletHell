@@ -90,16 +90,21 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            for (int i = this.sprites.Count - 2; i >= 0; i--)
+            for (int i = this.sprites.Count - 1; i >= 0; i--)
             {
-                for (int j = i + 1; j >= 0; j--)
+                for (int j = this.sprites.Count - 2; j >= 1; j--)
                 {
-                    if (this.sprites[i].HasCollidedWithSpriteBox(this.sprites[j]))
+                    if (this.sprites[i] == this.sprites[j])
+                    {
+                        continue;
+                    }
+                    
+                    if (this.sprites[i].IsHitboxIntersecting(this.sprites[j]))
                     {
                         // If potential collision, do more precise check
                         if (this.sprites[i] is Projectile projectilei && !(this.sprites[j] is Projectile))
                         {
-                            if (projectilei.IsIntersecting(this.sprites[j]))
+                            if (projectilei.IsTextureIntersecting(this.sprites[j]))
                             {
                                 projectilei.OnCollision(this.sprites[j]);
                                 this.sprites[j].OnCollision(projectilei);
@@ -107,7 +112,7 @@
                         }
                         else if (this.sprites[j] is Projectile projectilej && !(this.sprites[i] is Projectile))
                         {
-                            if (projectilej.IsIntersecting(this.sprites[i]))
+                            if (projectilej.IsTextureIntersecting(this.sprites[i]))
                             {
                                 this.sprites[i].OnCollision(projectilej);
                                 projectilej.OnCollision(this.sprites[i]);
@@ -115,7 +120,7 @@
                         }
                         else if (!(this.sprites[i] is Projectile) && !(!(this.sprites[j] is Projectile)))
                         {
-                            if (this.sprites[i].IsIntersecting(this.sprites[j]))
+                            if (this.sprites[i].IsTextureIntersecting(this.sprites[j]))
                             {
                                 this.sprites[i].OnCollision(this.sprites[j]);
                                 this.sprites[j].OnCollision(this.sprites[i]);
@@ -136,12 +141,10 @@
                     {
                         this.finalBossDefeated = true;
                         this.sprites.RemoveAt(i);
-                        i--;
                     }
                     else
                     {
                         this.sprites.RemoveAt(i);
-                        i--;
                     }
                 }
             }

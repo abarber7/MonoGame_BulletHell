@@ -66,6 +66,8 @@
             }
 
             base.Move();
+
+            // this.position = new Vector2(this.Parent.Rectangle.Center.X, this.Parent.Rectangle.Center.Y) + this.Velocity; // Rectangle offset bug hunting (analogous statement)--remove later
         }
 
         // method to call when timer has Elapsed
