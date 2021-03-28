@@ -4,13 +4,14 @@
     using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal class FinalBoss : Enemy
     {
         private int previousTime = 0;
 
-        public FinalBoss(Dictionary<string, object> finalBossProperties)
-            : base(finalBossProperties)
+        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
+            : base(texture, color, movement, projectile, lifeSpan)
         {
         }
 
@@ -28,7 +29,8 @@
 
         private new void Attack(List<Sprite> sprites)
         {
-            Projectile newProjectile = this.Projectile.Clone() as Projectile;
+            // TODO: needs refactoring and moved to Attack object
+            /*Projectile newProjectile = this.Projectile.Clone() as Projectile;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
             newProjectile.Movement.velocity = this.Movement.velocity;
             newProjectile.Movement.Position = this.Movement.Position;
@@ -68,7 +70,7 @@
             newProjectile.Movement.velocity.X -= 2;
             newProjectile.Parent = this;
 
-            sprites.Add(newProjectile);
+            sprites.Add(newProjectile);*/
         }
     }
 }

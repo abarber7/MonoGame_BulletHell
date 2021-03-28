@@ -1,32 +1,26 @@
-﻿using BulletHell.Controls;
-using BulletHell.Game_Utilities;
-using BulletHell.States.Emitters;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.States
+﻿namespace BulletHell.States
 {
+    using System;
+    using System.Collections.Generic;
+    using global::BulletHell.Controls;
+    using global::BulletHell.States.Emitters;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class GameOverLose : State
     {
-        private List<Component> _components;
-        private SnowEmitter _snowEmitter;
+        private List<Component> components;
+        private SnowEmitter snowEmitter;
         private SpriteBatch spriteBatch;
         private Texture2D gameOverTexture;
-
-
-
-        public object GraphicsDevice { get; private set; }
 
         public GameOverLose(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
-            gameOverTexture = _content.Load<Texture2D>("Titles/GameOver");
+            var buttonTexture = content.Load<Texture2D>("Controls/Button");
+            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
+            this.gameOverTexture = content.Load<Texture2D>("Titles/GameOver");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -34,7 +28,7 @@ namespace BulletHell.States
                 Text = "Play Again",
             };
 
-            newGameButton.Click += NewGameButton_Click;
+            newGameButton.Click += this.NewGameButton_Click;
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
@@ -42,37 +36,39 @@ namespace BulletHell.States
                 Text = "Main Menu",
             };
 
-            returnButton.Click += ReturnButton_Click;
+            returnButton.Click += this.ReturnButton_Click;
 
-            var ExitGameButton = new Button(buttonTexture, buttonFont)
+            var exitGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 300),
                 Text = "Exit Game",
             };
 
-            ExitGameButton.Click += ExitGameButton_Click;
+            exitGameButton.Click += this.ExitGameButton_Click;
 
-
-
-            _components = new List<Component>()
-      {
-        newGameButton,
-        returnButton,
-        ExitGameButton,
-      };
+            this.components = new List<Component>()
+            {
+                newGameButton,
+                returnButton,
+                exitGameButton,
+            };
         }
+
+        public object GraphicsDevice { get; private set; }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _game.GraphicsDevice.Clear(Color.Red);
+            this.game.GraphicsDevice.Clear(Color.Red);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(gameOverTexture, new Vector2(90, 50), Color.Black);
+            spriteBatch.Draw(this.gameOverTexture, new Vector2(90, 50), Color.Black);
 
-            foreach (var component in _components)
+            foreach (var component in this.components)
+            {
                 component.Draw(gameTime, spriteBatch);
+            }
 
-            _snowEmitter.Draw(gameTime, spriteBatch);
+            this.snowEmitter.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -84,37 +80,38 @@ namespace BulletHell.States
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var component in _components)
+            foreach (var component in this.components)
+            {
                 component.Update(gameTime);
+            }
 
-            _snowEmitter.Update(gameTime);
+            this.snowEmitter.Update(gameTime);
         }
-
-        private void NewGameButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new DifficultyState(_game, _graphicsDevice, _content));
-        }
-
-        private void ReturnButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
-        }
-
-        private void ExitGameButton_Click(object sender, EventArgs e)
-        {
-            _game.Exit();
-        }
-
 
         public override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(_game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
 
-            _snowEmitter = new SnowEmitter(new Emitters.SpriteLike(_content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
         {
+        }
+
+        private void NewGameButton_Click(object sender, EventArgs e)
+        {
+            this.game.ChangeState(new DifficultyState(this.game, this.graphicsDevice, this.content));
+        }
+
+        private void ReturnButton_Click(object sender, EventArgs e)
+        {
+            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
+        }
+
+        private void ExitGameButton_Click(object sender, EventArgs e)
+        {
+            this.game.Exit();
         }
     }
 }

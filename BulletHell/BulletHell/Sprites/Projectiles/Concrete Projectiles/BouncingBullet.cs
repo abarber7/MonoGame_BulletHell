@@ -1,8 +1,7 @@
 ﻿namespace BulletHell.Sprites.Projectiles.Concrete_Projectiles
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -11,8 +10,8 @@
         // max bounce number
         private int maxBounces = 5;
 
-        public BouncingBullet(Dictionary<string, object> bouncingBulletProperties)
-            : base(bouncingBulletProperties)
+        public BouncingBullet(Texture2D texture, Color color, MovementPattern movement)
+            : base(texture, color, movement)
         {
         }
 
@@ -24,7 +23,7 @@
                 // when bullet is out of bounds reverse its velocity and reduce maxBounces
                 if (this.OutOfBounds())
                 {
-                    this.Movement.velocity = -this.Movement.velocity;
+                    this.Movement.Velocity = -this.Movement.Velocity;
                     this.maxBounces--;
                 }
             }
@@ -39,11 +38,6 @@
             }
 
             this.Movement.Move();
-        }
-
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
-        {
-            base.Update(gameTime, sprites);
         }
     }
 }

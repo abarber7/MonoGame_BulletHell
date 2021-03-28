@@ -1,4 +1,4 @@
-﻿namespace BulletHell.Player
+﻿namespace BulletHell.The_Player
 {
     using Microsoft.Xna.Framework.Input;
 

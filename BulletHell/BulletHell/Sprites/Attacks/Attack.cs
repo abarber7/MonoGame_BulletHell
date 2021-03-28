@@ -4,11 +4,10 @@
 
     internal abstract class Attack
     {
-        Projectile projectile;
+        private Projectile projectile;
 
         public virtual void DoAttack()
         {
-
         }
     }
 }

@@ -1,14 +1,24 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.States.Emitters
+﻿namespace BulletHell.States.Emitters
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class SpriteLike : Component, ICloneable
     {
-        protected Texture2D _texture;
+        public Vector2 Position;
+        public Vector2 Velocity;
+
+        protected Texture2D texture;
+
+        public SpriteLike(Texture2D texture)
+        {
+            this.texture = texture;
+
+            this.Opacity = 1f;
+
+            this.Origin = new Vector2(this.texture.Width / 2, this.texture.Height / 2);
+        }
 
         public float Opacity { get; set; }
 
@@ -18,40 +28,29 @@ namespace BulletHell.States.Emitters
 
         public float Scale { get; set; }
 
-        public Vector2 Position;
-
-        public Vector2 Velocity;
-
         public Rectangle Rectangle
         {
             get
             {
-                return new Rectangle((int)(Position.X - Origin.X), (int)(Position.Y - Origin.Y), (int)(_texture.Width * Scale), (int)(_texture.Height * Scale));
+                return new Rectangle((int)(this.Position.X - this.Origin.X), (int)(this.Position.Y - this.Origin.Y), (int)(this.texture.Width * this.Scale), (int)(this.texture.Height * this.Scale));
             }
         }
 
         public bool IsRemoved { get; set; }
 
-        public SpriteLike(Texture2D texture)
-        {
-            _texture = texture;
-
-            Opacity = 1f;
-
-            Origin = new Vector2(_texture.Width / 2, _texture.Height / 2);
-        }
-
         public override void Update(GameTime gameTime)
         {
-            Position += Velocity;
+            this.Position += this.Velocity;
 
-            if (Rectangle.Top > BulletHell.ScreenHeight)
-                IsRemoved = true;
+            if (this.Rectangle.Top > BulletHell.ScreenHeight)
+            {
+                this.IsRemoved = true;
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, null, Color.White * Opacity, Rotation, Origin, Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(this.texture, this.Position, null, Color.White * this.Opacity, this.Rotation, this.Origin, this.Scale, SpriteEffects.None, 0);
         }
 
         public object Clone()

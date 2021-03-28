@@ -1,18 +1,16 @@
-﻿using BulletHell.Game_Utilities;
-using BulletHell.Sprites;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using global::BulletHell.Utilities;
-using Microsoft.Xna.Framework.Input;
-using BulletHell.Sprites.Projectiles;
-using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-
-namespace BulletHell.States
+﻿namespace BulletHell.States
 {
+    using System.Collections.Generic;
+    using global::BulletHell.Game_Utilities;
+    using global::BulletHell.Sprites;
+    using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using global::BulletHell.Sprites.Projectiles;
+    using global::BulletHell.Sprites.The_Player;
+    using global::BulletHell.Waves;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class GameState : State
     {
         private SpriteBatch spriteBatch;
@@ -20,15 +18,12 @@ namespace BulletHell.States
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
-        private State _currentState;
-        private State _nextState;
         private int lives = 3;
         private bool finalBossDefeated = false;
 
         public GameState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
-
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -38,32 +33,29 @@ namespace BulletHell.States
             {
                 sprite.Draw(this.spriteBatch);
 
-                if (sprite is Sprites.Entities.Player)
+                if (sprite is Player player)
                 {
-                    Sprites.Entities.Player player = (Sprites.Entities.Player)sprite;
-                    if (player.invicible)
+                    if (player.Invincible)
                     {
                         this.DrawBoxAroundSprite(player, Color.Crimson);
                     }
 
-                    if (player.slowMode)
+                    if (player.SlowMode)
                     {
                         this.DrawBoxAroundSprite(player, Color.White);
-                        player.slowMode = false;
+                        player.SlowMode = false;
                     }
                 }
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
 
-
             this.spriteBatch.End();
-
         }
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(_game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
 
             this.sprites = new List<Sprite>();
 
@@ -76,7 +68,6 @@ namespace BulletHell.States
 
         public override void Update(GameTime gameTime)
         {
-
             this.CheckAndDeployWave(gameTime);
 
             foreach (var sprite in this.sprites.ToArray())
@@ -89,8 +80,15 @@ namespace BulletHell.States
                 this.EndGamePrompt();
             }
 
+            this.CustomPostUpdate(gameTime);
+        }
 
-            this.PostUpdate();
+        public override void Draw(GameTime gameTime)
+        {
+        }
+
+        public override void PostUpdate(GameTime gameTime)
+        {
         }
 
         private void CreatePlayer()
@@ -108,7 +106,7 @@ namespace BulletHell.States
             this.timeUntilNextWave -= gameTime.ElapsedGameTime.TotalSeconds;
             if (this.timeUntilNextWave <= 0 && this.waves.Count > 0)
             {
-                this.timeUntilNextWave = this.waves[0].waveDuration;
+                this.timeUntilNextWave = this.waves[0].WaveDuration;
                 this.waves[0].CreateWave(this.sprites);
                 this.waves.RemoveRange(0, 1);
             }
@@ -116,7 +114,7 @@ namespace BulletHell.States
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)
         {
-            Texture2D hitboxTexture = new Texture2D(_game.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
+            Texture2D hitboxTexture = new Texture2D(this.game.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
             Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
             for (int i = 0; i < data.Length; i++)
             {
@@ -143,47 +141,48 @@ namespace BulletHell.States
             this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Movement.Position.X - (hitboxTexture.Width / 2), sprite.Movement.Position.Y - (hitboxTexture.Height / 2)), color);
         }
 
-        private void PostUpdate()
+        private void CustomPostUpdate(GameTime gameTime)
         {
             for (int i = this.sprites.Count - 1; i >= 0; i--)
             {
                 if (this.sprites[i].IsRemoved)
                 {
-                    if (this.sprites[i] is Sprites.Entities.Player)
+                    if (this.sprites[i] is Player)
                     {
                         this.lives--;
                         this.RemoveAllProjectiles();
-                        this.CreatePlayer();
+                        ((Player)this.sprites[i]).Respawn(gameTime);
                     }
                     else if (this.sprites[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
+                        this.sprites.RemoveAt(i);
                     }
-
-                    this.sprites.RemoveAt(i);
+                    else
+                    {
+                        this.sprites.RemoveAt(i);
+                    }
                 }
             }
         }
+
         private void EndGamePrompt()
         {
             // TODO: Implement with Antonio's menu system.
             if (this.lives == 0)
             {
-                _game.ChangeState(new GameOverLose(_game, _graphicsDevice, _content));
-
+                this.game.ChangeState(new GameOverLose(this.game, this.graphicsDevice, this.content));
             }
-            else if (this.finalBossDefeated = true)
+            else if (this.finalBossDefeated == true)
             {
-                _game.ChangeState(new GameOverWin(_game, _graphicsDevice, _content));
-
+                this.game.ChangeState(new GameOverWin(this.game, this.graphicsDevice, this.content));
             }
         }
 
         private void CreateStats()
         {
-            this.font = this._content.Load<SpriteFont>("Fonts/Font");
+            this.font = this.content.Load<SpriteFont>("Fonts/Font");
         }
-
 
         private void RemoveAllProjectiles()
         {
@@ -194,15 +193,6 @@ namespace BulletHell.States
                     this.sprites.RemoveAt(i);
                 }
             }
-        }
-
-
-        public override void Draw(GameTime gameTime)
-        {
-        }
-
-        public override void PostUpdate(GameTime gameTime)
-        {
         }
     }
 }

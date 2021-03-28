@@ -1,0 +1,264 @@
+{
+  "player": {
+    "entityType": "player",
+    "textureName": "Block",
+    "color": "Blue",
+    "movementPattern": {
+      "movementPatternType": "playerInput",
+      "spawnXPosition": 400,
+      "spawnYPosition": 550,
+      "startXPosition": 400,
+      "startYPosition": 350,
+      "speed": 2
+    },
+    "projectile": {
+      "projectileType": "bullet",
+      "textureName": "Bullet",
+      "color": "Blue",
+      "movementPattern": {
+        "movementPatternType": "linear",
+        "xVelocity": 0,
+        "yVelocity": -1,
+        "speed": 4
+      }
+    }
+  },
+  "waves": [
+    {
+      "waveNumber": 1,
+      "waveDuration": 15,
+      "entityGroups": [
+        {
+          "entityAmount": 6,
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 400, 400, 200, 600, -400, 1200 ],
+            "spawnYPosition": [ -275, -275, -200, -200, 175, 175 ],
+            "startXPosition": [ 0, 800, 200, 600, 100, 700 ],
+            "startYPosition": [ 50, 50, 100, 100, 175, 175 ],
+            "endXPosition": [ 800, 0, 700, 100, 300, 500 ],
+            "endYPosition": [ 50, 50, 100, 100, 175, 175 ],
+            "speed": 2
+          },
+
+          "entityProperties": {
+            "entityType": "simpleGrunt",
+            "textureName": "Block",
+            "color": "Green",
+            "lifeSpan": 30,
+            "projectile": {
+              "projectileType": "bullet",
+              "textureName": "Bullet",
+              "color": "Green",
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 2,
+      "waveDuration": 15,
+      "entityGroups": [
+        {
+          "entityAmount": 12,
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 400, 400, 400, 400, -300, -100, 1100, 900, 400, 400, 400, 400 ],
+            "spawnYPosition": [ -275, -200, -275, -200, 150, 150, 150, 150, -275, -275, -275, -275 ],
+            "startXPosition": [ 50, 50, 750, 750, 100, 300, 700, 500, 600, 200, 800, 0 ],
+            "startYPosition": [ 75, 75, 75, 75, 150, 150, 150, 150, 100, 100, 100, 100 ],
+            "endXPosition": [ 750, 750, 50, 50, 300, 500, 500, 300, 200, 600, 700, 100 ],
+            "endYPosition": [ 75, 75, 75, 75, 150, 150, 150, 150, 100, 100, 100, 100 ],
+            "exitXPosition": [ 400, 400, 400, 400, -300, -100, 1100, 900, 400, 400, 400, 400 ],
+            "exitYPosition": [ -275, -200, -275, -200, 150, 150, 150, 150, -275, -275, -275, -275 ],
+            "speed": 2
+          },
+
+          "entityProperties": {
+            "entityType": "simpleGrunt",
+            "textureName": "Block",
+            "color": "Green",
+            "lifeSpan": 30,
+            "projectile": {
+              "projectileType": "bullet",
+              "textureName": "Bullet",
+              "color": "Green",
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 3,
+      "waveDuration": 5,
+      "entityGroups": [
+        {
+          "entityAmount": 6,
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "speed": 2,
+            "spawnXPosition": [ 400, 400, 900, -100, -400, 1200 ],
+            "spawnYPosition": [ -275, -275, 150, 150, 175, 175 ],
+            "startXPosition": [ 0, 800, 500, 300, 100, 700 ],
+            "startYPosition": [ 50, 50, 150, 150, 175, 175 ],
+            "endXPosition": [ 800, 0, 300, 500, 300, 500 ],
+            "endYPosition": [ 50, 50, 150, 150, 175, 175 ],
+            "exitXPosition": [ 400, 400, 900, -100, -400, 1200 ],
+            "exitYPosition": [ -275, -275, 150, 150, 175, 175 ]
+          },
+
+          "entityProperties": {
+            "entityType": "simpleGrunt",
+            "textureName": "Block",
+            "color": "Green",
+            "lifeSpan": 15,
+
+            "projectile": {
+              "projectileType": "bullet",
+              "textureName": "Bullet",
+              "color": "Green",
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 4,
+      "waveDuration": 4,
+      "entityGroups": [
+        {
+          "entityAmount": 3,
+          "movementPattern": {
+            "movementPatternType": "runAndGun",
+            "spawnXPosition": [ -100, -350, -600 ],
+            "spawnYPosition": [ -100, -100, -100 ],
+            "startXPosition": [ 0, 0, 0 ],
+            "startYPosition": [ 150, 150, 150 ],
+            "endXPosition": [ 350, 225, 100 ],
+            "endYPosition": [ 150, 150, 150 ],
+            "exitXPosition": [ 1000, 1000, 1000 ],
+            "exitYPosition": [ -100, -100, -100 ],
+            "speed": 2,
+            "timeBeforeExit": 6.5
+          },
+
+          "entityProperties": {
+            "entityType": "complexGrunt",
+            "textureName": "Block",
+            "color": "Yellow",
+            "lifeSpan": 30,
+
+            "projectile": {
+              "projectileType": "bounceBullet",
+              "textureName": "Bullet",
+              "color": "White",
+              "bounceTimes": 1,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 5,
+      "waveDuration": 4,
+      "entityGroups": [
+        {
+          "entityAmount": 3,
+          "movementPattern": {
+            "movementPatternType": "runAndGun",
+            "spawnXPosition": [ 900, 1150, 1400 ],
+            "spawnYPosition": [ -100, -100, -100 ],
+            "startXPosition": [ 800, 800, 800 ],
+            "startYPosition": [ 150, 150, 150 ],
+            "endXPosition": [ 450, 575, 700 ],
+            "endYPosition": [ 150, 150, 150 ],
+            "exitXPosition": [ -100, -100, -100 ],
+            "exitYPosition": [ -100, -100, -100 ],
+            "speed": 2,
+            "timeBeforeExit": 6.5
+          },
+
+          "entityProperties": {
+            "entityType": "complexGrunt",
+            "textureName": "Block",
+            "color": "Yellow",
+            "lifeSpan": 30,
+            "projectile": {
+              "projectileType": "bounceBullet",
+              "textureName": "Bullet",
+              "color": "White",
+              "bounceTimes": 1,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 6,
+      "waveDuration": 30,
+      "entityGroups": [
+        {
+          "entityAmount": 1,
+          "entityProperties": {
+            "entityType": "midBoss",
+            "textureName": "Block",
+            "color": "White",
+            "lifeSpan": 30,
+            "movementPattern": {
+              "movementPatternType": "bounce",
+              "xVelocity": -1,
+              "yVelocity": -1,
+              "startXPosition": 0,
+              "startYPosition": 0,
+              "speed": 5
+            },
+            "projectile": {
+              "projectileType": "bounceBullet",
+              "textureName": "Bullet",
+              "color": "White",
+              "bounceTimes": 1,
+              "movementPattern": {
+                "movementPatternType": "bounce",
+                "xVelocity": 0,
+                "yVelocity": 0,
+                "startXPosition": 0,
+                "startYPosition": 0,
+                "speed": 10
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
