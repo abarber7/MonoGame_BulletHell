@@ -1,15 +1,13 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
-    using System;
-    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
 
     internal class Static : MovementPattern
     {
-        public Static(Dictionary<string, object> staticProperties)
+        public Static(Vector2 startPosition)
             : base()
         {
-            this.position.X = Convert.ToSingle((int)staticProperties["xPosition"]);
-            this.position.Y = Convert.ToSingle((int)staticProperties["yPosition"]);
+            this.Position = startPosition;
         }
     }
 }

@@ -27,10 +27,10 @@
             this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
         }
 
-        public new void Attack(List<Sprite> sprites)
+        /*public new void Attack(List<Sprite> sprites)
         {
             // TODO: needs refactoring and moved to Attack object
-            /*Projectile newProjectile = this.Projectile.Clone() as Projectile;
+            Projectile newProjectile = this.Projectile.Clone() as Projectile;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Velocity = this.Movement.Velocity;
             newProjectile.Movement.Position = this.Movement.Position;
@@ -55,7 +55,7 @@
             newProjectile.Movement.velocity.X -= 1;
             newProjectile.Parent = this;
 
-            sprites.Add(newProjectile);*/
-        }
+            sprites.Add(newProjectile);
+        }*/
     }
 }

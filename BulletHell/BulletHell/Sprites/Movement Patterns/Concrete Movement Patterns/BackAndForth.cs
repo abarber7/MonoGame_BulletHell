@@ -51,7 +51,7 @@
                 // If it is not time to exit do the movement pattern
                 if (this.exitTime == false)
                 {
-                    // when exceeding position reverse velocity to go back and fort
+                    // when exceeding position reverse velocity to go back and forth
                     if (this.ExceededPosition(this.startPosition, this.endPosition, this.Velocity))
                     {
                         this.Velocity = -this.Velocity;

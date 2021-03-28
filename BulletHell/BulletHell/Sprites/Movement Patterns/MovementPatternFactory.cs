@@ -13,12 +13,6 @@
             switch (movementPatternProperties["movementPatternType"])
             {
                 case "playerInput":
-                    movementPattern = new PlayerInput(movementPatternProperties);
-                    break;
-                case "linear":
-                    movementPattern = new Linear(movementPatternProperties);
-                    break;
-                case "backAndForth":
                     // spawning
                     Vector2 spawnPosition;
                     spawnPosition.X = Convert.ToSingle((int)movementPatternProperties["spawnXPosition"]);
@@ -29,22 +23,58 @@
                     startPosition.X = Convert.ToSingle((int)movementPatternProperties["startXPosition"]);
                     startPosition.Y = Convert.ToSingle((int)movementPatternProperties["startYPosition"]);
 
+                    int speed = (int)movementPatternProperties["speed"];
+
+                    movementPattern = new PlayerInput(spawnPosition, startPosition, speed);
+                    break;
+                case "linear":
+                    Vector2 velocity;
+                    velocity.X = Convert.ToSingle((int)movementPatternProperties["xVelocity"]);
+                    velocity.Y = Convert.ToSingle((int)movementPatternProperties["yVelocity"]);
+                    speed = (int)movementPatternProperties["speed"];
+                    movementPattern = new Linear(velocity, speed);
+                    break;
+                case "backAndForth":
+                    // spawning
+                    spawnPosition.X = Convert.ToSingle((int)movementPatternProperties["spawnXPosition"]);
+                    spawnPosition.Y = Convert.ToSingle((int)movementPatternProperties["spawnYPosition"]);
+
+                    // movement pattern
+                    startPosition.X = Convert.ToSingle((int)movementPatternProperties["startXPosition"]);
+                    startPosition.Y = Convert.ToSingle((int)movementPatternProperties["startYPosition"]);
+
                     Vector2 endPosition;
                     endPosition.X = Convert.ToSingle((int)movementPatternProperties["endXPosition"]);
                     endPosition.Y = Convert.ToSingle((int)movementPatternProperties["endYPosition"]);
 
-                    int speed = (int)movementPatternProperties["speed"];
+                    speed = (int)movementPatternProperties["speed"];
 
                     movementPattern = new BackAndForth(spawnPosition, startPosition, endPosition, speed);
                     break;
                 case "static":
-                    movementPattern = new Static(movementPatternProperties);
+                    startPosition.X = Convert.ToSingle((int)movementPatternProperties["xPosition"]);
+                    startPosition.Y = Convert.ToSingle((int)movementPatternProperties["yPosition"]);
+                    movementPattern = new Static(startPosition);
                     break;
                 case "pattern":
-                    movementPattern = new Pattern(movementPatternProperties);
+                    speed = (int)movementPatternProperties["speed"];
+                    List<Vector2> points = new List<Vector2>();
+                    List<List<int>> listOfPoints = (List<List<int>>)movementPatternProperties["points"];
+                    foreach (List<int> point in listOfPoints)
+                    {
+                        points.Add(new Vector2(point[0], point[1]));
+                    }
+
+                    movementPattern = new Pattern(points, speed);
                     break;
                 case "semicircle":
-                    movementPattern = new Semicircle(movementPatternProperties);
+                    startPosition.X = Convert.ToSingle((int)movementPatternProperties["startXPosition"]);
+                    startPosition.Y = Convert.ToSingle((int)movementPatternProperties["startYPosition"]);
+                    endPosition.X = Convert.ToSingle((int)movementPatternProperties["endXPosition"]);
+                    endPosition.Y = Convert.ToSingle((int)movementPatternProperties["endYPosition"]);
+                    speed = (int)movementPatternProperties["speed"];
+                    bool half1Or2 = (bool)movementPatternProperties["half1Or2"];
+                    movementPattern = new Semicircle(startPosition, endPosition, speed, half1Or2);
                     break;
                 case "runAndGun":
                     // spawning
@@ -74,7 +104,13 @@
                     movementPattern = new RunAndGun(spawnPosition, startPosition, stopPosition, exitPosition, speed, timer);
                     break;
                 case "bounce":
-                    movementPattern = new Bounce(movementPatternProperties);
+                    speed = (int)movementPatternProperties["speed"];
+                    velocity.X = Convert.ToSingle((int)movementPatternProperties["xVelocity"]) * speed;
+                    velocity.Y = Convert.ToSingle((int)movementPatternProperties["yVelocity"]) * speed;
+                    startPosition.X = Convert.ToSingle((int)movementPatternProperties["startXPosition"]);
+                    startPosition.Y = Convert.ToSingle((int)movementPatternProperties["startYPosition"]);
+
+                    movementPattern = new Bounce(startPosition, velocity, speed);
                     break;
                 default:
                     throw new Exception("Invalid Entity");
