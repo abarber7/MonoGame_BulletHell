@@ -33,7 +33,7 @@
                 this.Attack(sprites);
             }
 
-            /// this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
+            // this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
         }
     }
 }

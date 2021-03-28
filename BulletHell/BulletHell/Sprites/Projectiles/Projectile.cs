@@ -20,11 +20,6 @@
         {
             get
             {
-                //return new Rectangle(
-                //    (int)this.Movement.Position.X,
-                //    (int)this.Movement.Position.Y + (this.Texture.Height / 2),
-                //    (int)Math.Round(this.Texture.Width * 1.5),
-                //    (int)Math.Round(this.Texture.Height * 3.5));
                 return new Rectangle(
                     new Point((int)this.Movement.Position.X - this.Texture.Width, (int)this.Movement.Position.Y - (int)Math.Round(this.Texture.Height * 2.5)),
                     new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));

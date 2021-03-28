@@ -35,7 +35,7 @@
             velocity.X *= projectileSpeed;
             velocity.Y *= projectileSpeed;
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = this.Movement.Position;
+            newProjectile.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
             newProjectile.Parent = this;
             sprites.Add(newProjectile);
         }

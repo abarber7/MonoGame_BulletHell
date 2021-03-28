@@ -69,11 +69,6 @@
                 return new Rectangle(
                     new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
                     new Point(this.Texture.Width, this.Texture.Height));
-                //return new Rectangle(
-                //    (int)this.Movement.Position.X - (this.Texture.Width / 2),
-                //    (int)this.Movement.Position.Y - (this.Texture.Height / 2),
-                //    this.Texture.Width,
-                //    this.Texture.Height);
             }
         }
 
