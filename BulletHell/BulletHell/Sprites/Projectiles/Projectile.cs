@@ -15,7 +15,7 @@
 
         public Sprite Parent { get; set; }
 
-        // Serves as hitbox (larger than usual to account for speed vs framerate)
+        // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
         public override Rectangle Rectangle
         {
             get

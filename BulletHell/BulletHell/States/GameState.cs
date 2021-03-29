@@ -112,7 +112,7 @@
                             this.sprites[i].OnCollision(projectilej);
                             projectilej.OnCollision(this.sprites[i]);
                         }
-                        else if (!(this.sprites[i] is Projectile) && !(!(this.sprites[j] is Projectile)))
+                        else if (!(this.sprites[i] is Projectile) && !(this.sprites[j] is Projectile))
                         {
                             if (this.sprites[i].IsTextureIntersecting(this.sprites[j]))
                             {
