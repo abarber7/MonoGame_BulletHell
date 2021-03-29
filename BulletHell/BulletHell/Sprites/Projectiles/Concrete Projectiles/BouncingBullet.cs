@@ -10,8 +10,8 @@
         // max bounce number
         private int maxBounces = 5;
 
-        public BouncingBullet(Texture2D texture, Color color, MovementPattern movement)
-            : base(texture, color, movement)
+        public BouncingBullet(Texture2D texture, Color color, MovementPattern movement, int damage)
+            : base(texture, color, movement, damage)
         {
         }
 

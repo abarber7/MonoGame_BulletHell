@@ -147,6 +147,7 @@
         {
         }
 
+        // Source: https://www.geeksforgeeks.org/find-two-rectangles-overlap/
         public bool IsHitboxIntersecting(Sprite sprite)
         {
             // To check if either rectangle is actually a line
