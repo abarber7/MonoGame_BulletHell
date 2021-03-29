@@ -28,6 +28,17 @@
             this.Invincible = true;
         }
 
+        // Serves as hitbox; Player hitbox is smaller than enemies'
+        public override Rectangle Rectangle
+        {
+            get
+            {
+                return new Rectangle(
+                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+                    new Point(this.Texture.Width / 4, this.Texture.Height / 4));
+            }
+        }
+
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             if (this.resetGameTime)
@@ -42,7 +53,6 @@
             this.SetInvincibility(gameTime);
 
             this.Attack(sprites);
-            this.Collision(sprites);
 
             int previousSpeed = this.Movement.CurrentSpeed;
 
@@ -51,6 +61,24 @@
 
             this.Move();
             this.Movement.CurrentSpeed = previousSpeed;
+        }
+
+        public override void OnCollision(Sprite sprite)
+        {
+            this.Movement.ZeroXVelocity();
+            this.Movement.ZeroYVelocity();
+
+            if (this.Invincible == false)
+            {
+                if (sprite is Projectile projectile && projectile.Parent != this)
+                {
+                    this.IsRemoved = true;
+                }
+                else if (sprite is Enemy)
+                {
+                    this.IsRemoved = true;
+                }
+            }
         }
 
         public bool IsSlowPressed()
@@ -105,7 +133,7 @@
             this.Movement.Move();
         }
 
-        private void Collision(List<Sprite> sprites)
+        /*private void Collision(List<Sprite> sprites)
         {
             foreach (var sprite in sprites)
             {
@@ -137,6 +165,6 @@
                     }
                 }
             }
-        }
+        }*/
     }
 }

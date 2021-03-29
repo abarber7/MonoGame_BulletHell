@@ -19,6 +19,8 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            base.Update(gameTime, sprites);
+
             this.timer1 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.timer3 += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -43,8 +45,6 @@
                 this.timer3 = 0;
                 this.Attack(sprites);
             }
-
-            base.Update(gameTime, sprites);
         }
     }
 }

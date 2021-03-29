@@ -33,6 +33,8 @@
             {
                 sprite.Draw(this.spriteBatch);
 
+                this.DrawBoxAroundSprite(sprite, Color.Chartreuse); // rectangle/hitbox visual testing
+
                 if (sprite is Player player)
                 {
                     if (player.Invincible)
@@ -70,6 +72,7 @@
         {
             this.CheckAndDeployWave(gameTime);
 
+            // ToArray necessary because collection is modified during looping
             foreach (var sprite in this.sprites.ToArray())
             {
                 sprite.Update(gameTime, this.sprites);
@@ -79,8 +82,6 @@
             {
                 this.EndGamePrompt();
             }
-
-            this.CustomPostUpdate(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -89,6 +90,58 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
+            for (int i = this.sprites.Count - 1; i >= 0; i--)
+            {
+                for (int j = this.sprites.Count - 2; j >= 1; j--)
+                {
+                    if (this.sprites[i] == this.sprites[j])
+                    {
+                        continue;
+                    }
+
+                    if (this.sprites[i].IsHitboxIntersecting(this.sprites[j]))
+                    {
+                        // If buffer box collision, do more precise check only if both objects aren't projectiles
+                        if (this.sprites[i] is Projectile projectilei && !(this.sprites[j] is Projectile))
+                        {
+                            projectilei.OnCollision(this.sprites[j]);
+                            this.sprites[j].OnCollision(projectilei);
+                        }
+                        else if (this.sprites[j] is Projectile projectilej && !(this.sprites[i] is Projectile))
+                        {
+                            this.sprites[i].OnCollision(projectilej);
+                            projectilej.OnCollision(this.sprites[i]);
+                        }
+                        else if (!(this.sprites[i] is Projectile) && !(this.sprites[j] is Projectile))
+                        {
+                            if (this.sprites[i].IsTextureIntersecting(this.sprites[j]))
+                            {
+                                this.sprites[i].OnCollision(this.sprites[j]);
+                                this.sprites[j].OnCollision(this.sprites[i]);
+                            }
+                        }
+                    }
+                }
+
+                if (this.sprites[i].IsRemoved)
+                {
+                    if (this.sprites[i] is Player player)
+                    {
+                        this.lives--;
+                        this.RemoveAllProjectiles();
+                        player.Respawn(gameTime);
+                    }
+                    else if (this.sprites[i] is FinalBoss)
+                    {
+                        this.finalBossDefeated = true;
+                        this.sprites.RemoveAt(i);
+                    }
+                    else
+                    {
+                        this.sprites.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         private void CreatePlayer()
@@ -118,19 +171,10 @@
             Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
             for (int i = 0; i < data.Length; i++)
             {
-                if (i < sprite.Rectangle.Width)
-                {
-                    data[i] = color;
-                }
-                else if (i % sprite.Rectangle.Width == 0)
-                {
-                    data[i] = color;
-                }
-                else if (i % sprite.Rectangle.Width == sprite.Rectangle.Width - 1)
-                {
-                    data[i] = color;
-                }
-                else if (i > (sprite.Rectangle.Width * sprite.Rectangle.Height) - sprite.Rectangle.Width)
+                if (i < sprite.Rectangle.Width ||
+                    i % sprite.Rectangle.Width == 0 ||
+                    i % sprite.Rectangle.Width == sprite.Rectangle.Width - 1 ||
+                    i > (sprite.Rectangle.Width * sprite.Rectangle.Height) - sprite.Rectangle.Width)
                 {
                     data[i] = color;
                 }
@@ -138,32 +182,7 @@
 
             hitboxTexture.SetData(data);
 
-            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Movement.Position.X - (hitboxTexture.Width / 2), sprite.Movement.Position.Y - (hitboxTexture.Height / 2)), color);
-        }
-
-        private void CustomPostUpdate(GameTime gameTime)
-        {
-            for (int i = this.sprites.Count - 1; i >= 0; i--)
-            {
-                if (this.sprites[i].IsRemoved)
-                {
-                    if (this.sprites[i] is Player)
-                    {
-                        this.lives--;
-                        this.RemoveAllProjectiles();
-                        ((Player)this.sprites[i]).Respawn(gameTime);
-                    }
-                    else if (this.sprites[i] is FinalBoss)
-                    {
-                        this.finalBossDefeated = true;
-                        this.sprites.RemoveAt(i);
-                    }
-                    else
-                    {
-                        this.sprites.RemoveAt(i);
-                    }
-                }
-            }
+            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Top), color);
         }
 
         private void EndGamePrompt()

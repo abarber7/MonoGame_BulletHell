@@ -29,12 +29,26 @@
                 this.IsRemoved = true;
             }
 
-            this.Collision(sprites);
-
             this.Movement.Move();
         }
 
-        protected void Collision(List<Sprite> sprites)
+        public override void OnCollision(Sprite sprite)
+        {
+            if (sprite is Projectile projectile)
+            {
+                // Ignore projectiles from fellow enemies/self
+                if (projectile.Parent is Player)
+                {
+                    this.IsRemoved = true;
+                }
+            }
+            else if (sprite is Player)
+            {
+                this.IsRemoved = true;
+            }
+        }
+
+        /*protected void Collision(List<Sprite> sprites)
         {
             foreach (var sprite in sprites)
             {
@@ -53,6 +67,6 @@
                     }
                 }
             }
-        }
+        }*/
     }
 }

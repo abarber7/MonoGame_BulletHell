@@ -51,7 +51,7 @@
                 // If it is not time to exit do the movement pattern
                 if (this.exitTime == false)
                 {
-                    // when exceeding position reverse velocity to go back and fort
+                    // when exceeding position reverse velocity to go back and forth
                     if (this.ExceededPosition(this.startPosition, this.endPosition, this.Velocity))
                     {
                         this.Velocity = -this.Velocity;
@@ -66,6 +66,8 @@
             }
 
             base.Move();
+
+            // this.position = new Vector2(this.Parent.Rectangle.Center.X, this.Parent.Rectangle.Center.Y) + this.Velocity; // Rectangle offset bug hunting (analogous statement)--remove later
         }
 
         // method to call when timer has Elapsed
