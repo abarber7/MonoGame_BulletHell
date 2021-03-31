@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns
 {
     using System;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
 
     internal abstract class MovementPattern : ICloneable
@@ -38,7 +39,7 @@
 
         public bool IsTouchingBottomOfScreen()
         {
-            int bottom = BulletHell.Graphics.PreferredBackBufferHeight - (this.Parent.Texture.Height / 2);
+            int bottom = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight - (this.Parent.Texture.Height / 2);
             if (this.Position.Y + this.Velocity.Y > bottom)
             {
                 Vector2 position = this.Position;
@@ -70,7 +71,7 @@
 
         public bool IsTouchingRightOfScreen()
         {
-            int right = BulletHell.Graphics.PreferredBackBufferWidth - (this.Parent.Texture.Width / 2);
+            int right = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth - (this.Parent.Texture.Width / 2);
             if (this.Position.X + this.Velocity.X > right)
             {
                 Vector2 position = this.Position;

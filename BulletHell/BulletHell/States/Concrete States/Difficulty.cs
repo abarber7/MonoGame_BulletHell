@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using BulletHell.Utilities;
     using global::BulletHell.Controls;
     using global::BulletHell.Game_Utilities;
     using global::BulletHell.States.Emitters;
@@ -16,12 +17,12 @@
         private SpriteBatch spriteBatch;
         private Texture2D selectDifficultyTexture;
 
-        public DifficultyState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
-          : base(game, graphicsDevice, content)
+        public DifficultyState()
+          : base()
         {
-            var buttonTexture = content.Load<Texture2D>("Controls/Button");
-            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
-            this.selectDifficultyTexture = content.Load<Texture2D>("Titles/SelectDifficulty");
+            var buttonTexture = TextureFactory.GetTexture("Controls/Button");
+            var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
+            this.selectDifficultyTexture = TextureFactory.GetTexture("Titles/SelectDifficulty");
 
             var newGameEasyButton = new Button(buttonTexture, buttonFont)
             {
@@ -68,7 +69,7 @@
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            this.game.GraphicsDevice.Clear(Color.Green);
+            GraphicManagers.GraphicsDevice.Clear(Color.Green);
 
             spriteBatch.Begin();
             spriteBatch.Draw(this.selectDifficultyTexture, new Vector2(40, 50), Color.Black);
@@ -95,9 +96,9 @@
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(TextureFactory.Content.Load<Texture2D>("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
@@ -113,26 +114,26 @@
         {
             GameLoader.LoadGameDictionary("demo");
 
-            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new GameState());
         }
 
         private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
             GameLoader.LoadGameDictionary("demo");
 
-            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new GameState());
         }
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
             GameLoader.LoadGameDictionary("demo");
 
-            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new GameState());
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new MenuState());
         }
     }
 }

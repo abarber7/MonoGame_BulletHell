@@ -7,53 +7,33 @@
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
-    public class BulletHell : Game
+    public class GUI : Game
     {
-        public static Random Random;
         public static int ScreenWidth = 800;
         public static int ScreenHeight = 480;
 
         private SpriteBatch spriteBatch;
-        private State currentState;
-        private State nextState;
 
         // Initialize screensize and other game properties
-        public BulletHell()
+        public GUI()
         {
-            Graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
 
-            UtlilityManager.Initialize(this.Content);
-            Random = new Random();
+            UtlilityManager.Initialize(this.Content, new GraphicsDeviceManager(this));
+
+            StateManager.ExitEvent += this.ExitGUI;
         }
 
-        public static GraphicsDeviceManager Graphics { get; set; }
-
-        public void ChangeState(State state)
+        public void ExitGUI(object sender, EventArgs e)
         {
-            this.nextState = state;
+            this.Exit();
         }
 
         // Update is called 60 times per second (60 FPS). Put all game logic here.
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                this.currentState = new MenuState(this, Graphics.GraphicsDevice, this.Content);
-                this.nextState = null;
-                this.currentState.LoadContent();
-            }
-
-            if (this.nextState != null)
-            {
-                this.currentState = this.nextState;
-                this.nextState = null;
-                this.currentState.LoadContent();
-            }
-
-            this.currentState.Update(gameTime);
-            this.currentState.PostUpdate(gameTime);
+            StateManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -62,7 +42,7 @@
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.CornflowerBlue);
-            this.currentState.Draw(gameTime, this.spriteBatch);
+            StateManager.CurrentState.Draw(gameTime, this.spriteBatch);
 
             base.Draw(gameTime);
         }
@@ -72,7 +52,6 @@
         {
             this.IsMouseVisible = true;
 
-            // TODO: Add your initialization logic here
             base.Initialize();
         }
 
@@ -81,8 +60,8 @@
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.currentState = new MenuState(this, Graphics.GraphicsDevice, this.Content);
-            this.currentState.LoadContent();
+            StateManager.CurrentState = new MenuState();
+            StateManager.CurrentState.LoadContent();
         }
     }
 }
