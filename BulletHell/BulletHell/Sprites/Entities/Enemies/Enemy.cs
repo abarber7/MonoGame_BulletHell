@@ -1,21 +1,27 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies
 {
     using System.Collections.Generic;
+    using global::BulletHell.Sprites.Movement_Patterns;
     using global::BulletHell.Sprites.Projectiles;
+    using global::BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Enemy : Entity
     {
         private double timer;
 
-        public Enemy(Dictionary<string, object> enemyProperties)
-            : base(enemyProperties)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan, int hp = 10)
+            : base(texture, color, movement, projectile)
         {
-            this.LifeSpan = (int)enemyProperties["lifeSpan"];
+            this.LifeSpan = lifeSpan;
+            this.HealthPoints = hp;
             this.timer = 0;
         }
 
         protected double LifeSpan { get; set; }
+
+        protected int HealthPoints { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -26,12 +32,30 @@
                 this.IsRemoved = true;
             }
 
-            this.Collision(sprites);
-
             this.Movement.Move();
         }
 
-        protected void Collision(List<Sprite> sprites)
+        public override void OnCollision(Sprite sprite)
+        {
+            if (sprite is Projectile projectile)
+            {
+                // Ignore projectiles from fellow enemies/self
+                if (projectile.Parent is Player)
+                {
+                    this.HealthPoints -= projectile.Damage;
+                    if (this.HealthPoints <= 0)
+                    {
+                        this.IsRemoved = true;
+                    }
+                }
+            }
+            else if (sprite is Player)
+            {
+                this.IsRemoved = true;
+            }
+        }
+
+        /*protected void Collision(List<Sprite> sprites)
         {
             foreach (var sprite in sprites)
             {
@@ -50,6 +74,6 @@
                     }
                 }
             }
-        }
+        }*/
     }
 }
