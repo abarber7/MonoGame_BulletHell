@@ -42,7 +42,7 @@
         {
             this.Position += this.Velocity;
 
-            if (this.Rectangle.Top > BulletHell.ScreenHeight)
+            if (this.Rectangle.Top > GUI.ScreenHeight)
             {
                 this.IsRemoved = true;
             }

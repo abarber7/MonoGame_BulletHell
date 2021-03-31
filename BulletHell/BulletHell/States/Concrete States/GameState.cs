@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.States
 {
     using System.Collections.Generic;
+    using BulletHell.Utilities;
     using global::BulletHell.Game_Utilities;
     using global::BulletHell.Sprites;
     using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
@@ -21,8 +22,8 @@
         private int lives = 3;
         private bool finalBossDefeated = false;
 
-        public GameState(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
-        : base(game, graphicsDevice, content)
+        public GameState()
+        : base()
         {
         }
 
@@ -57,7 +58,7 @@
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
             this.sprites = new List<Sprite>();
 
@@ -167,7 +168,7 @@
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)
         {
-            Texture2D hitboxTexture = new Texture2D(this.game.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
+            Texture2D hitboxTexture = new Texture2D(GraphicManagers.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
             Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
             for (int i = 0; i < data.Length; i++)
             {
@@ -190,17 +191,17 @@
             // TODO: Implement with Antonio's menu system.
             if (this.lives == 0)
             {
-                this.game.ChangeState(new GameOverLose(this.game, this.graphicsDevice, this.content));
+                StateManager.ChangeState(new GameOverLose());
             }
             else if (this.finalBossDefeated == true)
             {
-                this.game.ChangeState(new GameOverWin(this.game, this.graphicsDevice, this.content));
+                StateManager.ChangeState(new GameOverWin());
             }
         }
 
         private void CreateStats()
         {
-            this.font = this.content.Load<SpriteFont>("Fonts/Font");
+            this.font = TextureFactory.GetSpriteFont("Fonts/Font");
         }
 
         private void RemoveAllProjectiles()
