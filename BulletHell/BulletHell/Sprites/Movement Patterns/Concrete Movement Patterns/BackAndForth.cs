@@ -1,7 +1,5 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
-    using System;
-    using System.Collections.Generic;
     using System.Timers;
     using Microsoft.Xna.Framework;
 
@@ -17,7 +15,7 @@
 
         private System.Timers.Timer timer = new System.Timers.Timer(15000); // timer for exit at 15000 mili seconds
 
-        public BackAndForth (Vector2 spawnPosition, Vector2 startPosition, Vector2 endPosition, int speed)
+        public BackAndForth(Vector2 spawnPosition, Vector2 startPosition, Vector2 endPosition, int speed)
             : base()
         {
             this.spawnPosition = spawnPosition;
@@ -26,15 +24,6 @@
             this.Speed = speed;
             this.Position = this.spawnPosition; // set position to spawn positions
             this.Velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.Speed); // set velocity to move towards start position
-        }
-
-        // method to call when timer has Elapsed
-        private void ExitScreen(object source, ElapsedEventArgs e)
-        {
-
-            this.exitTime = true; // change bool so the entity will exit
-            this.exitPosition = this.Position; // save the position at the end of the timer so it can be used for calculating exit velocity
-            this.CurrentSpeed = this.Speed * 2; // change to exit speed
         }
 
         public override void Move()
@@ -62,7 +51,7 @@
                 // If it is not time to exit do the movement pattern
                 if (this.exitTime == false)
                 {
-                    // when exceeding position reverse velocity to go back and fort
+                    // when exceeding position reverse velocity to go back and forth
                     if (this.ExceededPosition(this.startPosition, this.endPosition, this.Velocity))
                     {
                         this.Velocity = -this.Velocity;
@@ -77,6 +66,16 @@
             }
 
             base.Move();
+
+            // this.position = new Vector2(this.Parent.Rectangle.Center.X, this.Parent.Rectangle.Center.Y) + this.Velocity; // Rectangle offset bug hunting (analogous statement)--remove later
+        }
+
+        // method to call when timer has Elapsed
+        private void ExitScreen(object source, ElapsedEventArgs e)
+        {
+            this.exitTime = true; // change bool so the entity will exit
+            this.exitPosition = this.Position; // save the position at the end of the timer so it can be used for calculating exit velocity
+            this.CurrentSpeed = this.Speed * 2; // change to exit speed
         }
     }
 }

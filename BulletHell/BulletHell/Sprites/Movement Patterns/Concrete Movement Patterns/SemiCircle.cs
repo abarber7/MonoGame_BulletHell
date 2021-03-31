@@ -7,23 +7,21 @@
     internal class Semicircle : MovementPattern
     {
         private Vector2 startPosition;
-        private Vector2 endPosition;
         private Vector2 centerPosition;
+        private Vector2 endPosition;
         private float radius;
         private Vector2 previousPosition;
         private Vector2 nextPosition;
         private bool half1Or2; // Circles have two semicircles, 1 or 2 denoted by true or false.
         private float count = 0;
 
-        public Semicircle(Dictionary<string, object> semicircleProperties)
+        public Semicircle(Vector2 startPosition, Vector2 endPosition, int speed, bool half1Or2)
             : base()
         {
-            this.Speed = (int)semicircleProperties["speed"];
-            this.startPosition.X = Convert.ToSingle((int)semicircleProperties["xStartPosition"]);
-            this.startPosition.Y = Convert.ToSingle((int)semicircleProperties["yStartPosition"]);
-            this.endPosition.X = Convert.ToSingle((int)semicircleProperties["xEndPosition"]);
-            this.endPosition.Y = Convert.ToSingle((int)semicircleProperties["yEndPosition"]);
-            this.half1Or2 = (bool)semicircleProperties["half1Or2"];
+            this.startPosition = startPosition;
+            this.endPosition = endPosition;
+            this.Speed = speed;
+            this.half1Or2 = half1Or2;
             this.Position = this.startPosition;
             this.centerPosition = new Vector2((this.startPosition.X + this.endPosition.X) / 2, (this.startPosition.Y + this.endPosition.Y) / 2);
             this.SetRadius();
@@ -31,6 +29,18 @@
             this.previousPosition = new Vector2(this.startPosition.X, this.startPosition.Y);
             this.nextPosition = this.CalculateNextPosition();
             this.velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.Speed);
+        }
+
+        public override void Move()
+        {
+            if (this.ExceededPosition(this.previousPosition, this.nextPosition, this.velocity))
+            {
+                this.previousPosition = new Vector2(this.nextPosition.X, this.nextPosition.Y);
+                this.nextPosition = this.CalculateNextPosition();
+                this.velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.Speed);
+            }
+
+            base.Move();
         }
 
         private void SetCenter()
@@ -62,7 +72,10 @@
             float nextX;
             float nextY;
 
-            if (this.count > 6) { this.count = 1; }
+            if (this.count > 6)
+            {
+                this.count = 1;
+            }
 
             if (this.half1Or2)
             {
@@ -72,23 +85,10 @@
             }
             else
             {
-
                 nextX = this.centerPosition.X + (this.radius * (float)Math.Cos(30 * this.count));
                 nextY = this.centerPosition.Y + (this.radius * (float)Math.Sin(30 * this.count)); // (float)Math.Sqrt(Math.Abs((double)((this.radius * this.radius) - (nextX * nextX))));
                 return new Vector2(nextX, nextY);
             }
-        }
-
-        public override void Move()
-        {
-            if (this.ExceededPosition(this.previousPosition, this.nextPosition, this.velocity))
-            {
-                this.previousPosition = new Vector2(this.nextPosition.X, this.nextPosition.Y);
-                this.nextPosition = this.CalculateNextPosition();
-                this.velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.Speed);
-            }
-
-            base.Move();
         }
     }
 }

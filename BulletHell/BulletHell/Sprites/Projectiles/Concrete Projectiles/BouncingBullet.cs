@@ -1,8 +1,6 @@
 ﻿namespace BulletHell.Sprites.Projectiles.Concrete_Projectiles
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using global::BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -12,8 +10,8 @@
         // max bounce number
         private int maxBounces = 5;
 
-        public BouncingBullet(Texture2D texture, Color color, MovementPattern movement)
-            : base(texture, color, movement)
+        public BouncingBullet(Texture2D texture, Color color, MovementPattern movement, int damage)
+            : base(texture, color, movement, damage)
         {
         }
 
@@ -40,11 +38,6 @@
             }
 
             this.Movement.Move();
-        }
-
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
-        {
-            base.Update(gameTime, sprites);
         }
     }
 }

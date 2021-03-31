@@ -9,16 +9,11 @@
         private int previousTargetPoinIndex;
         private int nextTargetPointIndex;
 
-        public Pattern(Dictionary<string, object> patternProperties)
+        public Pattern(List<Vector2> points, int speed)
             : base()
         {
-            this.Speed = (int)patternProperties["speed"];
-            this.points = new List<Vector2>();
-            List<List<int>> listOfPoints = (List<List<int>>)patternProperties["points"];
-            foreach (List<int> point in listOfPoints)
-            {
-                this.points.Add(new Vector2(point[0], point[1]));
-            }
+            this.points = points;
+            this.Speed = speed;
 
             this.previousTargetPoinIndex = 0;
             this.nextTargetPointIndex = 1;

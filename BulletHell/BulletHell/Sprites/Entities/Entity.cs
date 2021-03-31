@@ -30,10 +30,12 @@
             Projectile newProjectile = this.Projectile.Clone() as Projectile;
             int projectileSpeed = newProjectile.Movement.Speed;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.velocity.Normalize();
-            newProjectile.Movement.velocity.X *= projectileSpeed;
-            newProjectile.Movement.velocity.Y *= projectileSpeed;
-            newProjectile.Movement.Position = this.Movement.Position;
+            Vector2 velocity = newProjectile.Movement.Velocity;
+            velocity.Normalize();
+            velocity.X *= projectileSpeed;
+            velocity.Y *= projectileSpeed;
+            newProjectile.Movement.Velocity = velocity;
+            newProjectile.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
             newProjectile.Parent = this;
             sprites.Add(newProjectile);
         }

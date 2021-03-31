@@ -59,7 +59,6 @@
                     if (this.ExceededPosition(this.startPosition, this.stopPosition, this.Velocity))
                     {
                         this.Velocity = Vector2.Zero;
-
                     }
                 }
 
@@ -69,13 +68,13 @@
                     this.Velocity = this.CalculateVelocity(this.stopPosition, this.exitPosition, this.Speed); // change velocity to exit out of the screen
                 }
             }
+
             base.Move();
         }
 
         // method to call when timer has Elapsed
         private void ExitScreen(object source, ElapsedEventArgs e)
         {
-
             this.exitTime = true; // change bool so the entity will exit
             this.CurrentSpeed = this.Speed * 2; // change to exit speed
         }

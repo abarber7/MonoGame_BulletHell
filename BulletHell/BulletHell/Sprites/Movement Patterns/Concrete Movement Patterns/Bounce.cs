@@ -1,18 +1,15 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
-    using System;
-    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
 
     internal class Bounce : MovementPattern
     {
-        public Bounce(Dictionary<string, object> bounceProperties)
+        public Bounce(Vector2 startPosition, Vector2 velocity, int speed)
             : base()
         {
-            this.Speed = (int)bounceProperties["speed"];
-            this.velocity.X = Convert.ToSingle((int)bounceProperties["xVelocity"]) * this.Speed;
-            this.velocity.Y = Convert.ToSingle((int)bounceProperties["yVelocity"]) * this.Speed;
-            this.position.X = Convert.ToSingle((int)bounceProperties["xPosition"]);
-            this.position.Y = Convert.ToSingle((int)bounceProperties["yPosition"]);
+            this.position = startPosition;
+            this.velocity = velocity;
+            this.Speed = speed;
         }
 
         public override void Move()
