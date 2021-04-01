@@ -100,7 +100,7 @@
                         continue;
                     }
 
-                    if (this.sprites[i].IsHitboxIntersecting(this.sprites[j]))
+                    if (this.sprites[i].Rectangle.Intersects(this.sprites[j].Rectangle))
                     {
                         // If buffer box collision, do more precise check only if both objects aren't projectiles
                         if (this.sprites[i] is Projectile projectilei && !(this.sprites[j] is Projectile))

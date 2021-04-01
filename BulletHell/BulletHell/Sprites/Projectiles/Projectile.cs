@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Entities.Enemies;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -39,9 +41,10 @@
             // Ignore collision if sprite is one who fired or if sprite is another projectile (for now)
             if (sprite != this.Parent && !(sprite is Projectile))
             {
-                // Allow projectiles to pass through friendlies
-                if ((!sprite.GetType().IsSubclassOf(this.Parent.GetType()) || !this.Parent.GetType().IsSubclassOf(sprite.GetType()))
-                    && sprite.GetType() != this.Parent.GetType())
+                // Hit case 1: sprite is Player, and this projectile is from an Enemy
+                // Hit case 2: sprite is an Enemy, and this projectile is from Player
+                if ((sprite is Player && this.Parent is Enemy) ||
+                    (sprite is Enemy && this.Parent is Player))
                 {
                     this.IsRemoved = true;
                 }
