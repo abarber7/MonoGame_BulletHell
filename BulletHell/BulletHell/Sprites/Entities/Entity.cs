@@ -30,6 +30,7 @@
             Projectile newProjectile = this.Projectile.Clone() as Projectile;
             int projectileSpeed = newProjectile.Movement.Speed;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
+            newProjectile.Movement.Parent = newProjectile;
             Vector2 velocity = newProjectile.Movement.Velocity;
             velocity.Normalize();
             velocity.X *= projectileSpeed;

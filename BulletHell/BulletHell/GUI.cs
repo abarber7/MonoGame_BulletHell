@@ -1,11 +1,10 @@
 ﻿namespace BulletHell
 {
     using System;
-    using global::BulletHell.States;
-    using global::BulletHell.Utilities;
+    using BulletHell.States;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
 
     public class GUI : Game
     {
