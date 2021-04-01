@@ -14,5 +14,12 @@
             // TODO: Need to throw error if texture was not found.
             return texture;
         }
+
+        public static SpriteFont GetSpriteFont(string spriteFontName)
+        {
+            var spriteFont = Content.Load<SpriteFont>(spriteFontName);
+
+            return spriteFont;
+        }
     }
 }

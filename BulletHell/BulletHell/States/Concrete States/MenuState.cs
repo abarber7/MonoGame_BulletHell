@@ -4,53 +4,54 @@
     using System.Collections.Generic;
     using global::BulletHell.Controls;
     using global::BulletHell.States.Emitters;
+    using global::BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class GameOverLose : State
+    public class MenuState : State
     {
         private List<Component> components;
         private SnowEmitter snowEmitter;
         private SpriteBatch spriteBatch;
-        private Texture2D gameOverTexture;
+        private Texture2D mainMenuTexture;
 
-        public GameOverLose(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
-          : base(game, graphicsDevice, content)
+        public MenuState()
+          : base()
         {
-            var buttonTexture = content.Load<Texture2D>("Controls/Button");
-            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
-            this.gameOverTexture = content.Load<Texture2D>("Titles/GameOver");
+            var buttonTexture = TextureFactory.GetTexture("Controls/Button");
+            var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
+            this.mainMenuTexture = TextureFactory.GetTexture("Titles/whiteMainMenu");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 200),
-                Text = "Play Again",
+                Text = "New Game",
             };
 
             newGameButton.Click += this.NewGameButton_Click;
 
-            var returnButton = new Button(buttonTexture, buttonFont)
+            var optionsButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 250),
-                Text = "Main Menu",
+                Text = "Options",
             };
 
-            returnButton.Click += this.ReturnButton_Click;
+            optionsButton.Click += this.OptionsButton_Click;
 
-            var exitGameButton = new Button(buttonTexture, buttonFont)
+            var quitGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(300, 300),
-                Text = "Exit Game",
+                Text = "Quit",
             };
 
-            exitGameButton.Click += this.ExitGameButton_Click;
+            quitGameButton.Click += this.QuitGameButton_Click;
 
             this.components = new List<Component>()
             {
                 newGameButton,
-                returnButton,
-                exitGameButton,
+                optionsButton,
+                quitGameButton,
             };
         }
 
@@ -58,10 +59,10 @@
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            this.game.GraphicsDevice.Clear(Color.Red);
+            GraphicManagers.GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(this.gameOverTexture, new Vector2(90, 50), Color.Black);
+            spriteBatch.Draw(this.mainMenuTexture, new Vector2(150, 50), Color.White);
 
             foreach (var component in this.components)
             {
@@ -90,28 +91,28 @@
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(TextureFactory.Content.Load<Texture2D>("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
         {
         }
 
+        private void OptionsButton_Click(object sender, EventArgs e)
+        {
+            StateManager.ChangeState(new Options());
+        }
+
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new DifficultyState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new DifficultyState());
         }
 
-        private void ReturnButton_Click(object sender, EventArgs e)
+        private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
-        }
-
-        private void ExitGameButton_Click(object sender, EventArgs e)
-        {
-            this.game.Exit();
+            StateManager.ExitEvent(null, e);
         }
     }
 }
