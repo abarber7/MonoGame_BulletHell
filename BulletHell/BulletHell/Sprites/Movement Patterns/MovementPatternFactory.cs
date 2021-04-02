@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+    using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using Microsoft.Xna.Framework;
 
     internal class MovementPatternFactory

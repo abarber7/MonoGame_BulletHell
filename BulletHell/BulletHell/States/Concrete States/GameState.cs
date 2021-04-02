@@ -1,20 +1,18 @@
 ﻿namespace BulletHell.States
 {
     using System.Collections.Generic;
+    using BulletHell.Game_Utilities;
+    using BulletHell.Sprites;
+    using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
-    using global::BulletHell.Game_Utilities;
-    using global::BulletHell.Sprites;
-    using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-    using global::BulletHell.Sprites.Projectiles;
-    using global::BulletHell.Sprites.The_Player;
-    using global::BulletHell.Waves;
+    using BulletHell.Waves;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     public class GameState : State
     {
-        private SpriteBatch spriteBatch;
         private List<Sprite> sprites;
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
@@ -34,7 +32,7 @@
             {
                 sprite.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(sprite, Color.Chartreuse); // rectangle/hitbox visual testing
+                this.DrawBoxAroundSprite(sprite, Color.Chartreuse); // rectangle/hitbox visual TESTING
 
                 if (sprite is Player player)
                 {
@@ -93,34 +91,18 @@
         {
             for (int i = this.sprites.Count - 1; i >= 0; i--)
             {
-                for (int j = this.sprites.Count - 2; j >= 1; j--)
+                for (int j = this.sprites.Count - 1; j >= 0; j--)
                 {
                     if (this.sprites[i] == this.sprites[j])
                     {
                         continue;
                     }
 
+                    // Check for hitbox collision
                     if (this.sprites[i].Rectangle.Intersects(this.sprites[j].Rectangle))
                     {
-                        // If buffer box collision, do more precise check only if both objects aren't projectiles
-                        if (this.sprites[i] is Projectile projectilei && !(this.sprites[j] is Projectile))
-                        {
-                            projectilei.OnCollision(this.sprites[j]);
-                            this.sprites[j].OnCollision(projectilei);
-                        }
-                        else if (this.sprites[j] is Projectile projectilej && !(this.sprites[i] is Projectile))
-                        {
-                            this.sprites[i].OnCollision(projectilej);
-                            projectilej.OnCollision(this.sprites[i]);
-                        }
-                        else if (!(this.sprites[i] is Projectile) && !(this.sprites[j] is Projectile))
-                        {
-                            if (this.sprites[i].IsTextureIntersecting(this.sprites[j]))
-                            {
-                                this.sprites[i].OnCollision(this.sprites[j]);
-                                this.sprites[j].OnCollision(this.sprites[i]);
-                            }
-                        }
+                        this.sprites[i].OnCollision(this.sprites[j]);
+                        this.sprites[j].OnCollision(this.sprites[i]);
                     }
                 }
 
@@ -188,7 +170,6 @@
 
         private void EndGamePrompt()
         {
-            // TODO: Implement with Antonio's menu system.
             if (this.lives == 0)
             {
                 StateManager.ChangeState(new GameOverLose());

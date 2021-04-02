@@ -1,9 +1,9 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
-    using global::BulletHell.Sprites.The_Player;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -54,26 +54,5 @@
                 this.IsRemoved = true;
             }
         }
-
-        /*protected void Collision(List<Sprite> sprites)
-        {
-            foreach (var sprite in sprites)
-            {
-                if (sprite == this)
-                {
-                    continue;
-                }
-
-                if (sprite is Projectile projectile)
-                {
-                    if (projectile.Parent is Player
-                        && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
-                    {
-                        this.IsRemoved = true;
-                        sprite.IsRemoved = true;
-                    }
-                }
-            }
-        }*/
     }
 }
