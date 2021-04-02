@@ -31,12 +31,9 @@
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
         {
-            get
-            {
-                return new Rectangle(
+            get => new Rectangle(
                     new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));
-            }
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

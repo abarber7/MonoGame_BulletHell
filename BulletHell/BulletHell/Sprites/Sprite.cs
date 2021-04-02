@@ -26,39 +26,22 @@
 
         public Color Color
         {
-            get
-            {
-                return this.color;
-            }
-
-            set
-            {
-                this.color = value;
-            }
+            get => this.color;
+            set => this.color = value;
         }
 
         public bool IsRemoved
         {
-            get
-            {
-                return this.isRemoved;
-            }
-
-            set
-            {
-                this.isRemoved = value;
-            }
+            get => this.isRemoved;
+            set => this.isRemoved = value;
         }
 
         // Serves as hitbox
         public virtual Rectangle Rectangle
         {
-            get
-            {
-                return new Rectangle(
+            get => new Rectangle(
                     new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
                     new Point(this.Texture.Width, this.Texture.Height));
-            }
         }
 
         public virtual void Update(GameTime gametime, List<Sprite> sprites)

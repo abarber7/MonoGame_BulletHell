@@ -18,10 +18,7 @@
             this.Projectile = projectile;
         }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
+        public object Clone() => this.MemberwiseClone();
 
         protected void Attack(List<Sprite> sprites)
         {
