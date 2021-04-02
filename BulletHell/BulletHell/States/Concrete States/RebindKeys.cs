@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Controls;
-    using global::BulletHell.States.Emitters;
-    using global::BulletHell.The_Player;
-    using global::BulletHell.Utilities;
+    using BulletHell.Controls;
+    using BulletHell.States.Emitters;
+    using BulletHell.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
@@ -15,7 +14,6 @@
     {
         private List<Component> components;
         private SnowEmitter snowEmitter;
-        private SpriteBatch spriteBatch;
         private Texture2D configureControlsTexture;
         private KeyboardState preivousState;
         private bool rebinding = false;
@@ -130,14 +128,13 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            // remove sprites if they're not needed
         }
 
         public override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
@@ -151,7 +148,7 @@
             {
                 Keys newKey = newState.GetPressedKeys()[0];
 
-                // Check if key is already binded.
+                // Check if key is already bound
                 if (Input.CheckIfAlreadyBinded(newKey) == false)
                 {
                     Input.SetKey(this.functionToRebind, newKey);

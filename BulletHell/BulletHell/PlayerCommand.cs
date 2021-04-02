@@ -1,6 +1,6 @@
 ﻿namespace BulletHell
 {
-    using global::BulletHell.Sprites.The_Player;
+    using BulletHell.Sprites.The_Player;
 
     internal class PlayerCommand : ICommand
     {

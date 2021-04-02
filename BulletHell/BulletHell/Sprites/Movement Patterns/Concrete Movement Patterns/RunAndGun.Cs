@@ -13,9 +13,9 @@
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exitTime = false; // bool for if it is time to exit
 
-        private System.Timers.Timer timer;
+        private Timer timer;
 
-        public RunAndGun(Vector2 spawnPosition, Vector2 startPosition, Vector2 stopPosition, Vector2 exitPosition, int speed, System.Timers.Timer timer)
+        public RunAndGun(Vector2 spawnPosition, Vector2 startPosition, Vector2 stopPosition, Vector2 exitPosition, int speed, Timer timer)
             : base()
         {
             this.spawnPosition = spawnPosition;

@@ -2,18 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using BulletHell.Controls;
+    using BulletHell.States.Emitters;
     using BulletHell.Utilities;
-    using global::BulletHell.Controls;
-    using global::BulletHell.States.Emitters;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     public class GameOverLose : State
     {
         private List<Component> components;
         private SnowEmitter snowEmitter;
-        private SpriteBatch spriteBatch;
         private Texture2D gameOverTexture;
 
         public GameOverLose()
@@ -76,7 +74,6 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            // remove sprites if they're not needed
         }
 
         public override void Update(GameTime gameTime)
@@ -93,7 +90,7 @@
         {
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)

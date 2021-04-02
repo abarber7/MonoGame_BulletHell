@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Entity : Sprite, ICloneable
     {
-        // private int healthPoints;
         public Projectile Projectile;
         public ushort AttackSpeed = 1;
 

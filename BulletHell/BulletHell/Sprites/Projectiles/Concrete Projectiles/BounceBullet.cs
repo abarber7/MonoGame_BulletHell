@@ -1,6 +1,6 @@
 ﻿namespace BulletHell.Sprites.Projectiles.Concrete_Projectiles
 {
-    using global::BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
