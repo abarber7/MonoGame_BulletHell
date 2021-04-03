@@ -56,5 +56,18 @@
         public virtual void OnCollision(Sprite sprite)
         {
         }
+
+        public void CheckForCollision(List<Sprite> sprites)
+        {
+            for (int i = sprites.Count - 1; i >= 0; i--)
+            {
+                // Check for hitbox collision
+                if (this.Rectangle.Intersects(sprites[i].Rectangle))
+                {
+                    this.OnCollision(sprites[i]);
+                    sprites[i].OnCollision(this);
+                }
+            }
+        }
     }
 }
