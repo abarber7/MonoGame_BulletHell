@@ -88,8 +88,7 @@
             this.CheckAndDeployWave(gameTime);
 
             this.CreateCommands(gameTime); // Create fresh command queue
-
-           // this.ExecuteCommands(); // Update sprites and check for collisions
+            this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
             if (this.lives == 0 || this.finalBossDefeated)
             {
@@ -103,17 +102,16 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            this.ExecuteCommands();
             this.RemoveSprites(gameTime);
         }
 
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
-            this.commandQueue.Add(new UpdateCommand(this.player, gameTime, this.enemies));
+            this.commandQueue.Add(new UpdateCommand(this.player, gameTime, this.projectiles));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.enemies)); }); // Note: Enemy's Update does nothing with sprite list
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.projectiles)); }); // projectiles used here as container where Attack() adds sprites
 
             // Create projectile update commands
             this.projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
@@ -130,6 +128,7 @@
             if (this.commandQueue != null)
             {
                 this.commandQueue.ForEach((c) => { c.Execute(); });
+                this.commandQueue.Clear();
             }
         }
 
@@ -166,6 +165,32 @@
                 }
             }
         }
+
+        /*private void OnSpriteRemoval(object sender, GameComponentCollectionEventArgs e)
+        {
+            if (sender == this.player)
+            {
+                this.lives--;
+                this.projectiles.Clear(); // Remove all projectiles
+                this.player.Respawn(gameTime); // TODO: set up sender so that gameTime comes in args ?
+            }
+            else if (sender is Enemy enemy)
+            {
+                if (this.enemies[i] is FinalBoss)
+                {
+                    this.finalBossDefeated = true;
+                    this.enemies.RemoveAt(i);
+                }
+                else
+                {
+                    this.enemies.RemoveAt(i);
+                }
+            }
+            else if (sender is Projectile projectile)
+            {
+                this.projectiles.RemoveAt(i);
+            }
+        }*/
 
         private void CreateWaves()
         {
