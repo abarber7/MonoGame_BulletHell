@@ -1,9 +1,9 @@
 ﻿namespace BulletHell.Waves
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites;
-    using global::BulletHell.Sprites.Entities;
-    using global::BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites;
+    using BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.Movement_Patterns;
 
     internal class EntityGroup
     {
@@ -22,16 +22,16 @@
         {
             for (int i = 0; i < this.entityAmount; i++)
             {
-                Entity entity = (Entity)this.entityType.Clone();
+                Entity enemy = (Entity)this.entityType.Clone();
 
                 if (this.entityAmount > 1)
                 {
-                    entity.Movement = this.movementPatterns[i];
-                    entity.Projectile.Movement.Parent = entity;
-                    entity.Movement.Parent = entity;
+                    enemy.Movement = this.movementPatterns[i];
+                    enemy.Projectile.Movement.Parent = enemy;
+                    enemy.Movement.Parent = enemy;
                 }
 
-                sprites.Add(entity);
+                sprites.Add(enemy);
             }
         }
     }

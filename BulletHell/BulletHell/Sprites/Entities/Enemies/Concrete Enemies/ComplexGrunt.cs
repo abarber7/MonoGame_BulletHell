@@ -1,8 +1,8 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -19,6 +19,8 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            base.Update(gameTime, sprites);
+
             this.timer1 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.timer3 += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -43,8 +45,6 @@
                 this.timer3 = 0;
                 this.Attack(sprites);
             }
-
-            base.Update(gameTime, sprites);
         }
     }
 }

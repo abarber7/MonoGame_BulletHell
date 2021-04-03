@@ -1,8 +1,8 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -23,6 +23,8 @@
              }
             */
 
+            base.Update(gameTime, sprites);
+
             this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.timer2 > 1f)
@@ -31,8 +33,7 @@
                 this.Attack(sprites);
             }
 
-            /// this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
-            base.Update(gameTime, sprites);
+            // this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
         }
     }
 }

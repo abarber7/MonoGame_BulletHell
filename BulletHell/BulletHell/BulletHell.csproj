@@ -40,7 +40,7 @@
     <Folder Include="Sprites\Attacks\Concrete Attacks\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Sprites\Movement Patterns\Concrete Movement Patterns\RunAndGun.Cs">
+    <Compile Update="Sprites\Movement Patterns\Concrete Movement Patterns\RunAndGun.cs">
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

@@ -1,7 +1,7 @@
 {
   "player": {
     "entityType": "player",
-    "textureName": "Block",
+    "textureName": "hitboxTestEnemy",
     "color": "Blue",
     "movementPattern": {
       "movementPatternType": "playerInput",
@@ -15,6 +15,7 @@
       "projectileType": "bullet",
       "textureName": "Bullet",
       "color": "Blue",
+      "damage":  5,
       "movementPattern": {
         "movementPatternType": "linear",
         "xVelocity": 0,
@@ -43,13 +44,14 @@
 
           "entityProperties": {
             "entityType": "simpleGrunt",
-            "textureName": "Block",
+            "textureName": "hitboxTestEnemy",
             "color": "Green",
             "lifeSpan": 30,
             "projectile": {
               "projectileType": "bullet",
               "textureName": "Bullet",
               "color": "Green",
+              "damage": 5,
               "movementPattern": {
                 "movementPatternType": "linear",
                 "xVelocity": 0,
@@ -82,13 +84,14 @@
 
           "entityProperties": {
             "entityType": "simpleGrunt",
-            "textureName": "Block",
+            "textureName": "hitboxTestEnemy",
             "color": "Green",
             "lifeSpan": 30,
             "projectile": {
               "projectileType": "bullet",
               "textureName": "Bullet",
               "color": "Green",
+              "damage": 5,
               "movementPattern": {
                 "movementPatternType": "linear",
                 "xVelocity": 0,
@@ -121,7 +124,7 @@
 
           "entityProperties": {
             "entityType": "simpleGrunt",
-            "textureName": "Block",
+            "textureName": "hitboxTestEnemy",
             "color": "Green",
             "lifeSpan": 15,
 
@@ -129,6 +132,7 @@
               "projectileType": "bullet",
               "textureName": "Bullet",
               "color": "Green",
+              "damage": 5,
               "movementPattern": {
                 "movementPatternType": "linear",
                 "xVelocity": 0,
@@ -162,7 +166,7 @@
 
           "entityProperties": {
             "entityType": "complexGrunt",
-            "textureName": "Block",
+            "textureName": "hitboxTestEnemy",
             "color": "Yellow",
             "lifeSpan": 30,
 
@@ -170,6 +174,7 @@
               "projectileType": "bounceBullet",
               "textureName": "Bullet",
               "color": "White",
+              "damage": 5,
               "bounceTimes": 1,
               "movementPattern": {
                 "movementPatternType": "linear",
@@ -204,13 +209,14 @@
 
           "entityProperties": {
             "entityType": "complexGrunt",
-            "textureName": "Block",
+            "textureName": "hitboxTestEnemy",
             "color": "Yellow",
             "lifeSpan": 30,
             "projectile": {
               "projectileType": "bounceBullet",
               "textureName": "Bullet",
               "color": "White",
+              "damage": 5,
               "bounceTimes": 1,
               "movementPattern": {
                 "movementPatternType": "linear",
@@ -231,7 +237,7 @@
           "entityAmount": 1,
           "entityProperties": {
             "entityType": "midBoss",
-            "textureName": "Block",
+            "textureName": "hitboxTestEnemy",
             "color": "White",
             "lifeSpan": 30,
             "movementPattern": {
@@ -246,6 +252,45 @@
               "projectileType": "bounceBullet",
               "textureName": "Bullet",
               "color": "White",
+              "damage": 5,
+              "bounceTimes": 1,
+              "movementPattern": {
+                "movementPatternType": "bounce",
+                "xVelocity": 0,
+                "yVelocity": 0,
+                "startXPosition": 0,
+                "startYPosition": 0,
+                "speed": 10
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 7,
+      "waveDuration": 30,
+      "entityGroups": [
+        {
+          "entityAmount": 1,
+          "entityProperties": {
+            "entityType": "finalBoss",
+            "textureName": "hitboxTestEnemy",
+            "color": "Black",
+            "lifeSpan": 30,
+            "movementPattern": {
+              "movementPatternType": "bounce",
+              "xVelocity": -1,
+              "yVelocity": -1,
+              "startXPosition": 0,
+              "startYPosition": 0,
+              "speed": 5
+            },
+            "projectile": {
+              "projectileType": "bounceBullet",
+              "textureName": "Bullet",
+              "color": "White",
+              "damage": 5,
               "bounceTimes": 1,
               "movementPattern": {
                 "movementPatternType": "bounce",

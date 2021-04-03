@@ -1,12 +1,13 @@
 ﻿namespace BulletHell.Sprites
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Sprite
     {
+        private readonly Color[] textureData;
         private bool isRemoved = false;
         private Color color = Color.White;
 
@@ -15,6 +16,8 @@
             this.Texture = texture;
             this.Color = color;
             this.Movement = movement;
+            this.textureData = new Color[texture.Width * texture.Height]; // array size is pixel amount in the texture
+            this.Texture.GetData(this.textureData);
         }
 
         public Texture2D Texture { get; set; }
@@ -23,40 +26,25 @@
 
         public Color Color
         {
-            get
-            {
-                return this.color;
-            }
-
-            set
-            {
-                this.color = value;
-            }
+            get => this.color;
+            set => this.color = value;
         }
 
         public bool IsRemoved
         {
-            get
-            {
-                return this.isRemoved;
-            }
-
-            set
-            {
-                this.isRemoved = value;
-            }
+            get => this.isRemoved;
+            set => this.isRemoved = value;
         }
 
         // Serves as hitbox
-        public Rectangle Rectangle
+        public virtual Rectangle Rectangle
         {
-            get
-            {
-                return new Rectangle((int)this.Movement.Position.X - (this.Texture.Width / 2), (int)this.Movement.Position.Y - (this.Texture.Height / 2), this.Texture.Width, this.Texture.Height);
-            }
+            get => new Rectangle(
+                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+                    new Point(this.Texture.Width, this.Texture.Height));
         }
 
-        public virtual void Update(GameTime gametime, List<Sprite> sprits)
+        public virtual void Update(GameTime gametime, List<Sprite> sprites)
         {
         }
 
@@ -65,48 +53,8 @@
             spriteBatch.Draw(this.Texture, this.Movement.Position, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
         }
 
-        protected bool IsTouchingLeftSideOfSprite(Sprite sprite)
+        public virtual void OnCollision(Sprite sprite)
         {
-            return this.Rectangle.Right + this.Movement.Velocity.X > sprite.Rectangle.Left &&
-              this.Rectangle.Left < sprite.Rectangle.Left &&
-              this.Rectangle.Bottom > sprite.Rectangle.Top &&
-              this.Rectangle.Top < sprite.Rectangle.Bottom;
-        }
-
-        protected bool IsTouchingRightSideOfSprite(Sprite sprite)
-        {
-            return this.Rectangle.Left + this.Movement.Velocity.X < sprite.Rectangle.Right &&
-              this.Rectangle.Right > sprite.Rectangle.Right &&
-              this.Rectangle.Bottom > sprite.Rectangle.Top &&
-              this.Rectangle.Top < sprite.Rectangle.Bottom;
-        }
-
-        protected bool IsTouchingTopSideOfSprite(Sprite sprite)
-        {
-            return this.Rectangle.Bottom + this.Movement.Velocity.Y > sprite.Rectangle.Top &&
-              this.Rectangle.Top < sprite.Rectangle.Top &&
-              this.Rectangle.Right > sprite.Rectangle.Left &&
-              this.Rectangle.Left < sprite.Rectangle.Right;
-        }
-
-        protected bool IsTouchingBottomSideOfSprite(Sprite sprite)
-        {
-            return this.Rectangle.Top + this.Movement.Velocity.Y < sprite.Rectangle.Bottom &&
-              this.Rectangle.Bottom > sprite.Rectangle.Bottom &&
-              this.Rectangle.Right > sprite.Rectangle.Left &&
-              this.Rectangle.Left < sprite.Rectangle.Right;
-        }
-
-        protected bool HasCollidedWithASprite(Sprite sprite)
-        {
-            if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)) || (this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

@@ -13,7 +13,7 @@
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exitTime = false; // bool for if it is time to exit
 
-        private System.Timers.Timer timer = new System.Timers.Timer(15000); // timer for exit at 15000 mili seconds
+        private Timer timer = new Timer(15000); // timer for exit at 15000 mili seconds
 
         public BackAndForth(Vector2 spawnPosition, Vector2 startPosition, Vector2 endPosition, int speed)
             : base()
@@ -51,7 +51,7 @@
                 // If it is not time to exit do the movement pattern
                 if (this.exitTime == false)
                 {
-                    // when exceeding position reverse velocity to go back and fort
+                    // when exceeding position reverse velocity to go back and forth
                     if (this.ExceededPosition(this.startPosition, this.endPosition, this.Velocity))
                     {
                         this.Velocity = -this.Velocity;
@@ -66,6 +66,8 @@
             }
 
             base.Move();
+
+            // this.position = new Vector2(this.Parent.Rectangle.Center.X, this.Parent.Rectangle.Center.Y) + this.Velocity; // Rectangle offset bug hunting (analogous statement)--remove later
         }
 
         // method to call when timer has Elapsed

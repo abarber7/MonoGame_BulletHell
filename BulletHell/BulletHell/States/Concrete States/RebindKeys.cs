@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Controls;
-    using global::BulletHell.States.Emitters;
-    using global::BulletHell.The_Player;
+    using BulletHell.Controls;
+    using BulletHell.States.Emitters;
+    using BulletHell.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
@@ -14,7 +14,6 @@
     {
         private List<Component> components;
         private SnowEmitter snowEmitter;
-        private SpriteBatch spriteBatch;
         private Texture2D configureControlsTexture;
         private KeyboardState preivousState;
         private bool rebinding = false;
@@ -27,12 +26,12 @@
         private Button rightButton;
         private Button attackButton;
 
-        public RebindKeys(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
-          : base(game, graphicsDevice, content)
+        public RebindKeys()
+          : base()
         {
-            var buttonTexture = content.Load<Texture2D>("Controls/Button");
-            var buttonFont = content.Load<SpriteFont>("Fonts/Font");
-            this.configureControlsTexture = content.Load<Texture2D>("Titles/ConfigureControls");
+            var buttonTexture = TextureFactory.Content.Load<Texture2D>("Controls/Button");
+            var buttonFont = TextureFactory.Content.Load<SpriteFont>("Fonts/Font");
+            this.configureControlsTexture = TextureFactory.Content.Load<Texture2D>("Titles/ConfigureControls");
 
             this.upButton = new Button(buttonTexture, buttonFont)
             {
@@ -97,7 +96,7 @@
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            this.game.GraphicsDevice.Clear(Color.DarkGray);
+            GraphicManagers.GraphicsDevice.Clear(Color.DarkGray);
 
             spriteBatch.Begin();
             spriteBatch.Draw(this.configureControlsTexture, new Vector2(-7, 0), Color.Black);
@@ -129,14 +128,13 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            // remove sprites if they're not needed
         }
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
@@ -150,7 +148,7 @@
             {
                 Keys newKey = newState.GetPressedKeys()[0];
 
-                // Check if key is already binded.
+                // Check if key is already bound
                 if (Input.CheckIfAlreadyBinded(newKey) == false)
                 {
                     Input.SetKey(this.functionToRebind, newKey);
@@ -222,12 +220,12 @@
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new Options(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new Options());
         }
 
         private void ExitGameButton_Click(object sender, EventArgs e)
         {
-            this.game.Exit();
+            StateManager.ExitEvent(null, e);
         }
     }
 }

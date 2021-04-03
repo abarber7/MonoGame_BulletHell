@@ -2,25 +2,24 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Controls;
-    using global::BulletHell.States.Emitters;
+    using BulletHell.Controls;
+    using BulletHell.States.Emitters;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     public class GameOverWin : State
     {
         private List<Component> components;
         private SnowEmitter snowEmitter;
-        private SpriteBatch spriteBatch;
         private Texture2D youWinTexture;
 
-        public GameOverWin(BulletHell game, GraphicsDevice graphicsDevice, ContentManager content)
-          : base(game, graphicsDevice, content)
+        public GameOverWin()
+          : base()
         {
-            var buttonTexture = this.content.Load<Texture2D>("Controls/Button");
-            var buttonFont = this.content.Load<SpriteFont>("Fonts/Font");
-            this.youWinTexture = this.content.Load<Texture2D>("Titles/YouWinWhite");
+            var buttonTexture = TextureFactory.GetTexture("Controls/Button");
+            var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
+            this.youWinTexture = TextureFactory.GetTexture("Titles/YouWinWhite");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -58,7 +57,7 @@
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            this.game.GraphicsDevice.Clear(Color.LightSeaGreen);
+            GraphicManagers.GraphicsDevice.Clear(Color.LightSeaGreen);
 
             spriteBatch.Begin();
             spriteBatch.Draw(this.youWinTexture, new Vector2(190, 50), Color.Gold);
@@ -75,7 +74,6 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            // remove sprites if they're not needed
         }
 
         public override void Update(GameTime gameTime)
@@ -90,9 +88,9 @@
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(this.content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)
@@ -101,17 +99,17 @@
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new DifficultyState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new DifficultyState());
         }
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
+            StateManager.ChangeState(new MenuState());
         }
 
         private void ExitGameButton_Click(object sender, EventArgs e)
         {
-            this.game.Exit();
+            StateManager.ExitEvent(null, e);
         }
     }
 }

@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
-    using global::BulletHell.Sprites.The_Player;
-    using global::BulletHell.Utilities;
+    using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 

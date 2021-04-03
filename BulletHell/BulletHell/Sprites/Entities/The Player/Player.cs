@@ -1,11 +1,11 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Entities;
-    using global::BulletHell.Sprites.Entities.Enemies;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.Entities.Enemies;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -28,7 +28,15 @@
             this.Invincible = true;
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
+        // Serves as hitbox; Player hitbox is smaller than enemies'
+        public override Rectangle Rectangle
+        {
+            get => new Rectangle(
+                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+                    new Point(this.Texture.Width / 4, this.Texture.Height / 4));
+        }
+
+        public override void Update(GameTime gameTime, List<Sprite> enemies)
         {
             if (this.resetGameTime)
             {
@@ -41,8 +49,7 @@
 
             this.SetInvincibility(gameTime);
 
-            this.Attack(sprites);
-            this.Collision(sprites);
+            this.Attack(enemies);
 
             int previousSpeed = this.Movement.CurrentSpeed;
 
@@ -51,6 +58,24 @@
 
             this.Move();
             this.Movement.CurrentSpeed = previousSpeed;
+        }
+
+        public override void OnCollision(Sprite sprite)
+        {
+            this.Movement.ZeroXVelocity();
+            this.Movement.ZeroYVelocity();
+
+            if (this.Invincible == false)
+            {
+                if (sprite is Projectile projectile && projectile.Parent != this)
+                {
+                    this.IsRemoved = true;
+                }
+                else if (sprite is Enemy)
+                {
+                    this.IsRemoved = true;
+                }
+            }
         }
 
         public bool IsSlowPressed()
@@ -103,40 +128,6 @@
         private void Move()
         {
             this.Movement.Move();
-        }
-
-        private void Collision(List<Sprite> sprites)
-        {
-            foreach (var sprite in sprites)
-            {
-                if (sprite == this)
-                {
-                    continue;
-                }
-
-                if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)))
-                {
-                    this.Movement.ZeroXVelocity();
-                }
-
-                if ((this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
-                {
-                    this.Movement.ZeroYVelocity();
-                }
-
-                if (sprite is Projectile projectile)
-                {
-                    if (projectile.Parent is Enemy && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
-                    {
-                        if (this.Invincible == false)
-                        {
-                            this.IsRemoved = true;
-                        }
-
-                        sprite.IsRemoved = true;
-                    }
-                }
-            }
         }
     }
 }
