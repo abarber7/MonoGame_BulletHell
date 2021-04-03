@@ -28,7 +28,7 @@
                     new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprits)
+        public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             this.Move();
         }

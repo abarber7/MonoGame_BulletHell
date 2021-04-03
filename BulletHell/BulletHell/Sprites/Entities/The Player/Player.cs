@@ -36,7 +36,7 @@
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
+        public override void Update(GameTime gameTime, List<Sprite> enemies)
         {
             if (this.resetGameTime)
             {
@@ -49,7 +49,7 @@
 
             this.SetInvincibility(gameTime);
 
-            this.Attack(sprites);
+            this.Attack(enemies);
 
             int previousSpeed = this.Movement.CurrentSpeed;
 

@@ -1,4 +1,4 @@
-﻿namespace BulletHell
+﻿namespace BulletHell.Sprites.Commands
 {
     using System.Collections.Generic;
     using BulletHell.Sprites;
@@ -6,6 +6,6 @@
 
     internal interface ICommand
     {
-        public void Execute(GameTime gameTime, List<Sprite> sprites);
+        public void Execute();
     }
 }
