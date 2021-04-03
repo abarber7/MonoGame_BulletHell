@@ -1,8 +1,11 @@
 ﻿namespace BulletHell.States
 {
     using System.Collections.Generic;
+    using System.Linq;
     using BulletHell.Game_Utilities;
     using BulletHell.Sprites;
+    using BulletHell.Sprites.Commands;
+    using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
@@ -13,12 +16,16 @@
 
     public class GameState : State
     {
-        private List<Sprite> sprites;
+        private Player player;
+        private List<Sprite> enemies;
+        private List<Sprite> projectiles;
+
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
         private int lives = 3;
         private bool finalBossDefeated = false;
+        private List<ICommand> commandQueue = null;
 
         public GameState()
         : base()
@@ -28,25 +35,30 @@
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             this.spriteBatch.Begin();
-            foreach (var sprite in this.sprites)
+
+            this.player.Draw(this.spriteBatch);
+
+            if (this.player.Invincible)
             {
-                sprite.Draw(this.spriteBatch);
+                this.DrawBoxAroundSprite(this.player, Color.Crimson);
+            }
 
-                this.DrawBoxAroundSprite(sprite, Color.Chartreuse); // rectangle/hitbox visual TESTING
+            if (this.player.SlowMode)
+            {
+                this.DrawBoxAroundSprite(this.player, Color.White);
+                this.player.SlowMode = false;
+            }
 
-                if (sprite is Player player)
-                {
-                    if (player.Invincible)
-                    {
-                        this.DrawBoxAroundSprite(player, Color.Crimson);
-                    }
+            foreach (var p in this.projectiles)
+            {
+                p.Draw(this.spriteBatch);
+                this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
+            }
 
-                    if (player.SlowMode)
-                    {
-                        this.DrawBoxAroundSprite(player, Color.White);
-                        player.SlowMode = false;
-                    }
-                }
+            foreach (var e in this.enemies)
+            {
+                e.Draw(this.spriteBatch);
+                this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
@@ -58,9 +70,13 @@
         {
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.sprites = new List<Sprite>();
+            this.enemies = new List<Sprite>();
 
-            this.CreatePlayer();
+            this.projectiles = new List<Sprite>();
+
+            this.commandQueue = new List<ICommand>();
+
+            this.player = GameLoader.LoadPlayer();
 
             this.CreateWaves();
 
@@ -71,11 +87,8 @@
         {
             this.CheckAndDeployWave(gameTime);
 
-            // ToArray necessary because collection is modified during looping
-            foreach (var sprite in this.sprites.ToArray())
-            {
-                sprite.Update(gameTime, this.sprites);
-            }
+            this.CreateCommands(gameTime); // Create fresh command queue
+            this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
             if (this.lives == 0 || this.finalBossDefeated)
             {
@@ -89,48 +102,95 @@
 
         public override void PostUpdate(GameTime gameTime)
         {
-            for (int i = this.sprites.Count - 1; i >= 0; i--)
+            this.RemoveSprites(gameTime);
+        }
+
+        private void CreateCommands(GameTime gameTime)
+        {
+            // Create player update command
+            this.commandQueue.Add(new UpdateCommand(this.player, gameTime, this.projectiles));
+
+            // Create enemy update commands
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.projectiles)); }); // projectiles used here as container where Attack() adds sprites
+
+            // Create projectile update commands
+            this.projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+
+            // Create player collision check command, using both enemies and projectiles to check against
+            this.commandQueue.Add(new CollisionCheckCommand(this.player, this.enemies.Concat(this.projectiles).ToList())); // Did player hit any enemies or projectiles
+
+            // Create enemy collision checks (purpose is to see if player projectiles hit any)
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new CollisionCheckCommand(e, this.projectiles)); }); // Did player projectiles hit any enemies
+        }
+
+        private void ExecuteCommands()
+        {
+            if (this.commandQueue != null)
             {
-                for (int j = this.sprites.Count - 1; j >= 0; j--)
-                {
-                    if (this.sprites[i] == this.sprites[j])
-                    {
-                        continue;
-                    }
+                this.commandQueue.ForEach((c) => { c.Execute(); });
+                this.commandQueue.Clear();
+            }
+        }
 
-                    // Check for hitbox collision
-                    if (this.sprites[i].Rectangle.Intersects(this.sprites[j].Rectangle))
-                    {
-                        this.sprites[i].OnCollision(this.sprites[j]);
-                        this.sprites[j].OnCollision(this.sprites[i]);
-                    }
-                }
+        private void RemoveSprites(GameTime gameTime)
+        {
+            if (this.player.IsRemoved)
+            {
+                this.lives--;
+                this.projectiles.Clear(); // Remove all projectiles
+                this.player.Respawn(gameTime);
+            }
 
-                if (this.sprites[i].IsRemoved)
+            for (int i = this.enemies.Count - 1; i >= 0; i--)
+            {
+                if (this.enemies[i].IsRemoved)
                 {
-                    if (this.sprites[i] is Player player)
-                    {
-                        this.lives--;
-                        this.RemoveAllProjectiles();
-                        player.Respawn(gameTime);
-                    }
-                    else if (this.sprites[i] is FinalBoss)
+                    if (this.enemies[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
-                        this.sprites.RemoveAt(i);
+                        this.enemies.RemoveAt(i);
                     }
                     else
                     {
-                        this.sprites.RemoveAt(i);
+                        this.enemies.RemoveAt(i);
                     }
+                }
+            }
+
+            for (int i = this.projectiles.Count - 1; i >= 0; i--)
+            {
+                if (this.projectiles[i].IsRemoved)
+                {
+                    this.projectiles.RemoveAt(i);
                 }
             }
         }
 
-        private void CreatePlayer()
+        /*private void OnSpriteRemoval(object sender, GameComponentCollectionEventArgs e)
         {
-            this.sprites.Add(GameLoader.LoadPlayer());
-        }
+            if (sender == this.player)
+            {
+                this.lives--;
+                this.projectiles.Clear(); // Remove all projectiles
+                this.player.Respawn(gameTime); // TODO: set up sender so that gameTime comes in args ?
+            }
+            else if (sender is Enemy enemy)
+            {
+                if (this.enemies[i] is FinalBoss)
+                {
+                    this.finalBossDefeated = true;
+                    this.enemies.RemoveAt(i);
+                }
+                else
+                {
+                    this.enemies.RemoveAt(i);
+                }
+            }
+            else if (sender is Projectile projectile)
+            {
+                this.projectiles.RemoveAt(i);
+            }
+        }*/
 
         private void CreateWaves()
         {
@@ -143,7 +203,7 @@
             if (this.timeUntilNextWave <= 0 && this.waves.Count > 0)
             {
                 this.timeUntilNextWave = this.waves[0].WaveDuration;
-                this.waves[0].CreateWave(this.sprites);
+                this.waves[0].CreateWave(this.enemies);
                 this.waves.RemoveRange(0, 1);
             }
         }
@@ -183,17 +243,6 @@
         private void CreateStats()
         {
             this.font = TextureFactory.GetSpriteFont("Fonts/Font");
-        }
-
-        private void RemoveAllProjectiles()
-        {
-            for (int i = this.sprites.Count - 1; i >= 0; i--)
-            {
-                if (this.sprites[i] is Projectile)
-                {
-                    this.sprites.RemoveAt(i);
-                }
-            }
         }
     }
 }

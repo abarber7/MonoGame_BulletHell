@@ -23,15 +23,12 @@
         // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
         public override Rectangle Rectangle
         {
-            get
-            {
-                return new Rectangle(
+            get => new Rectangle(
                     new Point((int)this.Movement.Position.X - this.Texture.Width, (int)this.Movement.Position.Y - (int)Math.Round(this.Texture.Height * 2.5)),
                     new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
-            }
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprits)
+        public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             this.Move();
         }
@@ -61,10 +58,7 @@
             this.Movement.Move();
         }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
+        public object Clone() => this.MemberwiseClone();
 
         public bool OutOfBounds()
         {
