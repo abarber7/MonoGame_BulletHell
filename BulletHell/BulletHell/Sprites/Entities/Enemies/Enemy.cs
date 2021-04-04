@@ -9,6 +9,7 @@
 
     internal abstract class Enemy : Entity
     {
+        protected double points;
         private double timer;
 
         public Enemy(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan, int hp = 10)
@@ -53,6 +54,17 @@
             {
                 this.IsRemoved = true;
             }
+        }
+
+        public double GetPoints()
+        {
+            // Only reward points if this enemy is dead.
+            if (this.HealthPoints <= 0)
+            {
+                return this.points;
+            }
+
+            return 0;
         }
     }
 }

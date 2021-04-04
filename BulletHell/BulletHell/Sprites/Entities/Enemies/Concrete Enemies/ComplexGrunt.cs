@@ -15,6 +15,7 @@
         public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
             : base(texture, color, movement, projectile, lifeSpan)
         {
+            this.points = .5;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

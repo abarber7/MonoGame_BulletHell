@@ -26,6 +26,7 @@
         private int lives = 3;
         private bool finalBossDefeated = false;
         private List<ICommand> commandQueue = null;
+        private double score = 0;
 
         public GameState()
         : base()
@@ -62,6 +63,7 @@
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("{0:C}", this.score), new Vector2(10, 25), Color.Black);
 
             this.spriteBatch.End();
         }
@@ -145,6 +147,9 @@
             {
                 if (this.enemies[i].IsRemoved)
                 {
+                    Enemy toRemove = (Enemy) this.enemies[i]; // Consider changing enemy list to be composed of Enemy objects rather than Sprites
+                    this.score += toRemove.GetPoints();
+
                     if (this.enemies[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
