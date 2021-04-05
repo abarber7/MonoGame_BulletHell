@@ -52,13 +52,15 @@
             foreach (var p in this.projectiles)
             {
                 p.Draw(this.spriteBatch);
-                this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
+
+                // this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var e in this.enemies)
             {
                 e.Draw(this.spriteBatch);
-                this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
+
+                // this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
