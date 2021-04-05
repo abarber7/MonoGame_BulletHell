@@ -29,9 +29,20 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Sprites\Attacks\Concrete Attacks\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Sprites\Movement Patterns\Concrete Movement Patterns\RunAndGun.cs">
+      <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
 </Project>
