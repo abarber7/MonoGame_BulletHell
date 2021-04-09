@@ -1,14 +1,13 @@
 ﻿namespace BulletHell.Sprites
 {
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Projectiles;
 
     internal abstract class Attack
     {
-        Projectile projectile;
+        private Projectile projectile;
 
         public virtual void DoAttack()
         {
-
         }
     }
 }

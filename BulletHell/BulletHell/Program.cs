@@ -7,7 +7,7 @@
         [STAThread]
         public static void Main()
         {
-            using (var game = new BulletHell())
+            using (var game = new GUI())
             {
                 game.Run();
             }
