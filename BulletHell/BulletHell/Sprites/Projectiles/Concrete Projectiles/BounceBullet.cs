@@ -1,16 +1,18 @@
 ﻿namespace BulletHell.Sprites.Projectiles.Concrete_Projectiles
 {
-    using System.Collections.Generic;
+    using BulletHell.Sprites.Movement_Patterns;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     internal class BounceBullet : Projectile
     {
         private int bounceCount = 0;
         private int numberOfTimesToBounce;
 
-        public BounceBullet(Dictionary<string, object> bulletProperties)
-            : base(bulletProperties)
+        public BounceBullet(Texture2D texture, Color color, MovementPattern movement, int timesToBounce, int damage)
+            : base(texture, color, movement, damage)
         {
-            this.numberOfTimesToBounce = (int)bulletProperties["bounceTimes"];
+            this.numberOfTimesToBounce = timesToBounce;
         }
 
         public override void Move()

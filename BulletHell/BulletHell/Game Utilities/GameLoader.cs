@@ -4,8 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using global::BulletHell.Sprites;
-    using global::BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.The_Player;
+    using BulletHell.Waves;
     using Newtonsoft.Json.Linq;
 
     internal class GameLoader
@@ -14,7 +15,7 @@
 
         public static void LoadGameDictionary(string jsonToLoad)
         {
-            string jsonFilePath = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName, "JSONs\\" + jsonToLoad + ".json");
+            string jsonFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "JSONs\\" + jsonToLoad + ".json");
             string json = File.ReadAllText(jsonFilePath);
             JObject jsonObj = JObject.Parse(json);
             gameDictionary = (Dictionary<string, object>)ToCollections(jsonObj);
@@ -36,7 +37,7 @@
 
         public static Player LoadPlayer()
         {
-            return new Player((Dictionary<string, object>)gameDictionary["player"]);
+            return (Player)EntityFactory.CreateEntity((Dictionary<string, object>)gameDictionary["player"]);
         }
 
         // Source: https://stackoverflow.com/questions/14886800/convert-jobject-into-dictionarystring-object-is-it-possible

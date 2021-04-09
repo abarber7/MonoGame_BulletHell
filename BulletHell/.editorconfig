@@ -2,3 +2,6 @@
 
 # Default severity for analyzer diagnostics with category 'StyleCop.CSharp.DocumentationRules'
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.DocumentationRules.severity = none
+
+# IDE0065: Misplaced using directive
+csharp_using_directive_placement = inside_namespace
