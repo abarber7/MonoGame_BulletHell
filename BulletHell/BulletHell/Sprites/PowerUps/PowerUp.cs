@@ -14,6 +14,7 @@ namespace BulletHell.Sprites.PowerUps
             : base(texture, color, movement)
         {
             this.DropPercent = dropPercent;
+            this.Movement.Parent = this;
         }
 
         public int DropPercent { get; set; }
@@ -43,7 +44,7 @@ namespace BulletHell.Sprites.PowerUps
         {
             if (this.OutOfBounds())
             {
-                this.IsRemoved = true;
+              //  this.IsRemoved = true;
             }
 
             this.Movement.Move();

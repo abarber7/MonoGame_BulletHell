@@ -42,6 +42,14 @@
             }
 
             this.Movement.Move();
+            this.updatePowerUpsPosition();
+        }
+
+        private void updatePowerUpsPosition()
+        {
+            this.PowerUp.Movement.Origin = this.Movement.Origin;
+            this.PowerUp.Movement.Position = this.Movement.Position;
+           // this.PowerUp.Movement.
         }
 
         public override void OnCollision(Sprite sprite)

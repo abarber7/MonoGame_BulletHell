@@ -53,23 +53,23 @@
                 case "enemy":
                     int lifeSpan = (int)entityProperties["lifeSpan"];
                     PowerUp powerUp = PowerUpFactory.CreatePowerUp((Dictionary<string, object>)entityProperties["powerUp"]);
-
+                    PowerUp newPowerUp = (PowerUp)powerUp.Clone();
                     switch (enemyType)
                     {
                         case "exampleEnemy":
-                            entity = new ExampleEnemy(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new ExampleEnemy(texture, color, movement, projectile, newPowerUp, lifeSpan);
                             break;
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new SimpleGrunt(texture, color, movement, projectile, newPowerUp, lifeSpan);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new ComplexGrunt(texture, color, movement, projectile, newPowerUp, lifeSpan);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new MidBoss(texture, color, movement, projectile, newPowerUp, lifeSpan);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new FinalBoss(texture, color, movement, projectile, newPowerUp, lifeSpan);
                             break;
                     }
 

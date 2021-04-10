@@ -30,7 +30,7 @@
       "waveDuration": 15,
       "entityGroups": [
         {
-          "entityAmount": 6,
+          "entityAmount": 2,
           "movementPattern": {
             "movementPatternType": "backAndForth",
             "spawnXPosition": [ 400, 400, 200, 600, -400, 1200 ],
@@ -52,7 +52,7 @@
               "powerUpType": "damageUp",
               "textureName": "damageUp",
               "color": "Red",
-              "dropPercent": 50,
+              "dropPercent": 100,
               "movementPattern": {
                 "movementPatternType": "linear",
                 "xVelocity": 0,
@@ -103,6 +103,20 @@
             "textureName": "hitboxTestEnemy",
             "color": "Green",
             "lifeSpan": 30,
+
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
             "projectile": {
               "projectileType": "bullet",
               "textureName": "Bullet",
@@ -143,6 +157,19 @@
             "textureName": "hitboxTestEnemy",
             "color": "Green",
             "lifeSpan": 15,
+
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
 
             "projectile": {
               "projectileType": "bullet",
@@ -186,6 +213,19 @@
             "color": "Yellow",
             "lifeSpan": 30,
 
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
             "projectile": {
               "projectileType": "bounceBullet",
               "textureName": "Bullet",
@@ -228,6 +268,20 @@
             "textureName": "hitboxTestEnemy",
             "color": "Yellow",
             "lifeSpan": 30,
+
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
             "projectile": {
               "projectileType": "bounceBullet",
               "textureName": "Bullet",
@@ -264,6 +318,20 @@
               "startYPosition": 0,
               "speed": 5
             },
+
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
             "projectile": {
               "projectileType": "bounceBullet",
               "textureName": "Bullet",
@@ -302,6 +370,20 @@
               "startYPosition": 0,
               "speed": 5
             },
+
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
             "projectile": {
               "projectileType": "bounceBullet",
               "textureName": "Bullet",

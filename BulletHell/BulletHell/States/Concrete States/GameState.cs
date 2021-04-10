@@ -7,6 +7,7 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
@@ -157,10 +158,10 @@
                         Enemy e = (Enemy)this.enemies[i];
                         if (e.DropLoot)
                         {
-                            this.enemies.Add(e.PowerUp);
+                            this.projectiles.Add((PowerUp)e.PowerUp.Clone());
                         }
 
-                        this.enemies.RemoveAt(i); // Check if dropLoot = True, if so add it to the list of enemy sprites, it has a movement patter, its update will just move it down, will powerUp Sprint ovveride enemies OnCollision to ignore projectiles and only see if the player hits it... Alex
+                        this.enemies.RemoveAt(i); // Check if dropLoot = True, if so add it to the list of projectile sprites, it has a movement patter, its update will just move it down, will powerUp Sprint ovveride enemies OnCollision to ignore projectiles and only see if the player hits it... Alex
                     }
                 }
             }
