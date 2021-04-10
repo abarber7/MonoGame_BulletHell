@@ -5,7 +5,10 @@
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
+    using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -75,6 +78,19 @@
                 {
                     this.IsRemoved = true;
                 }
+
+                else if (sprite is PowerUp)
+                {
+                    if (sprite is DamageUp)
+                    {
+                        //IncreaseDamage() // have 4 levels and textures...  
+                        this.Projectile.Damage += 1;
+                        this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    }
+                    //else if (sprite is ____) 
+                }
+
+
             }
         }
 

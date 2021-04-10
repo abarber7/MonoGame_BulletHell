@@ -47,6 +47,20 @@
             "textureName": "hitboxTestEnemy",
             "color": "Green",
             "lifeSpan": 30,
+            
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 50,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
             "projectile": {
               "projectileType": "bullet",
               "textureName": "Bullet",
@@ -58,7 +72,9 @@
                 "yVelocity": 1,
                 "speed": 4
               }
-            }
+            } // end projectile
+
+
           }
         }
       ]

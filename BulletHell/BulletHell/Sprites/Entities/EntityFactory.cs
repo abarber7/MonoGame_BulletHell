@@ -1,19 +1,23 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
     using System;
+    using System.Diagnostics;
     using System.Collections.Generic;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+
     internal class EntityFactory
     {
         public static Entity CreateEntity(Dictionary<string, object> entityProperties)
         {
+            Debug.WriteLine(entityProperties);
             Entity entity = null;
             string textureName = (string)entityProperties["textureName"];
             Texture2D texture = TextureFactory.GetTexture(textureName);
@@ -34,6 +38,9 @@
             }
 
             Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)entityProperties["projectile"]);
+            
+             //  int dropPercent = 
+              // or for having the enemy have a random power up, get array of types and random in range length
 
             string enemyType = (string)entityProperties["entityType"];
             string entityClassification = (string)entityProperties["entityType"] != "player" ? "enemy" : "player";
@@ -45,23 +52,24 @@
                     break;
                 case "enemy":
                     int lifeSpan = (int)entityProperties["lifeSpan"];
+                    PowerUp powerUp = PowerUpFactory.CreatePowerUp((Dictionary<string, object>)entityProperties["powerUp"]);
 
                     switch (enemyType)
                     {
                         case "exampleEnemy":
-                            entity = new ExampleEnemy(texture, color, movement, projectile, lifeSpan);
+                            entity = new ExampleEnemy(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, projectile, lifeSpan);
+                            entity = new SimpleGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, projectile, lifeSpan);
+                            entity = new ComplexGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, projectile, lifeSpan);
+                            entity = new MidBoss(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, projectile, lifeSpan);
+                            entity = new FinalBoss(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                     }
 

@@ -154,7 +154,13 @@
                     }
                     else
                     {
-                        this.enemies.RemoveAt(i);
+                        Enemy e = (Enemy)this.enemies[i];
+                        if (e.DropLoot)
+                        {
+                            this.enemies.Add(e.PowerUp);
+                        }
+
+                        this.enemies.RemoveAt(i); // Check if dropLoot = True, if so add it to the list of enemy sprites, it has a movement patter, its update will just move it down, will powerUp Sprint ovveride enemies OnCollision to ignore projectiles and only see if the player hits it... Alex
                     }
                 }
             }
