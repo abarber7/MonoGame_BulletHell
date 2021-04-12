@@ -76,5 +76,18 @@
                 this.IsRemoved = true;
             }
         }
+
+        public PowerUp GetLoot()
+        {
+            PowerUp p = this.PowerUp.Clone() as PowerUp;
+            p.Movement = this.PowerUp.Movement.Clone() as MovementPattern;
+            Vector2 velocity = p.Movement.Velocity;
+            velocity.Normalize();
+            velocity.X *= p.Movement.Speed;
+            velocity.Y *= p.Movement.Speed;
+            p.Movement.Velocity = velocity;
+            p.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
+            return p;
+        }
     }
 }

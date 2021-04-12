@@ -1,6 +1,8 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
@@ -20,6 +22,7 @@
         private double initialSpawnTime;
         private bool spawning;
         private bool resetGameTime = true;
+        private int damageLevel;
 
         private KeyboardState currentKey;
         private KeyboardState previousKey;
@@ -29,6 +32,7 @@
         {
             this.spawning = true;
             this.Invincible = true;
+            this.damageLevel = 0;
         }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
@@ -78,19 +82,38 @@
                 {
                     this.IsRemoved = true;
                 }
+            }
 
-                else if (sprite is PowerUp)
+            if (sprite is PowerUp)
+            {
+                if (sprite is DamageUp)
                 {
-                    if (sprite is DamageUp)
-                    {
-                        //IncreaseDamage() // have 4 levels and textures...  
-                        this.Projectile.Damage += 1;
-                        this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
-                    }
-                    //else if (sprite is ____) 
+                    this.IncreaseDamage();
                 }
+                //else if (sprite is ____) 
+            }
+        }
 
-
+        private void IncreaseDamage()
+        {
+            this.damageLevel += 1;
+            switch (this.damageLevel)
+            {
+                case 1:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    break;
+                case 2:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    break;
+                case 3:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    break;
+                default:
+                    Debug.WriteLine("At max damage level");
+                    break;
             }
         }
 

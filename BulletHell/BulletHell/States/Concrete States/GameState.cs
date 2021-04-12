@@ -7,7 +7,9 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.PowerUps;
+    using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
@@ -158,10 +160,10 @@
                         Enemy e = (Enemy)this.enemies[i];
                         if (e.DropLoot)
                         {
-                            this.projectiles.Add((PowerUp)e.PowerUp.Clone());
+                            this.projectiles.Add(e.GetLoot()); // powerUp has a movement pattern, its update will just move it down
                         }
 
-                        this.enemies.RemoveAt(i); // Check if dropLoot = True, if so add it to the list of projectile sprites, it has a movement patter, its update will just move it down, will powerUp Sprint ovveride enemies OnCollision to ignore projectiles and only see if the player hits it... Alex
+                        this.enemies.RemoveAt(i);
                     }
                 }
             }

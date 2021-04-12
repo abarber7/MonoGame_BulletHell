@@ -38,9 +38,6 @@
             }
 
             Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)entityProperties["projectile"]);
-            
-             //  int dropPercent = 
-              // or for having the enemy have a random power up, get array of types and random in range length
 
             string enemyType = (string)entityProperties["entityType"];
             string entityClassification = (string)entityProperties["entityType"] != "player" ? "enemy" : "player";
@@ -53,23 +50,23 @@
                 case "enemy":
                     int lifeSpan = (int)entityProperties["lifeSpan"];
                     PowerUp powerUp = PowerUpFactory.CreatePowerUp((Dictionary<string, object>)entityProperties["powerUp"]);
-                    PowerUp newPowerUp = (PowerUp)powerUp.Clone();
+
                     switch (enemyType)
                     {
                         case "exampleEnemy":
-                            entity = new ExampleEnemy(texture, color, movement, projectile, newPowerUp, lifeSpan);
+                            entity = new ExampleEnemy(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, projectile, newPowerUp, lifeSpan);
+                            entity = new SimpleGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, projectile, newPowerUp, lifeSpan);
+                            entity = new ComplexGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, projectile, newPowerUp, lifeSpan);
+                            entity = new MidBoss(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, projectile, newPowerUp, lifeSpan);
+                            entity = new FinalBoss(texture, color, movement, projectile, powerUp, lifeSpan);
                             break;
                     }
 

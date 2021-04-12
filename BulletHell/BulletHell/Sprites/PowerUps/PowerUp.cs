@@ -44,7 +44,7 @@ namespace BulletHell.Sprites.PowerUps
         {
             if (this.OutOfBounds())
             {
-              //  this.IsRemoved = true;
+                this.IsRemoved = true;
             }
 
             this.Movement.Move();
