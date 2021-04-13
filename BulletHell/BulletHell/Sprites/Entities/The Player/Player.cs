@@ -33,6 +33,7 @@
             this.spawning = true;
             this.Invincible = true;
             this.damageLevel = 0;
+            this.Lives = 3;
         }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
@@ -90,9 +91,14 @@
                 {
                     this.IncreaseDamage();
                 }
-                //else if (sprite is ____) 
+                else if (sprite is ExtraLife)
+                {
+                    this.Lives += 1;
+                }
             }
         }
+
+        public int Lives { get; set; }
 
         private void IncreaseDamage()
         {

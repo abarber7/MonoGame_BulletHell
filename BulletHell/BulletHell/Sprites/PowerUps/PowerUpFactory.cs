@@ -38,7 +38,7 @@
                     throw new Exception("Invalid PowerUp Type");
             }
 
-            return (DamageUp)powerUp.Clone();
+            return powerUp;
         }
     }
 }

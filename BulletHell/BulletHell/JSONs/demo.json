@@ -105,8 +105,8 @@
             "lifeSpan": 30,
 
             "powerUp": {
-              "powerUpType": "damageUp",
-              "textureName": "damageUp",
+              "powerUpType": "extraLife",
+              "textureName": "lifeUp",
               "color": "Red",
               "dropPercent": 100,
               "movementPattern": {
