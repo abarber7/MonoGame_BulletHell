@@ -7,6 +7,9 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
+    using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
@@ -19,11 +22,9 @@
         private Player player;
         private List<Sprite> enemies;
         private List<Sprite> projectiles;
-
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
-        private int lives = 3;
         private bool finalBossDefeated = false;
         private List<ICommand> commandQueue = null;
 
@@ -63,7 +64,7 @@
                 // this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.player.Lives), new Vector2(10, 10), Color.Black);
 
             this.spriteBatch.End();
         }
@@ -92,7 +93,7 @@
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
-            if (this.lives == 0 || this.finalBossDefeated)
+            if (this.player.Lives == 0 || this.finalBossDefeated)
             {
                 this.EndGamePrompt();
             }
@@ -138,7 +139,7 @@
         {
             if (this.player.IsRemoved)
             {
-                this.lives--;
+                this.player.Lives--;
                 this.projectiles.Clear(); // Remove all projectiles
                 this.player.Respawn(gameTime);
             }
@@ -154,6 +155,12 @@
                     }
                     else
                     {
+                        Enemy e = (Enemy)this.enemies[i];
+                        if (e.DropLoot)
+                        {
+                            this.projectiles.Add(e.GetLoot()); // powerUp has a movement pattern, its update will just move it down
+                        }
+
                         this.enemies.RemoveAt(i);
                     }
                 }
@@ -232,7 +239,7 @@
 
         private void EndGamePrompt()
         {
-            if (this.lives == 0)
+            if (this.player.Lives == 0)
             {
                 StateManager.ChangeState(new GameOverLose());
             }

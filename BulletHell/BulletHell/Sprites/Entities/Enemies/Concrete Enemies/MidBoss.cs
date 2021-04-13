@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -10,8 +11,8 @@
     {
         private int previousTime = 0;
 
-        public MidBoss(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
-            : base(texture, color, movement, projectile, lifeSpan)
+        public MidBoss(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan)
+            : base(texture, color, movement, projectile, powerUp, lifeSpan)
         {
         }
 
