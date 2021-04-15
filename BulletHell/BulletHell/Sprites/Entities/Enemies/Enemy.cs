@@ -13,8 +13,8 @@
     {
         private double timer;
 
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan, int hp = 10)
-            : base(texture, color, movement, projectile)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp = 10)
+            : base(texture, color, movement, attack)
         {
             this.LifeSpan = lifeSpan;
             this.HealthPoints = hp;

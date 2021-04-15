@@ -37,9 +37,6 @@
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Sprites\Attacks\Concrete Attacks\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Sprites\Movement Patterns\Concrete Movement Patterns\RunAndGun.cs">
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

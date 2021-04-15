@@ -106,7 +106,7 @@
 
         public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
 
-        protected Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
+        public Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
         {
             Vector2 velocity;
             velocity.X = endPosition.X - startPosition.X;

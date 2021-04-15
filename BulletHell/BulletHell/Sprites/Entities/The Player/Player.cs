@@ -27,8 +27,8 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
-            : base(texture, color, movement, projectile)
+        public Player(Texture2D texture, Color color, MovementPattern movement, Attack attack)
+            : base(texture, color, movement, attack)
         {
             this.spawning = true;
             this.Invincible = true;
@@ -106,16 +106,16 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet2");
                     break;
                 case 2:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet3");
                     break;
                 case 3:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet4");
                     break;
                 default:
                     Debug.WriteLine("At max damage level");

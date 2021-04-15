@@ -1,8 +1,9 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
     using System;
-    using System.Diagnostics;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.PowerUps;
@@ -12,12 +13,11 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-
     internal class EntityFactory
     {
         public static Entity CreateEntity(Dictionary<string, object> entityProperties)
         {
-            Debug.WriteLine(entityProperties);
+            // Debug.WriteLine(entityProperties);
             Entity entity = null;
             string textureName = (string)entityProperties["textureName"];
             Texture2D texture = TextureFactory.GetTexture(textureName);
@@ -37,7 +37,7 @@
                 movement = null;
             }
 
-            Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)entityProperties["projectile"]);
+            Attack attack = AttackFactory.CreateAttack((Dictionary<string, object>)entityProperties["attack"]);
 
             string enemyType = (string)entityProperties["entityType"];
             string entityClassification = (string)entityProperties["entityType"] != "player" ? "enemy" : "player";
@@ -45,7 +45,7 @@
             switch (entityClassification)
             {
                 case "player":
-                    entity = new Player(texture, color, movement, projectile);
+                    entity = new Player(texture, color, movement, attack);
                     break;
                 case "enemy":
                     int lifeSpan = (int)entityProperties["lifeSpan"];
@@ -54,19 +54,19 @@
                     switch (enemyType)
                     {
                         case "exampleEnemy":
-                            entity = new ExampleEnemy(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new ExampleEnemy(texture, color, movement, attack, powerUp, lifeSpan);
                             break;
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new SimpleGrunt(texture, color, movement, attack, powerUp, lifeSpan);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new ComplexGrunt(texture, color, movement, attack, powerUp, lifeSpan);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new MidBoss(texture, color, movement, attack, powerUp, lifeSpan);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, projectile, powerUp, lifeSpan);
+                            entity = new FinalBoss(texture, color, movement, attack, powerUp, lifeSpan);
                             break;
                     }
 
@@ -80,7 +80,7 @@
                 entity.Movement.Parent = entity;
             }
 
-            entity.Projectile.Movement.Parent = entity;
+            entity.attack.projectile.Movement.Parent = entity;
 
             return entity;
         }

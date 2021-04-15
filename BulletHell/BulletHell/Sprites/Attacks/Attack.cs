@@ -1,13 +1,20 @@
 ﻿namespace BulletHell.Sprites
 {
+    using System.Collections.Generic;
     using BulletHell.Sprites.Projectiles;
 
     internal abstract class Attack
     {
-        private Projectile projectile;
+        public Projectile projectile;
 
-        public virtual void DoAttack()
+        protected Attack(Projectile projectile)
         {
+            this.projectile = projectile;
+        }
+
+        public virtual void DoAttack(List<Sprite> sprites, Sprite parent)
+        {
+
         }
     }
 }

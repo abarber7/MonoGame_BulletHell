@@ -27,7 +27,7 @@
                 if (this.entityAmount > 1)
                 {
                     enemy.Movement = this.movementPatterns[i];
-                    enemy.Projectile.Movement.Parent = enemy;
+                    enemy.attack.projectile.Movement.Parent = enemy;
                     enemy.Movement.Parent = enemy;
                 }
 

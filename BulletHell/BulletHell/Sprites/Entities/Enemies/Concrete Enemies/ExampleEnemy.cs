@@ -11,8 +11,8 @@
     {
         private int previousTime = 0;
 
-        public ExampleEnemy(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan)
-            : base(texture, color, movement, projectile, powerUp, lifeSpan)
+        public ExampleEnemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan)
+            : base(texture, color, movement, attack, powerUp, lifeSpan)
         {
         }
 

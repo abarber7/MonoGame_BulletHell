@@ -13,8 +13,8 @@
         private float timer2;
         private float timer3;
 
-        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan)
-            : base(texture, color, movement, projectile, powerUp, lifeSpan)
+        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan)
+            : base(texture, color, movement, attack, powerUp, lifeSpan)
         {
         }
 
