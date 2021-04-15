@@ -1,26 +1,24 @@
-﻿namespace BulletHell.Sprites.Projectiles
-{
-    using System;
-    using System.Collections.Generic;
-    using BulletHell.Sprites.Entities.Enemies;
-    using BulletHell.Sprites.Movement_Patterns;
-    using BulletHell.Sprites.The_Player;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
+﻿using BulletHell.Sprites.Movement_Patterns;
+using BulletHell.Sprites.The_Player;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-    internal abstract class Projectile : Sprite, ICloneable
+namespace BulletHell.Sprites.PowerUps
+{
+    internal abstract class PowerUp : Sprite, ICloneable
     {
-        public Projectile(Texture2D texture, Color color, MovementPattern movement, int damage)
+        protected PowerUp(Texture2D texture, Color color, MovementPattern movement, int dropPercent)
             : base(texture, color, movement)
         {
-            this.Damage = damage;
+            this.DropPercent = dropPercent;
+            this.Movement.Parent = this;
         }
 
-        public Sprite Parent { get; set; }
+        public int DropPercent { get; set; }
 
-        public int Damage { get; set; }
-
-        // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
         public override Rectangle Rectangle
         {
             get => new Rectangle(
@@ -35,16 +33,10 @@
 
         public override void OnCollision(Sprite sprite)
         {
-            // Ignore collision if sprite is one who fired or if sprite is another projectile (for now)
-            if (sprite != this.Parent && !(sprite is Projectile))
+            // Only care if sprite is player
+            if (sprite is Player)
             {
-                // Hit case 1: sprite is Player, and this projectile is from an Enemy
-                // Hit case 2: sprite is an Enemy, and this projectile is from Player
-                if ((sprite is Player && this.Parent is Enemy) ||
-                    (sprite is Enemy && this.Parent is Player))
-                {
-                    this.IsRemoved = true;
-                }
+                this.IsRemoved = true;
             }
         }
 

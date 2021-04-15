@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Entity : Sprite, ICloneable
     {
-        // private int healthPoints;
         public Projectile Projectile;
         public ushort AttackSpeed = 1;
 
@@ -19,10 +18,7 @@
             this.Projectile = projectile;
         }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
+        public object Clone() => this.MemberwiseClone();
 
         protected void Attack(List<Sprite> sprites)
         {
@@ -30,6 +26,7 @@
             Projectile newProjectile = this.Projectile.Clone() as Projectile;
             int projectileSpeed = newProjectile.Movement.Speed;
             newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
+            newProjectile.Movement.Parent = newProjectile;
             Vector2 velocity = newProjectile.Movement.Velocity;
             velocity.Normalize();
             velocity.X *= projectileSpeed;

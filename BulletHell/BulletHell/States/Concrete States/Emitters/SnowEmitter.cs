@@ -1,7 +1,7 @@
 ﻿namespace BulletHell.States.Emitters
 {
-    using Microsoft.Xna.Framework;
     using System;
+    using Microsoft.Xna.Framework;
 
     public class SnowEmitter : Emitter
     {
@@ -28,11 +28,11 @@
             var xPosition = Random.Next(0, GUI.ScreenWidth);
             var ySpeed = Random.Next(10, 100) / 100f;
 
-            sprite.Position = new Microsoft.Xna.Framework.Vector2(xPosition, -sprite.Rectangle.Height);
+            sprite.Position = new Vector2(xPosition, -sprite.Rectangle.Height);
             sprite.Opacity = (float)Random.NextDouble();
             sprite.Rotation = MathHelper.ToRadians(Random.Next(0, 360));
             sprite.Scale = (float)Random.NextDouble() + Random.Next(0, 3);
-            sprite.Velocity = new Microsoft.Xna.Framework.Vector2(0, ySpeed);
+            sprite.Velocity = new Vector2(0, ySpeed);
 
             return sprite;
         }

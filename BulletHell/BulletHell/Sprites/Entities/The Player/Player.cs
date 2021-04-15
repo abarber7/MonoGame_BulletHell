@@ -1,11 +1,16 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
+    using System;
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Entities;
-    using global::BulletHell.Sprites.Entities.Enemies;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using System.Diagnostics;
+    using BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.Entities.Enemies;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
+    using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
+    using BulletHell.Sprites.Projectiles;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -17,6 +22,7 @@
         private double initialSpawnTime;
         private bool spawning;
         private bool resetGameTime = true;
+        private int damageLevel;
 
         private KeyboardState currentKey;
         private KeyboardState previousKey;
@@ -26,20 +32,19 @@
         {
             this.spawning = true;
             this.Invincible = true;
+            this.damageLevel = 0;
+            this.Lives = 3;
         }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
         {
-            get
-            {
-                return new Rectangle(
+            get => new Rectangle(
                     new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));
-            }
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
+        public override void Update(GameTime gameTime, List<Sprite> enemies)
         {
             if (this.resetGameTime)
             {
@@ -52,7 +57,7 @@
 
             this.SetInvincibility(gameTime);
 
-            this.Attack(sprites);
+            this.Attack(enemies);
 
             int previousSpeed = this.Movement.CurrentSpeed;
 
@@ -78,6 +83,43 @@
                 {
                     this.IsRemoved = true;
                 }
+            }
+
+            if (sprite is PowerUp)
+            {
+                if (sprite is DamageUp)
+                {
+                    this.IncreaseDamage();
+                }
+                else if (sprite is ExtraLife)
+                {
+                    this.Lives += 1;
+                }
+            }
+        }
+
+        public int Lives { get; set; }
+
+        private void IncreaseDamage()
+        {
+            this.damageLevel += 1;
+            switch (this.damageLevel)
+            {
+                case 1:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    break;
+                case 2:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    break;
+                case 3:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    break;
+                default:
+                    Debug.WriteLine("At max damage level");
+                    break;
             }
         }
 
@@ -132,39 +174,5 @@
         {
             this.Movement.Move();
         }
-
-        /*private void Collision(List<Sprite> sprites)
-        {
-            foreach (var sprite in sprites)
-            {
-                if (sprite == this)
-                {
-                    continue;
-                }
-
-                if ((this.Movement.Velocity.X > 0 && this.IsTouchingLeftSideOfSprite(sprite)) || (this.Movement.Velocity.X < 0 && this.IsTouchingRightSideOfSprite(sprite)))
-                {
-                    this.Movement.ZeroXVelocity();
-                }
-
-                if ((this.Movement.Velocity.Y > 0 && this.IsTouchingTopSideOfSprite(sprite)) || (this.Movement.Velocity.Y < 0 && this.IsTouchingBottomSideOfSprite(sprite)))
-                {
-                    this.Movement.ZeroYVelocity();
-                }
-
-                if (sprite is Projectile projectile)
-                {
-                    if (projectile.Parent is Enemy && (this.IsTouchingLeftSideOfSprite(sprite) || this.IsTouchingRightSideOfSprite(sprite) || this.IsTouchingTopSideOfSprite(sprite) || this.IsTouchingBottomSideOfSprite(sprite)))
-                    {
-                        if (this.Invincible == false)
-                        {
-                            this.IsRemoved = true;
-                        }
-
-                        sprite.IsRemoved = true;
-                    }
-                }
-            }
-        }*/
     }
 }

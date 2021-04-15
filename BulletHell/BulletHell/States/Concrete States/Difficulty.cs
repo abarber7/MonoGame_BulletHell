@@ -2,19 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using BulletHell.Controls;
+    using BulletHell.Game_Utilities;
+    using BulletHell.States.Emitters;
     using BulletHell.Utilities;
-    using global::BulletHell.Controls;
-    using global::BulletHell.Game_Utilities;
-    using global::BulletHell.States.Emitters;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     public class DifficultyState : State
     {
         private List<Component> components;
         private SnowEmitter snowEmitter;
-        private SpriteBatch spriteBatch;
         private Texture2D selectDifficultyTexture;
 
         public DifficultyState()
@@ -98,7 +96,7 @@
         {
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
-            this.snowEmitter = new SnowEmitter(new Emitters.SpriteLike(TextureFactory.Content.Load<Texture2D>("Particles/Snow")));
+            this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.Content.Load<Texture2D>("Particles/Snow")));
         }
 
         public override void Draw(GameTime gameTime)

@@ -32,10 +32,7 @@
             this.Position += this.Velocity;
         }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
+        public object Clone() => this.MemberwiseClone();
 
         public bool IsTouchingBottomOfScreen()
         {
@@ -101,25 +98,13 @@
             }
         }
 
-        public void ZeroXVelocity()
-        {
-            this.velocity.X = 0;
-        }
+        public void ZeroXVelocity() => this.velocity.X = 0;
 
-        public void ZeroYVelocity()
-        {
-            this.velocity.Y = 0;
-        }
+        public void ZeroYVelocity() => this.velocity.Y = 0;
 
-        public void InvertXVelocity()
-        {
-            this.velocity.X = -this.velocity.X;
-        }
+        public void InvertXVelocity() => this.velocity.X = -this.velocity.X;
 
-        public void InvertYVelocity()
-        {
-            this.velocity.Y = -this.velocity.Y;
-        }
+        public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
 
         protected Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
         {

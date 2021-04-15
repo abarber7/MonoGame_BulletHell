@@ -1,8 +1,9 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Movement_Patterns;
-    using global::BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
+    using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -12,8 +13,8 @@
         private float timer2;
         private float timer3;
 
-        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
-            : base(texture, color, movement, projectile, lifeSpan)
+        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan)
+            : base(texture, color, movement, projectile, powerUp, lifeSpan)
         {
         }
 

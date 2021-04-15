@@ -32,10 +32,7 @@
 
         public Rectangle Rectangle
         {
-            get
-            {
-                return new Rectangle((int)this.Position.X, (int)this.Position.Y, this.texture.Width, this.texture.Height);
-            }
+            get => new Rectangle((int)this.Position.X, (int)this.Position.Y, this.texture.Width, this.texture.Height);
         }
 
         public string Text { get; set; }

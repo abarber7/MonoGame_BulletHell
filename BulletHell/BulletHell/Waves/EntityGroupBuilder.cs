@@ -1,8 +1,8 @@
 ﻿namespace BulletHell.Waves
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites.Entities;
-    using global::BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.Movement_Patterns;
 
     internal class EntityGroupBuilder
     {

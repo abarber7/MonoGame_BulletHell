@@ -1,7 +1,7 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
     using System.Collections.Generic;
-    using global::BulletHell.The_Player;
+    using BulletHell.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 

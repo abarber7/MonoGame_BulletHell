@@ -1,7 +1,7 @@
 ﻿namespace BulletHell.Waves
 {
     using System.Collections.Generic;
-    using global::BulletHell.Sprites;
+    using BulletHell.Sprites;
 
     internal class Wave
     {
