@@ -10,6 +10,8 @@
     internal class CircularHoming : Attack
     {
         private int numberOfCycles = 1;
+        private float timer;
+        private float delayToAttack = 0.25f;
 
         public new Circular Movement;
 
@@ -19,14 +21,20 @@
             this.Movement = circularMovement;
         }
 
-        public override void Update(GameTime gametime, List<Sprite> sprites)
+        public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.CreateProjectile(sprites);
-            this.Move();
+            this.timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.Movement.cycleCount >= this.numberOfCycles)
+            if (this.timer > this.delayToAttack)
             {
-                this.IsRemoved = true;
+                this.timer = 0;
+                this.Move();
+                this.CreateProjectile(sprites);
+
+                if (this.Movement.cycleCount >= this.numberOfCycles)
+                {
+                    this.IsRemoved = true;
+                }
             }
         }
 
@@ -37,10 +45,10 @@
             newProjectile.Movement.Parent = newProjectile;
 
             Vector2 targetPosition = GameState.GetPlayerPosition();
-            Vector2 velocity = this.Movement.CalculateVelocity(this.Rectangle.Center.ToVector2(), targetPosition, newProjectile.Movement.Speed);
+            Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
+            newProjectile.Movement.Position = this.Movement.Position;
             newProjectile.Parent = this;
             sprites.Add(newProjectile);
         }

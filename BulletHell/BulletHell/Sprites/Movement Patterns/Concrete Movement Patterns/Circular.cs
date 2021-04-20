@@ -6,7 +6,6 @@
     internal class Circular : MovementPattern
     {
         public int cycleCount = 0;
-        private Vector2 originPosition;
         private double radius;
         private double startingDegrees;
         private double degreesToRotate;
@@ -15,7 +14,7 @@
 
         public Circular(Vector2 originPosition, double radius, double degreesToRotate, double startingDegrees)
         {
-            this.originPosition = originPosition;
+            this.Origin = originPosition;
             this.radius = radius;
             this.startingDegrees = startingDegrees;
             this.degreesToRotate = degreesToRotate;
@@ -24,8 +23,8 @@
 
         public override void Move()
         {
-            this.position.X = Convert.ToSingle(this.originPosition.X + (Math.Cos(this.currentDegrees) * this.radius));
-            this.position.Y = Convert.ToSingle(this.originPosition.X + (Math.Sin(this.currentDegrees) * this.radius));
+            this.position.X = Convert.ToSingle(this.Origin.X + (Math.Cos(this.currentDegrees * (Math.PI / 180)) * this.radius));
+            this.position.Y = Convert.ToSingle(this.Origin.X + (Math.Sin(this.currentDegrees * (Math.PI / 180)) * this.radius));
 
             if (this.currentDegrees + this.degreesToRotate > this.startingDegrees)
             {

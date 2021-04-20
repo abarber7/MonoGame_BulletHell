@@ -27,6 +27,8 @@
 
         public int Rotation { get; set; }
 
+        public bool reachedStart = false; // bool for if entity reached start position
+
         public virtual void Move()
         {
             this.Position += this.Velocity;

@@ -10,7 +10,6 @@
         private Vector2 startPosition;
         private Vector2 endPosition;
 
-        private bool reachedStart = false; // bool for if entity reached start position
         private bool exitTime = false; // bool for if it is time to exit
 
         private Timer timer = new Timer(15000); // timer for exit at 15000 mili seconds

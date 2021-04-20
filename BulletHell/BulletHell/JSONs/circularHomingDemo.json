@@ -39,15 +39,15 @@
       "waveDuration": 15,
       "entityGroups": [
         {
-          "entityAmount": 6,
+          "entityAmount": 1,
           "movementPattern": {
             "movementPatternType": "backAndForth",
-            "spawnXPosition": [ 400, 400, 200, 600, -400, 1200 ],
-            "spawnYPosition": [ -275, -275, -200, -200, 175, 175 ],
-            "startXPosition": [ 0, 800, 200, 600, 100, 700 ],
-            "startYPosition": [ 50, 50, 100, 100, 175, 175 ],
-            "endXPosition": [ 800, 0, 700, 100, 300, 500 ],
-            "endYPosition": [ 50, 50, 100, 100, 175, 175 ],
+            "spawnXPosition": [ 400 ],
+            "spawnYPosition": [ -275 ],
+            "startXPosition": [ 0 ],
+            "startYPosition": [ 50 ],
+            "endXPosition": [ 800 ],
+            "endYPosition": [ 50 ],
             "speed": 2
           },
 
@@ -88,8 +88,8 @@
                 "movementPatternType": "circular",
                 "originXPosition": 0,
                 "originYPosition": 0,
-                "radius": 20,
-                "degreesToRotate": 15,
+                "radius": 100,
+                "degreesToRotate": 30,
                 "startingDegrees": 90
               }
             }

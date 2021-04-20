@@ -48,7 +48,7 @@
                     new Point(this.Texture.Width, this.Texture.Height));
         }
 
-        public object Clone() => this.MemberwiseClone();
+        public virtual object Clone() => this.MemberwiseClone();
 
         public virtual void Update(GameTime gametime, List<Sprite> sprites)
         {

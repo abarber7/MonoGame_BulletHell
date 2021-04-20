@@ -19,10 +19,13 @@
 
         protected void Attack(List<Sprite> sprites)
         {
-            Attack attackClone = (Attack)this.attack.Clone();
-            attackClone.Movement.Position = this.Movement.Position;
+            if (this.Movement.reachedStart)
+            {
+                Attack attackClone = (Attack)this.attack.Clone();
+                attackClone.Movement.Origin = this.Movement.Position;
 
-            sprites.Add(attackClone);
+                sprites.Add(attackClone);
+            }
         }
     }
 }
