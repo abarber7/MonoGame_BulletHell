@@ -80,7 +80,7 @@
                 entity.Movement.Parent = entity;
             }
 
-            entity.attack.projectile.Movement.Parent = entity;
+            entity.attack.Projectile.Movement.Parent = entity;
 
             return entity;
         }

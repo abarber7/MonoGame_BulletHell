@@ -7,7 +7,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Entity : Sprite, ICloneable
+    internal abstract class Entity : Sprite
     {
         public Attack attack;
 
@@ -17,11 +17,12 @@
             this.attack = attack;
         }
 
-        public object Clone() => this.MemberwiseClone();
-
         protected void Attack(List<Sprite> sprites)
         {
-            this.attack.DoAttack(sprites, this);
+            Attack attackClone = (Attack)this.attack.Clone();
+            attackClone.Movement.Position = this.Movement.Position;
+
+            sprites.Add(attackClone);
         }
     }
 }

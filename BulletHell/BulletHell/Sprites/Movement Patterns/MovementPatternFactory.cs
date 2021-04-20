@@ -112,6 +112,16 @@
 
                     movementPattern = new Bounce(startPosition, velocity, speed);
                     break;
+                case "circular":
+                    Vector2 originPosition;
+                    originPosition.X = Convert.ToSingle((int)movementPatternProperties["originXPosition"]);
+                    originPosition.Y = Convert.ToSingle((int)movementPatternProperties["originYPosition"]);
+                    double radius = Convert.ToSingle((int)movementPatternProperties["radius"]);
+                    double degreesToRotate = Convert.ToSingle((int)movementPatternProperties["degreesToRotate"]);
+                    double startingDegrees = Convert.ToSingle((int)movementPatternProperties["startingDegrees"]);
+
+                    movementPattern = new Circular(originPosition, radius, degreesToRotate, startingDegrees);
+                    break;
                 default:
                     throw new Exception("Invalid Entity");
             }

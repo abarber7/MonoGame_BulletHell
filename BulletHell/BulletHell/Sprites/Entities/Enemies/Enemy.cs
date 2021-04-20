@@ -23,14 +23,14 @@
             this.PowerUp = powerUp;
         }
 
-        protected double LifeSpan { get; set; }
-
-        protected int HealthPoints { get; set; }
-
         // public because GameState looks at a Sprite version of the enemy?
         public PowerUp PowerUp { get; set; }
 
         public bool DropLoot { get; set; }
+
+        protected double LifeSpan { get; set; }
+
+        protected int HealthPoints { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -42,14 +42,7 @@
             }
 
             this.Movement.Move();
-            this.updatePowerUpsPosition();
-        }
-
-        private void updatePowerUpsPosition()
-        {
-            this.PowerUp.Movement.Origin = this.Movement.Origin;
-            this.PowerUp.Movement.Position = this.Movement.Position;
-           // this.PowerUp.Movement.
+            this.UpdatePowerUpsPosition();
         }
 
         public override void OnCollision(Sprite sprite)
@@ -88,6 +81,14 @@
             p.Movement.Velocity = velocity;
             p.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
             return p;
+        }
+
+        private void UpdatePowerUpsPosition()
+        {
+            this.PowerUp.Movement.Origin = this.Movement.Origin;
+            this.PowerUp.Movement.Position = this.Movement.Position;
+
+            // this.PowerUp.Movement.
         }
     }
 }

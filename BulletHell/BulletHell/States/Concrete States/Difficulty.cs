@@ -110,7 +110,7 @@
 
         private void NewGameHardButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGameDictionary("attackdemo");
+            GameLoader.LoadGameDictionary("circularHomingDemo");
 
             StateManager.ChangeState(new GameState());
         }

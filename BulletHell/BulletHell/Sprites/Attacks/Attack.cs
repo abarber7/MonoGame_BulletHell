@@ -1,20 +1,24 @@
 ﻿namespace BulletHell.Sprites
 {
+    using System;
     using System.Collections.Generic;
+    using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Attack
+    internal abstract class Attack : Sprite
     {
-        public Projectile projectile;
+        public Projectile Projectile;
 
-        protected Attack(Projectile projectile)
+        protected Attack(Projectile projectile, MovementPattern movement)
+            : base(null, Color.Transparent, movement)
         {
-            this.projectile = projectile;
+            this.Projectile = projectile;
         }
 
-        public virtual void DoAttack(List<Sprite> sprites, Sprite parent)
+        public virtual void CreateProjectile(List<Sprite> sprites)
         {
-
         }
     }
 }

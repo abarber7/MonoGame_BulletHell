@@ -1,11 +1,12 @@
 ﻿namespace BulletHell.Sprites
 {
+    using System;
     using System.Collections.Generic;
     using BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Sprite
+    internal abstract class Sprite : ICloneable
     {
         private readonly Color[] textureData;
         private bool isRemoved = false;
@@ -16,8 +17,11 @@
             this.Texture = texture;
             this.Color = color;
             this.Movement = movement;
-            this.textureData = new Color[texture.Width * texture.Height]; // array size is pixel amount in the texture
-            this.Texture.GetData(this.textureData);
+            if (texture != null)
+            {
+                this.textureData = new Color[texture.Width * texture.Height]; // array size is pixel amount in the texture
+                this.Texture.GetData(this.textureData);
+            }
         }
 
         public Texture2D Texture { get; set; }
@@ -43,6 +47,8 @@
                     new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
                     new Point(this.Texture.Width, this.Texture.Height));
         }
+
+        public object Clone() => this.MemberwiseClone();
 
         public virtual void Update(GameTime gametime, List<Sprite> sprites)
         {

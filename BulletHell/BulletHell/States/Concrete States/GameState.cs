@@ -18,6 +18,7 @@
         private static Player player;
         private List<Sprite> enemies;
         private List<Sprite> projectiles;
+        private List<Sprite> attacks;
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
@@ -62,7 +63,7 @@
             {
                 e.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                //this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", player.Lives), new Vector2(10, 10), Color.Black);
@@ -77,6 +78,8 @@
             this.enemies = new List<Sprite>();
 
             this.projectiles = new List<Sprite>();
+
+            this.attacks = new List<Sprite>();
 
             this.commandQueue = new List<ICommand>();
 
