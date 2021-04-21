@@ -73,18 +73,6 @@
             this.Movement.ZeroXVelocity();
             this.Movement.ZeroYVelocity();
 
-            if (this.Invincible == false)
-            {
-                if (sprite is Projectile projectile && projectile.Parent != this)
-                {
-                    this.IsRemoved = true;
-                }
-                else if (sprite is Enemy)
-                {
-                    this.IsRemoved = true;
-                }
-            }
-
             if (sprite is PowerUp)
             {
                 if (sprite is DamageUp)
@@ -94,6 +82,17 @@
                 else if (sprite is ExtraLife)
                 {
                     this.Lives += 1;
+                }
+            }
+            else if (this.Invincible == false)
+            {
+                if (sprite is Projectile projectile && projectile.Parent != this)
+                {
+                    this.IsRemoved = true;
+                }
+                else if (sprite is Enemy)
+                {
+                    this.IsRemoved = true;
                 }
             }
         }

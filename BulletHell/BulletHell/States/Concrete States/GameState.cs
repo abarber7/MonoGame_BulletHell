@@ -1,5 +1,6 @@
 ﻿namespace BulletHell.States
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using BulletHell.Game_Utilities;
@@ -7,10 +8,6 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-    using BulletHell.Sprites.Movement_Patterns;
-    using BulletHell.Sprites.PowerUps;
-    using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
-    using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using BulletHell.Waves;
@@ -54,14 +51,14 @@
             {
                 p.Draw(this.spriteBatch);
 
-                // this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var e in this.enemies)
             {
                 e.Draw(this.spriteBatch);
 
-                // this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.player.Lives), new Vector2(10, 10), Color.Black);
@@ -219,22 +216,38 @@
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)
         {
-            Texture2D hitboxTexture = new Texture2D(GraphicManagers.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
-            Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (i < sprite.Rectangle.Width ||
-                    i % sprite.Rectangle.Width == 0 ||
-                    i % sprite.Rectangle.Width == sprite.Rectangle.Width - 1 ||
-                    i > (sprite.Rectangle.Width * sprite.Rectangle.Height) - sprite.Rectangle.Width)
-                {
-                    data[i] = color;
-                }
-            }
+            Vector2 topLeft = new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Top);
+            Vector2 bottomLeft = new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Bottom);
+            Vector2 topRight = new Vector2(sprite.Rectangle.Right, sprite.Rectangle.Top);
+            Vector2 bottomRight = new Vector2(sprite.Rectangle.Right, sprite.Rectangle.Bottom);
+            this.DrawLine(topLeft, topRight, color); // top edge
+            this.DrawLine(topLeft, bottomLeft, color); // left edge
+            this.DrawLine(bottomLeft, bottomRight, color); // bottom edge
+            this.DrawLine(topRight, bottomRight, color); // right edge
+        }
 
-            hitboxTexture.SetData(data);
+        private void DrawLine(Vector2 start, Vector2 end, Color color)
+        {
+            Texture2D lineTexture = new Texture2D(GraphicManagers.GraphicsDevice, 1, 1);
+            lineTexture.SetData<Color>( new Color[] { Color.White }); // fill the texture with white
 
-            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Top), color);
+            Vector2 edge = end - start;
+            float angle = (float)Math.Atan2(edge.Y, edge.X); // calculate angle to rotate line
+
+
+            this.spriteBatch.Draw(
+                lineTexture,
+                new Rectangle( // rectangle defines shape of line and position of start of line
+                    (int)start.X,
+                    (int)start.Y,
+                    (int)edge.Length(), // spritebatch will strech the texture to fill this rectangle
+                    1), // width of line, change this to make thicker line
+                null, // source rectangle N/A
+                color, // color of line
+                angle, // angle of line (calulated above)
+                new Vector2(0, 0), // point in line about which to rotate
+                SpriteEffects.None,
+                0);
         }
 
         private void EndGamePrompt()
