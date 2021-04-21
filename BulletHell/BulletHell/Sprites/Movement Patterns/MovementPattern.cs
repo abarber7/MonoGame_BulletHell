@@ -19,13 +19,19 @@
 
         public Vector2 Position { get => this.position; set => this.position = value; }
 
-        public Vector2 Origin { get; set; }
-
         public int Speed { get; set; }
 
         public int CurrentSpeed { get; set; }
 
+        // Specifies the rotation axis of sprite, relative to the drawing
+        // bounds and based on sprite texture - only needed when using Draw method
+        public Vector2 Origin { get; set; }
+
+        // For rotating sprites when drawing; should be done in radians
         public int Rotation { get; set; }
+
+        public bool reachedStart = false; // bool for if entity reached start position
+        public bool exitTime = false; // bool for if it is time to exit
 
         public virtual void Move()
         {
@@ -106,7 +112,7 @@
 
         public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
 
-        protected Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
+        public Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
         {
             Vector2 velocity;
             velocity.X = endPosition.X - startPosition.X;

@@ -27,14 +27,15 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
-            : base(texture, color, movement, projectile)
+        public Player(Texture2D texture, Color color, MovementPattern movement, Attack attack, int hp, double cooldownToAttack)
+            : base(texture, color, movement, attack, hp, cooldownToAttack)
         {
             this.spawning = true;
             this.Invincible = true;
             this.damageLevel = 0;
-            this.Lives = 3;
         }
+
+        public int Lives { get; set; }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
@@ -57,6 +58,8 @@
 
             this.SetInvincibility(gameTime);
 
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
+
             this.Attack(enemies);
 
             int previousSpeed = this.Movement.CurrentSpeed;
@@ -73,7 +76,18 @@
             this.Movement.ZeroXVelocity();
             this.Movement.ZeroYVelocity();
 
-            if (this.Invincible == false)
+            if (sprite is PowerUp)
+            {
+                if (sprite is DamageUp)
+                {
+                    this.IncreaseDamage();
+                }
+                else if (sprite is ExtraLife)
+                {
+                    this.HP += 1;
+                }
+            }
+            else if (this.Invincible == false)
             {
                 if (sprite is Projectile projectile && projectile.Parent != this)
                 {
@@ -84,21 +98,69 @@
                     this.IsRemoved = true;
                 }
             }
+        }
 
-            if (sprite is PowerUp)
+        public bool IsSlowPressed()
+        {
+            if (this.currentKey.IsKeyDown(Keys.LeftShift))
             {
-                if (sprite is DamageUp)
-                {
-                    this.IncreaseDamage();
-                }
-                else if (sprite is ExtraLife)
-                {
-                    this.Lives += 1;
-                }
+                this.Movement.CurrentSpeed = this.Movement.Speed / 2;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Respawn(GameTime gameTime)
+        {
+            ((PlayerInput)this.Movement).Respawn();
+            this.IsRemoved = false;
+            this.spawning = true;
+            this.Invincible = true;
+            this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
+        }
+
+        private void IncreaseDamage()
+        {
+            this.damageLevel += 1;
+            switch (this.damageLevel)
+            {
+                case 1:
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    break;
+                case 2:
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    break;
+                case 3:
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    break;
+                default:
+                    Debug.WriteLine("At max damage level");
+                    break;
             }
         }
 
-        public int Lives { get; set; }
+        private void SetInvincibility(GameTime gameTime)
+        {
+            if (this.spawning == true)
+            {
+                if ((gameTime.TotalGameTime.TotalSeconds - this.initialSpawnTime) >= 2)
+                {
+                    this.Invincible = false;
+                    this.spawning = false;
+                }
+            }
+            else
+            {
+                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                {
+                    this.Invincible = !this.Invincible;
+                }
+            }
+        }
 
         private void IncreaseDamage()
         {
@@ -123,49 +185,11 @@
             }
         }
 
-        public bool IsSlowPressed()
-        {
-            if (this.currentKey.IsKeyDown(Keys.LeftShift))
-            {
-                this.Movement.CurrentSpeed = this.Movement.Speed / 2;
-                return true;
-            }
-
-            return false;
-        }
-
-        public void Respawn(GameTime gameTime)
-        {
-            ((PlayerInput)this.Movement).Respawn();
-            this.IsRemoved = false;
-            this.spawning = true;
-            this.Invincible = true;
-            this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
-        }
-
-        private void SetInvincibility(GameTime gameTime)
-        {
-            if (this.spawning == true)
-            {
-                if ((gameTime.TotalGameTime.TotalSeconds - this.initialSpawnTime) >= 2)
-                {
-                    this.Invincible = false;
-                    this.spawning = false;
-                }
-            }
-            else
-            {
-                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
-                {
-                    this.Invincible = !this.Invincible;
-                }
-            }
-        }
-
         private new void Attack(List<Sprite> sprites)
         {
-            if (this.currentKey.IsKeyDown(Keys.Space) && this.previousKey.IsKeyUp(Keys.Space))
+            if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Keys.Space) && this.previousKey.IsKeyUp(Keys.Space))
             {
+                this.timer = 0;
                 base.Attack(sprites);
             }
         }
