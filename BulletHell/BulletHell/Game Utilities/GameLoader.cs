@@ -55,7 +55,7 @@
 
             if (o is long)
             {
-                return Convert.ToInt32(o);
+                return Convert.ToDouble(o);
             }
 
             return o;

@@ -15,6 +15,8 @@
             this.Movement.Parent = this;
         }
 
+        public double DropPercent { get; set; }
+
         public override Rectangle Rectangle
         {
             get => new Rectangle(

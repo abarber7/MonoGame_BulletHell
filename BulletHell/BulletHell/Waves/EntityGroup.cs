@@ -24,12 +24,8 @@
             {
                 Entity enemy = (Entity)this.entityType.Clone();
 
-                if (this.entityAmount > 1)
-                {
-                    enemy.Movement = this.movementPatterns[i];
-                    enemy.Projectile.Movement.Parent = enemy;
-                    enemy.Movement.Parent = enemy;
-                }
+                enemy.Movement = this.movementPatterns[i];
+                enemy.Movement.Parent = enemy;
 
                 sprites.Add(enemy);
             }

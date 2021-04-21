@@ -9,43 +9,14 @@
 
     internal class ComplexGrunt : Enemy
     {
-        private float timer1;
-        private float timer2;
-        private float timer3;
-
-        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan)
-            : base(texture, color, movement, projectile, powerUp, lifeSpan)
+        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double attackCooldown)
+            : base(texture, color, movement, attack, powerUp, lifeSpan, hp, attackCooldown)
         {
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             base.Update(gameTime, sprites);
-
-            this.timer1 += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.timer2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.timer3 += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer1 > .8f)
-            {
-                this.timer1 = 0;
-                this.Attack(sprites);
-            }
-
-            if (this.timer2 > .9f)
-            {
-                this.timer1 = 0;
-                this.timer2 = 0;
-                this.Attack(sprites);
-            }
-
-            if (this.timer3 > 1f)
-            {
-                this.timer1 = 0;
-                this.timer2 = 0;
-                this.timer3 = 0;
-                this.Attack(sprites);
-            }
         }
     }
 }

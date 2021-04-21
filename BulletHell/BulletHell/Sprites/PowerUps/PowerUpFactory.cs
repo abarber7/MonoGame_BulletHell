@@ -21,8 +21,9 @@
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)powerUpProperties["movementPattern"]);
             movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Origin is based on texture
 
-            int dropPercent = (int)powerUpProperties["dropPercent"];
-            PowerUp powerUp = powerUpProperties["powerUpType"] switch
+            double dropPercent = (double)powerUpProperties["dropPercent"];
+
+            switch (powerUpProperties["powerUpType"])
             {
                 "damageUp" => new DamageUp(texture, color, movement, dropPercent),
                 "extraLife" => new ExtraLife(texture, color, movement, dropPercent),

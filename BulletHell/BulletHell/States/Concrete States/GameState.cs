@@ -16,9 +16,10 @@
 
     public class GameState : State
     {
-        private Player player;
+        private static Player player;
         private List<Sprite> enemies;
         private List<Sprite> projectiles;
+        private List<Sprite> attacks;
         private List<Wave> waves;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
@@ -30,21 +31,26 @@
         {
         }
 
+        public static Vector2 GetPlayerPosition()
+        {
+            return player.GetCenterOfSprite();
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             this.spriteBatch.Begin();
 
-            this.player.Draw(this.spriteBatch);
+            player.Draw(this.spriteBatch);
 
-            if (this.player.Invincible)
+            if (player.Invincible)
             {
-                this.DrawBoxAroundSprite(this.player, Color.Crimson);
+                this.DrawBoxAroundSprite(player, Color.Crimson);
             }
 
-            if (this.player.SlowMode)
+            if (player.SlowMode)
             {
-                this.DrawBoxAroundSprite(this.player, Color.White);
-                this.player.SlowMode = false;
+                this.DrawBoxAroundSprite(player, Color.White);
+                player.SlowMode = false;
             }
 
             foreach (var projectile in this.projectiles)
@@ -61,7 +67,7 @@
                 this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.player.Lives), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", player.HP), new Vector2(10, 10), Color.Black);
 
             this.spriteBatch.End();
         }
@@ -74,9 +80,11 @@
 
             this.projectiles = new List<Sprite>();
 
+            this.attacks = new List<Sprite>();
+
             this.commandQueue = new List<ICommand>();
 
-            this.player = GameLoader.LoadPlayer();
+            player = GameLoader.LoadPlayer();
 
             this.CreateWaves();
 
@@ -90,7 +98,7 @@
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
-            if (this.player.Lives == 0 || this.finalBossDefeated)
+            if (player.HP == 0 || this.finalBossDefeated)
             {
                 this.EndGamePrompt();
             }
@@ -108,16 +116,19 @@
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
-            this.commandQueue.Add(new UpdateCommand(this.player, gameTime, this.projectiles));
+            this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.projectiles)); }); // projectiles used here as container where Attack() adds sprites
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // projectiles used here as container where Attack() adds sprites
+
+            // Create attack update commands
+            this.attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
             this.projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
 
             // Create player collision check command, using both enemies and projectiles to check against
-            this.commandQueue.Add(new CollisionCheckCommand(this.player, this.enemies.Concat(this.projectiles).ToList())); // Did player hit any enemies or projectiles
+            this.commandQueue.Add(new CollisionCheckCommand(player, this.enemies.Concat(this.projectiles).ToList())); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
             this.enemies.ForEach((e) => { this.commandQueue.Add(new CollisionCheckCommand(e, this.projectiles)); }); // Did player projectiles hit any enemies
@@ -134,11 +145,11 @@
 
         private void RemoveSprites(GameTime gameTime)
         {
-            if (this.player.IsRemoved)
+            if (player.IsRemoved)
             {
-                this.player.Lives--;
+                player.HP--;
                 this.projectiles.Clear(); // Remove all projectiles
-                this.player.Respawn(gameTime);
+                player.Respawn(gameTime);
             }
 
             for (int i = this.enemies.Count - 1; i >= 0; i--)
@@ -168,6 +179,14 @@
                 if (this.projectiles[i].IsRemoved)
                 {
                     this.projectiles.RemoveAt(i);
+                }
+            }
+
+            for (int i = this.attacks.Count - 1; i >= 0; i--)
+            {
+                if (this.attacks[i].IsRemoved)
+                {
+                    this.attacks.RemoveAt(i);
                 }
             }
         }
@@ -252,7 +271,7 @@
 
         private void EndGamePrompt()
         {
-            if (this.player.Lives == 0)
+            if (player.HP == 0)
             {
                 StateManager.ChangeState(new GameOverLose());
             }
