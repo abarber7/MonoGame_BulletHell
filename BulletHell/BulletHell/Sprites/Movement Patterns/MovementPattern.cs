@@ -19,12 +19,15 @@
 
         public Vector2 Position { get => this.position; set => this.position = value; }
 
-        public Vector2 Origin { get; set; }
-
         public int Speed { get; set; }
 
         public int CurrentSpeed { get; set; }
 
+        // Specifies the rotation axis of sprite, relative to the drawing
+        // bounds and based on sprite texture - only needed when using Draw method
+        public Vector2 Origin { get; set; }
+
+        // For rotating sprites when drawing; should be done in radians
         public int Rotation { get; set; }
 
         public bool reachedStart = false; // bool for if entity reached start position
