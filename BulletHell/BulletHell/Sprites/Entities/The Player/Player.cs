@@ -35,6 +35,8 @@
             this.damageLevel = 0;
         }
 
+        public int Lives { get; set; }
+
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
         {
@@ -74,18 +76,6 @@
             this.Movement.ZeroXVelocity();
             this.Movement.ZeroYVelocity();
 
-            if (this.Invincible == false)
-            {
-                if (sprite is Projectile projectile && projectile.Parent != this)
-                {
-                    this.IsRemoved = true;
-                }
-                else if (sprite is Enemy)
-                {
-                    this.IsRemoved = true;
-                }
-            }
-
             if (sprite is PowerUp)
             {
                 if (sprite is DamageUp)
@@ -95,6 +85,17 @@
                 else if (sprite is ExtraLife)
                 {
                     this.HP += 1;
+                }
+            }
+            else if (this.Invincible == false)
+            {
+                if (sprite is Projectile projectile && projectile.Parent != this)
+                {
+                    this.IsRemoved = true;
+                }
+                else if (sprite is Enemy)
+                {
+                    this.IsRemoved = true;
                 }
             }
         }
@@ -158,6 +159,29 @@
                 {
                     this.Invincible = !this.Invincible;
                 }
+            }
+        }
+
+        private void IncreaseDamage()
+        {
+            this.damageLevel += 1;
+            switch (this.damageLevel)
+            {
+                case 1:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    break;
+                case 2:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    break;
+                case 3:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    break;
+                default:
+                    Debug.WriteLine("At max damage level");
+                    break;
             }
         }
 

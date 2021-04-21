@@ -1,17 +1,15 @@
 ﻿namespace BulletHell.Sprites.PowerUps
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class PowerUp : Sprite, ICloneable
+    internal abstract class PowerUp : Projectile
     {
-        protected PowerUp(Texture2D texture, Color color, MovementPattern movement, double dropPercent)
-            : base(texture, color, movement)
+        public PowerUp(Texture2D texture, Color color, MovementPattern movement, int dropPercent)
+            : base(texture, color, movement, 0) // projectile does 0 damage
         {
             this.DropPercent = dropPercent;
             this.Movement.Parent = this;
@@ -22,14 +20,11 @@
         public override Rectangle Rectangle
         {
             get => new Rectangle(
-                    new Point((int)this.Movement.Position.X - this.Texture.Width, (int)this.Movement.Position.Y - (int)Math.Round(this.Texture.Height * 2.5)),
-                    new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
+                    new Point((int)this.Movement.Position.X - (this.Texture.Width), (int)this.Movement.Position.Y - (this.Texture.Height)),
+                    new Point(this.Texture.Width * 2, this.Texture.Height * 2));
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> sprites)
-        {
-            this.Move();
-        }
+        public int DropPercent { get; set; }
 
         public override void OnCollision(Sprite sprite)
         {
@@ -37,33 +32,6 @@
             if (sprite is Player)
             {
                 this.IsRemoved = true;
-            }
-        }
-
-        public virtual void Move()
-        {
-            if (this.OutOfBounds())
-            {
-                this.IsRemoved = true;
-            }
-
-            this.Movement.Move();
-        }
-
-        public object Clone() => this.MemberwiseClone();
-
-        public bool OutOfBounds()
-        {
-            if (this.Movement.IsTouchingLeftOfScreen() ||
-                this.Movement.IsTouchingRightOfScreen() ||
-                this.Movement.IsTouchingBottomOfScreen() ||
-                this.Movement.IsTouchingTopOfScreen())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }
