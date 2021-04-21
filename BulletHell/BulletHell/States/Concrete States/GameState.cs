@@ -245,7 +245,7 @@
                 null, // source rectangle N/A
                 color, // color of line
                 angle, // angle of line (calulated above)
-                new Vector2(0, 0), // point in line about which to rotate
+                Vector2.Zero, // point in line about which to rotate
                 SpriteEffects.None,
                 0);
         }

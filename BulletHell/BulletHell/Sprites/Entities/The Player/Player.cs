@@ -36,6 +36,8 @@
             this.Lives = 3;
         }
 
+        public int Lives { get; set; }
+
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
         {
@@ -97,31 +99,6 @@
             }
         }
 
-        public int Lives { get; set; }
-
-        private void IncreaseDamage()
-        {
-            this.damageLevel += 1;
-            switch (this.damageLevel)
-            {
-                case 1:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
-                    break;
-                case 2:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
-                    break;
-                case 3:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
-                    break;
-                default:
-                    Debug.WriteLine("At max damage level");
-                    break;
-            }
-        }
-
         public bool IsSlowPressed()
         {
             if (this.currentKey.IsKeyDown(Keys.LeftShift))
@@ -158,6 +135,29 @@
                 {
                     this.Invincible = !this.Invincible;
                 }
+            }
+        }
+
+        private void IncreaseDamage()
+        {
+            this.damageLevel += 1;
+            switch (this.damageLevel)
+            {
+                case 1:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    break;
+                case 2:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    break;
+                case 3:
+                    this.Projectile.Damage += 1;
+                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    break;
+                default:
+                    Debug.WriteLine("At max damage level");
+                    break;
             }
         }
 

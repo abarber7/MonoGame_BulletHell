@@ -23,14 +23,14 @@
             this.PowerUp = powerUp;
         }
 
+        public bool DropLoot { get; set; }
+
         protected double LifeSpan { get; set; }
 
         protected int HealthPoints { get; set; }
 
         // public because GameState looks at a Sprite version of the enemy?
-        public PowerUp PowerUp { get; set; }
-
-        public bool DropLoot { get; set; }
+        protected PowerUp PowerUp { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -42,14 +42,6 @@
             }
 
             this.Movement.Move();
-            this.updatePowerUpsPosition();
-        }
-
-        private void updatePowerUpsPosition()
-        {
-            this.PowerUp.Movement.Origin = this.Movement.Origin;
-            this.PowerUp.Movement.Position = this.Movement.Position;
-           // this.PowerUp.Movement.
         }
 
         public override void OnCollision(Sprite sprite)
@@ -79,15 +71,16 @@
 
         public PowerUp GetLoot()
         {
-            PowerUp p = this.PowerUp.Clone() as PowerUp;
-            p.Movement = this.PowerUp.Movement.Clone() as MovementPattern;
-            Vector2 velocity = p.Movement.Velocity;
+            PowerUp powerUp = this.PowerUp.Clone() as PowerUp;
+            powerUp.Movement = this.PowerUp.Movement.Clone() as MovementPattern;
+            Vector2 velocity = powerUp.Movement.Velocity;
             velocity.Normalize();
-            velocity.X *= p.Movement.Speed;
-            velocity.Y *= p.Movement.Speed;
-            p.Movement.Velocity = velocity;
-            p.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
-            return p;
+            velocity.X *= powerUp.Movement.Speed;
+            velocity.Y *= powerUp.Movement.Speed;
+            powerUp.Movement.Velocity = velocity;
+            Random random = new Random();
+            powerUp.Movement.Position = new Vector2(random.Next(100, 700), 70); // Spawn origin x-coordinate randomized in center portion of screen
+            return powerUp;
         }
     }
 }

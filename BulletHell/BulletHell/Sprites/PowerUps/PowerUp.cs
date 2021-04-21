@@ -18,7 +18,7 @@
         public override Rectangle Rectangle
         {
             get => new Rectangle(
-                    new Point((int)this.Movement.Position.X - (this.Texture.Width / 2), (int)this.Movement.Position.Y - (this.Texture.Height / 2)),
+                    new Point((int)this.Movement.Position.X - (this.Texture.Width), (int)this.Movement.Position.Y - (this.Texture.Height)),
                     new Point(this.Texture.Width * 2, this.Texture.Height * 2));
         }
 
