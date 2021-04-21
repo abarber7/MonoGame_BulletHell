@@ -56,6 +56,8 @@
 
             this.SetInvincibility(gameTime);
 
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
+
             this.Attack(enemies);
 
             int previousSpeed = this.Movement.CurrentSpeed;
@@ -161,8 +163,9 @@
 
         private new void Attack(List<Sprite> sprites)
         {
-            if (this.currentKey.IsKeyDown(Keys.Space) && this.previousKey.IsKeyUp(Keys.Space))
+            if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Keys.Space) && this.previousKey.IsKeyUp(Keys.Space))
             {
+                this.timer = 0;
                 base.Attack(sprites);
             }
         }

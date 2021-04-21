@@ -10,6 +10,7 @@
     internal abstract class Attack : Sprite
     {
         public Projectile projectile;
+        public Sprite Attacker;
         protected double timer = 0;
         protected double projectileSpawnCooldown;
 

@@ -4,13 +4,13 @@
     "textureName": "hitboxTestEnemy",
     "color": "Blue",
     "hp": 3,
-    "attackCooldown": 0.5,
+    "attackCooldown": 0.25,
     "movementPattern": {
       "movementPatternType": "playerInput",
-      "spawnXPosition": 400,
-      "spawnYPosition": 550,
-      "startXPosition": 400,
-      "startYPosition": 350,
+      "spawnXPosition": 240,
+      "spawnYPosition": 800,
+      "startXPosition": 240,
+      "startYPosition": 600,
       "speed": 2
     },
     "attack": {
@@ -25,7 +25,7 @@
           "movementPatternType": "linear",
           "xVelocity": 0,
           "yVelocity": -1,
-          "speed": 4
+          "speed": 5
         }
       },
       "movementPattern": {
@@ -85,12 +85,12 @@
                   "movementPatternType": "linear",
                   "xVelocity": 0,
                   "yVelocity": -1,
-                  "speed": 4
+                  "speed": 3
                 }
               },
               "movementPattern": {
                 "movementPatternType": "circular",
-                "timesToCycles": 3,
+                "timesToCycles": 2,
                 "originXPosition": 0,
                 "originYPosition": 0,
                 "radius": 0,
@@ -151,12 +151,12 @@
                   "movementPatternType": "linear",
                   "xVelocity": 0,
                   "yVelocity": -1,
-                  "speed": 4
+                  "speed": 3
                 }
               },
               "movementPattern": {
                 "movementPatternType": "circular",
-                "timesToCycles": 3,
+                "timesToCycles": 2,
                 "originXPosition": 0,
                 "originYPosition": 0,
                 "radius": 0,

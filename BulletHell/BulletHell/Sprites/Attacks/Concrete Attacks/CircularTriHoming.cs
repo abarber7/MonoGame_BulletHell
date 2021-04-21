@@ -47,7 +47,7 @@
 
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Movement.Position = this.Movement.GetActualPosition();
-            newProjectile.Parent = this;
+            newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
 
             Projectile secondProjectile = this.projectile.Clone() as Projectile;
@@ -60,7 +60,7 @@
 
             secondProjectile.Movement.Velocity = secondVelocity;
             secondProjectile.Movement.Position = this.Movement.GetActualPosition();
-            secondProjectile.Parent = this;
+            secondProjectile.Parent = this.Attacker;
             sprites.Add(secondProjectile);
 
             Projectile thirdProjectile = this.projectile.Clone() as Projectile;
@@ -73,7 +73,7 @@
 
             thirdProjectile.Movement.Velocity = thirdVelocity;
             thirdProjectile.Movement.Position = this.Movement.GetActualPosition();
-            thirdProjectile.Parent = this;
+            thirdProjectile.Parent = this.Attacker;
             sprites.Add(thirdProjectile);
         }
 

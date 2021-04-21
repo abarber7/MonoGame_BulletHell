@@ -24,10 +24,10 @@
 
         protected void Attack(List<Sprite> sprites)
         {
-            if (this.Movement.reachedStart && !this.Movement.exitTime)
+             if (this.Movement.reachedStart && !this.Movement.exitTime)
             {
                 Attack attackClone = (Attack)this.attack.Clone();
-                attackClone.Movement.Parent = this;
+                attackClone.Attacker = this;
                 attackClone.Movement.Position = this.GetCenterOfSprite();
 
                 sprites.Add(attackClone);

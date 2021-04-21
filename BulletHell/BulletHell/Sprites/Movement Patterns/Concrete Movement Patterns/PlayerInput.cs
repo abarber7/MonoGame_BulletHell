@@ -23,6 +23,7 @@
         public void Respawn()
         {
             this.respawning = true;
+            this.reachedStart = false;
             this.position = this.spawnPosition;
             this.CurrentSpeed = this.Speed * 2;
             this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
@@ -36,6 +37,7 @@
                 if (this.ExceededPosition(this.spawnPosition, this.startPosition, this.Velocity))
                 {
                     this.respawning = false; // change bool so entity will move in the pattern
+                    this.reachedStart = true;
                     this.CurrentSpeed = this.Speed;
                     this.ZeroXVelocity();
                     this.ZeroYVelocity();

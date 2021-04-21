@@ -115,7 +115,7 @@
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
-            this.commandQueue.Add(new UpdateCommand(player, gameTime, this.projectiles));
+            this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
 
             // Create enemy update commands
             this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // projectiles used here as container where Attack() adds sprites
