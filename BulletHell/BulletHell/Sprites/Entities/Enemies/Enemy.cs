@@ -6,6 +6,7 @@
     using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -75,8 +76,10 @@
             velocity.X *= powerUp.Movement.Speed;
             velocity.Y *= powerUp.Movement.Speed;
             powerUp.Movement.Velocity = velocity;
+
             Random random = new Random();
-            powerUp.Movement.Position = new Vector2(random.Next(100, 300), 70); // Spawn origin x-coordinate randomized in center portion of screen
+            int screenMiddle = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth / 2;
+            powerUp.Movement.Position = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
             return powerUp;
         }
     }
