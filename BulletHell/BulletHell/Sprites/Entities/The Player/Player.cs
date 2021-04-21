@@ -1,6 +1,5 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using BulletHell.Sprites.Entities;
@@ -120,29 +119,6 @@
             this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
-        private void IncreaseDamage()
-        {
-            this.damageLevel += 1;
-            switch (this.damageLevel)
-            {
-                case 1:
-                    this.attack.projectile.Damage += 1;
-                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet2");
-                    break;
-                case 2:
-                    this.attack.projectile.Damage += 1;
-                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet3");
-                    break;
-                case 3:
-                    this.attack.projectile.Damage += 1;
-                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet4");
-                    break;
-                default:
-                    Debug.WriteLine("At max damage level");
-                    break;
-            }
-        }
-
         private void SetInvincibility(GameTime gameTime)
         {
             if (this.spawning == true)
@@ -168,16 +144,16 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet2");
                     break;
                 case 2:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet3");
                     break;
                 case 3:
-                    this.Projectile.Damage += 1;
-                    this.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet4");
                     break;
                 default:
                     Debug.WriteLine("At max damage level");
