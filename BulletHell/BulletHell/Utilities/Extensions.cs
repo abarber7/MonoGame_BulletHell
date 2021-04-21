@@ -10,7 +10,7 @@
             return new Microsoft.Xna.Framework.Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A);
         }
 
-        public static System.Drawing.Color ToDrawing(this Microsoft.Xna.Framework.Color drawingColor)
+        public static Color ToDrawing(this Microsoft.Xna.Framework.Color drawingColor)
         {
             return System.Drawing.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
