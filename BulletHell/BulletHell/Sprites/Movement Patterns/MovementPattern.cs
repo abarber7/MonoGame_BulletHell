@@ -27,6 +27,9 @@
 
         public int Rotation { get; set; }
 
+        public bool reachedStart = false; // bool for if entity reached start position
+        public bool exitTime = false; // bool for if it is time to exit
+
         public virtual void Move()
         {
             this.Position += this.Velocity;
@@ -106,7 +109,7 @@
 
         public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
 
-        protected Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
+        public Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
         {
             Vector2 velocity;
             velocity.X = endPosition.X - startPosition.X;

@@ -13,24 +13,21 @@
     {
         private double timer;
 
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, PowerUp powerUp, int lifeSpan, int hp = 10)
-            : base(texture, color, movement, projectile)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double attackCooldown)
+            : base(texture, color, movement, attack, hp, attackCooldown)
         {
             this.LifeSpan = lifeSpan;
-            this.HealthPoints = hp;
             this.timer = 0;
             this.DropLoot = false;
             this.PowerUp = powerUp;
         }
 
-        protected double LifeSpan { get; set; }
-
-        protected int HealthPoints { get; set; }
-
         // public because GameState looks at a Sprite version of the enemy?
         public PowerUp PowerUp { get; set; }
 
         public bool DropLoot { get; set; }
+
+        protected double LifeSpan { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -42,14 +39,7 @@
             }
 
             this.Movement.Move();
-            this.updatePowerUpsPosition();
-        }
-
-        private void updatePowerUpsPosition()
-        {
-            this.PowerUp.Movement.Origin = this.Movement.Origin;
-            this.PowerUp.Movement.Position = this.Movement.Position;
-           // this.PowerUp.Movement.
+            this.UpdatePowerUpsPosition();
         }
 
         public override void OnCollision(Sprite sprite)
@@ -59,8 +49,8 @@
                 // Ignore projectiles from fellow enemies/self
                 if (projectile.Parent is Player)
                 {
-                    this.HealthPoints -= projectile.Damage;
-                    if (this.HealthPoints <= 0)
+                    this.HP -= projectile.Damage;
+                    if (this.HP <= 0)
                     {
                         this.IsRemoved = true;
                         Random rnd = new Random();
@@ -88,6 +78,14 @@
             p.Movement.Velocity = velocity;
             p.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
             return p;
+        }
+
+        private void UpdatePowerUpsPosition()
+        {
+            this.PowerUp.Movement.Origin = this.Movement.Origin;
+            this.PowerUp.Movement.Position = this.Movement.Position;
+
+            // this.PowerUp.Movement.
         }
     }
 }

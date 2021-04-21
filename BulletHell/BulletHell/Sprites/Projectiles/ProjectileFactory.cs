@@ -23,7 +23,7 @@
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)projectileProperties["movementPattern"]);
             movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
 
-            int damage = (int)projectileProperties["damage"];
+            int damage = Convert.ToInt32((double)projectileProperties["damage"]);
 
             switch (projectileProperties["projectileType"])
             {

@@ -1,13 +1,13 @@
 ﻿namespace BulletHell.Sprites.PowerUps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     internal class PowerUpFactory
     {
@@ -24,7 +24,7 @@
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)powerUpProperties["movementPattern"]);
             movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
 
-            int dropPercent = (int)powerUpProperties["dropPercent"];
+            double dropPercent = (double)powerUpProperties["dropPercent"];
 
             switch (powerUpProperties["powerUpType"])
             {

@@ -7,34 +7,31 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Entity : Sprite, ICloneable
+    internal abstract class Entity : Sprite
     {
-        public Projectile Projectile;
-        public ushort AttackSpeed = 1;
+        public int HP;
+        protected double timer;
+        protected double attackCooldown;
+        protected Attack attack;
 
-        protected Entity(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
+        protected Entity(Texture2D texture, Color color, MovementPattern movement, Attack attack, int hp, double attackCooldown)
             : base(texture, color, movement)
         {
-            this.Projectile = projectile;
+            this.attack = attack;
+            this.HP = hp;
+            this.attackCooldown = attackCooldown;
         }
-
-        public object Clone() => this.MemberwiseClone();
 
         protected void Attack(List<Sprite> sprites)
         {
-            // TODO: needs refactoring and moved to Attack object
-            Projectile newProjectile = this.Projectile.Clone() as Projectile;
-            int projectileSpeed = newProjectile.Movement.Speed;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.Parent = newProjectile;
-            Vector2 velocity = newProjectile.Movement.Velocity;
-            velocity.Normalize();
-            velocity.X *= projectileSpeed;
-            velocity.Y *= projectileSpeed;
-            newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
-            newProjectile.Parent = this;
-            sprites.Add(newProjectile);
+             if (this.Movement.reachedStart && !this.Movement.exitTime)
+            {
+                Attack attackClone = (Attack)this.attack.Clone();
+                attackClone.Attacker = this;
+                attackClone.Movement.Position = this.GetCenterOfSprite();
+
+                sprites.Add(attackClone);
+            }
         }
     }
 }
