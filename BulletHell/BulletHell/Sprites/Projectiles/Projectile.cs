@@ -58,8 +58,6 @@
             this.Movement.Move();
         }
 
-        public object Clone() => this.MemberwiseClone();
-
         public bool OutOfBounds()
         {
             if (this.Movement.IsTouchingLeftOfScreen() ||
