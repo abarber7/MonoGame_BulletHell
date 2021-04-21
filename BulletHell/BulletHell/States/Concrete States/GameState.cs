@@ -47,18 +47,18 @@
                 this.player.SlowMode = false;
             }
 
-            foreach (var p in this.projectiles)
+            foreach (var projectile in this.projectiles)
             {
-                p.Draw(this.spriteBatch);
+                projectile.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            foreach (var e in this.enemies)
+            foreach (var enemy in this.enemies)
             {
-                e.Draw(this.spriteBatch);
+                enemy.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.player.Lives), new Vector2(10, 10), Color.Black);
@@ -127,7 +127,7 @@
         {
             if (this.commandQueue != null)
             {
-                this.commandQueue.ForEach((c) => { c.Execute(); });
+                this.commandQueue.ForEach((command) => { command.Execute(); });
                 this.commandQueue.Clear();
             }
         }
@@ -152,10 +152,10 @@
                     }
                     else
                     {
-                        Enemy e = (Enemy)this.enemies[i];
-                        if (e.DropLoot)
+                        Enemy enemy = (Enemy)this.enemies[i];
+                        if (enemy.DropLoot)
                         {
-                            this.projectiles.Add(e.GetLoot()); // powerUp has a movement pattern, its update will just move it down
+                            this.projectiles.Add(enemy.GetLoot()); // powerUp has a movement pattern, its update will just move it down
                         }
 
                         this.enemies.RemoveAt(i);
@@ -216,32 +216,31 @@
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)
         {
+            Texture2D lineTexture = new Texture2D(GraphicManagers.GraphicsDevice, 1, 1);
+            lineTexture.SetData(new Color[] { Color.White }); // fill the texture with white
+
             Vector2 topLeft = new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Top);
             Vector2 bottomLeft = new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Bottom);
             Vector2 topRight = new Vector2(sprite.Rectangle.Right, sprite.Rectangle.Top);
             Vector2 bottomRight = new Vector2(sprite.Rectangle.Right, sprite.Rectangle.Bottom);
-            this.DrawLine(topLeft, topRight, color); // top edge
-            this.DrawLine(topLeft, bottomLeft, color); // left edge
-            this.DrawLine(bottomLeft, bottomRight, color); // bottom edge
-            this.DrawLine(topRight, bottomRight, color); // right edge
+            this.DrawLine(lineTexture, topLeft, topRight, color); // top edge
+            this.DrawLine(lineTexture, topLeft, bottomLeft, color); // left edge
+            this.DrawLine(lineTexture, bottomLeft, bottomRight, color); // bottom edge
+            this.DrawLine(lineTexture, topRight, bottomRight, color); // right edge
         }
 
         // Source: https://gamedev.stackexchange.com/a/44016
-        private void DrawLine(Vector2 start, Vector2 end, Color color)
+        private void DrawLine(Texture2D lineTexture, Vector2 start, Vector2 end, Color color)
         {
-            Texture2D lineTexture = new Texture2D(GraphicManagers.GraphicsDevice, 1, 1);
-            lineTexture.SetData<Color>( new Color[] { Color.White }); // fill the texture with white
-
             Vector2 edge = end - start;
-            float angle = (float)Math.Atan2(edge.Y, edge.X); // calculate angle to rotate line
-
+            float angle = (float)Math.Atan2(edge.Y, edge.X); // calculate angle to rotate line (for left/right sides)
 
             this.spriteBatch.Draw(
                 lineTexture,
                 new Rectangle( // rectangle defines shape of line and position of start of line
                     (int)start.X,
                     (int)start.Y,
-                    (int)edge.Length(), // spritebatch will strech the texture to fill this rectangle
+                    (int)edge.Length(), // spriteBatch will strech the texture to fill this rectangle
                     1), // width of line, change this to make thicker line
                 null, // source rectangle N/A
                 color, // color of line

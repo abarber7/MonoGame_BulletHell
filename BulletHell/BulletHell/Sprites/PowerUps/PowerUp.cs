@@ -8,11 +8,18 @@
 
     internal abstract class PowerUp : Projectile
     {
-        protected PowerUp(Texture2D texture, Color color, MovementPattern movement, int dropPercent)
+        public PowerUp(Texture2D texture, Color color, MovementPattern movement, int dropPercent)
             : base(texture, color, movement, 0) // projectile does 0 damage
         {
             this.DropPercent = dropPercent;
             this.Movement.Parent = this;
+        }
+
+        public override Rectangle Rectangle
+        {
+            get => new Rectangle(
+                    new Point((int)this.Movement.Position.X - (this.Texture.Width / 2), (int)this.Movement.Position.Y - (this.Texture.Height / 2)),
+                    new Point(this.Texture.Width * 2, this.Texture.Height * 2));
         }
 
         public int DropPercent { get; set; }
