@@ -119,7 +119,7 @@
 
         private void IncreaseDamage()
         {
-            /*this.damageLevel += 1;
+            this.damageLevel += 1;
             switch (this.damageLevel)
             {
                 case 1:
@@ -137,7 +137,7 @@
                 default:
                     Debug.WriteLine("At max damage level");
                     break;
-            }*/
+            }
         }
 
         private void SetInvincibility(GameTime gameTime)

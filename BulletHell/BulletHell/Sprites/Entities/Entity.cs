@@ -11,15 +11,15 @@
     {
         public int HP;
         protected double timer;
-        protected double cooldownToAttack;
-        private Attack attack;
+        protected double attackCooldown;
+        protected Attack attack;
 
-        protected Entity(Texture2D texture, Color color, MovementPattern movement, Attack attack, int hp, double cooldownToAttack)
+        protected Entity(Texture2D texture, Color color, MovementPattern movement, Attack attack, int hp, double attackCooldown)
             : base(texture, color, movement)
         {
             this.attack = attack;
             this.HP = hp;
-            this.cooldownToAttack = cooldownToAttack;
+            this.attackCooldown = attackCooldown;
         }
 
         protected void Attack(List<Sprite> sprites)

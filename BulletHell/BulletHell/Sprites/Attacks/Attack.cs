@@ -9,15 +9,15 @@
 
     internal abstract class Attack : Sprite
     {
-        protected Projectile projectile;
+        public Projectile projectile;
         protected double timer = 0;
-        protected double cooldownToCreateProjectile;
+        protected double projectileSpawnCooldown;
 
-        public Attack(Projectile projectile, MovementPattern movement, double cooldownToCreateProjectile)
+        public Attack(Projectile projectile, MovementPattern movement, double projectileSpawnCooldown)
             : base(null, Color.Transparent, movement)
         {
             this.projectile = projectile;
-            this.cooldownToCreateProjectile = cooldownToCreateProjectile;
+            this.projectileSpawnCooldown = projectileSpawnCooldown;
         }
 
         protected virtual void CreateProjectile(List<Sprite> sprites)

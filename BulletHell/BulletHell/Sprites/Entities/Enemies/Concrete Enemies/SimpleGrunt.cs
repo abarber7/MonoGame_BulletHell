@@ -20,7 +20,7 @@
 
             this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.timer > this.cooldownToAttack)
+            if (this.timer > this.attackCooldown)
             {
                 this.timer = 0;
                 this.Attack(sprites);

@@ -1,23 +1,23 @@
-﻿using BulletHell.Sprites.Movement_Patterns;
-using BulletHell.Sprites.The_Player;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BulletHell.Sprites.PowerUps
+﻿namespace BulletHell.Sprites.PowerUps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.The_Player;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     internal abstract class PowerUp : Sprite, ICloneable
     {
-        protected PowerUp(Texture2D texture, Color color, MovementPattern movement, int dropPercent)
+        protected PowerUp(Texture2D texture, Color color, MovementPattern movement, double dropPercent)
             : base(texture, color, movement)
         {
             this.DropPercent = dropPercent;
             this.Movement.Parent = this;
         }
 
-        public int DropPercent { get; set; }
+        public double DropPercent { get; set; }
 
         public override Rectangle Rectangle
         {

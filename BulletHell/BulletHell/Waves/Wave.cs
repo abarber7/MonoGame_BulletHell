@@ -1,18 +1,19 @@
 ﻿namespace BulletHell.Waves
 {
+    using System;
     using System.Collections.Generic;
     using BulletHell.Sprites;
 
     internal class Wave
     {
         public int WaveNumber;
-        public int WaveDuration;
+        public double WaveDuration;
         private List<EntityGroup> entityGroups = new List<EntityGroup>();
 
         public Wave(Dictionary<string, object> waveProperties)
         {
-            this.WaveNumber = (int)waveProperties["waveNumber"];
-            this.WaveDuration = (int)waveProperties["waveDuration"];
+            this.WaveNumber = Convert.ToInt32((double)waveProperties["waveNumber"]);
+            this.WaveDuration = (double)waveProperties["waveDuration"];
 
             foreach (object entityGroupProperties in (List<object>)waveProperties["entityGroups"])
             {

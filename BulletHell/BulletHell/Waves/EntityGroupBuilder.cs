@@ -1,5 +1,6 @@
 ﻿namespace BulletHell.Waves
 {
+    using System;
     using System.Collections.Generic;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Movement_Patterns;
@@ -9,7 +10,7 @@
         public static EntityGroup CreateEntityGroup(Dictionary<string, object> entityGroupProperties)
         {
             Entity entityType = EntityFactory.CreateEntity((Dictionary<string, object>)entityGroupProperties["entityProperties"]);
-            int entityAmount = (int)entityGroupProperties["entityAmount"];
+            int entityAmount = Convert.ToInt32((double)entityGroupProperties["entityAmount"]);
             List<MovementPattern> movementPatterns;
             if (entityGroupProperties.ContainsKey("movementPattern"))
             {

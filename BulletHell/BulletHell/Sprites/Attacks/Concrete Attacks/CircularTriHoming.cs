@@ -22,7 +22,7 @@
         {
             this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.timer > this.cooldownToCreateProjectile)
+            if (this.timer > this.projectileSpawnCooldown)
             {
                 this.timer = 0;
                 this.CreateProjectile(sprites);
