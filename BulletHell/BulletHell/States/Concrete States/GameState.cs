@@ -66,7 +66,7 @@
                 // this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", player.Lives), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", player.HP), new Vector2(10, 10), Color.Black);
 
             this.spriteBatch.End();
         }
@@ -97,7 +97,7 @@
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
-            if (player.Lives == 0 || this.finalBossDefeated)
+            if (player.HP == 0 || this.finalBossDefeated)
             {
                 this.EndGamePrompt();
             }
@@ -146,7 +146,7 @@
         {
             if (player.IsRemoved)
             {
-                player.Lives--;
+                player.HP--;
                 this.projectiles.Clear(); // Remove all projectiles
                 player.Respawn(gameTime);
             }
@@ -178,6 +178,14 @@
                 if (this.projectiles[i].IsRemoved)
                 {
                     this.projectiles.RemoveAt(i);
+                }
+            }
+
+            for (int i = this.attacks.Count - 1; i >= 0; i--)
+            {
+                if (this.attacks[i].IsRemoved)
+                {
+                    this.attacks.RemoveAt(i);
                 }
             }
         }
@@ -246,7 +254,7 @@
 
         private void EndGamePrompt()
         {
-            if (player.Lives == 0)
+            if (player.HP == 0)
             {
                 StateManager.ChangeState(new GameOverLose());
             }

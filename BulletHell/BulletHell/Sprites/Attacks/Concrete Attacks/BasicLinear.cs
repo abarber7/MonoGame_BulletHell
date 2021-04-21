@@ -7,8 +7,8 @@
 
     internal class BasicLinear : Attack
     {
-        public BasicLinear(Projectile projectile, MovementPattern movement)
-            : base(projectile, movement)
+        public BasicLinear(Projectile projectile, MovementPattern movement, double cooldownToCreateProjectile)
+            : base(projectile, movement, cooldownToCreateProjectile)
         {
         }
 
@@ -18,11 +18,11 @@
             this.IsRemoved = true;
         }
 
-        public override void CreateProjectile(List<Sprite> sprites)
+        protected override void CreateProjectile(List<Sprite> sprites)
         {
-            Projectile newProjectile = this.Projectile.Clone() as Projectile;
+            Projectile newProjectile = this.projectile.Clone() as Projectile;
             int projectileSpeed = newProjectile.Movement.Speed;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
+            newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
             Vector2 velocity = newProjectile.Movement.Velocity;
             velocity.Normalize();

@@ -25,7 +25,6 @@
                 Entity enemy = (Entity)this.entityType.Clone();
 
                 enemy.Movement = this.movementPatterns[i];
-                enemy.attack.Projectile.Movement.Parent = enemy;
                 enemy.Movement.Parent = enemy;
 
                 sprites.Add(enemy);

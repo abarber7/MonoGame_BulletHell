@@ -13,11 +13,10 @@
     {
         private double timer;
 
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp = 10)
-            : base(texture, color, movement, attack)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double cooldownToAttack)
+            : base(texture, color, movement, attack, hp, cooldownToAttack)
         {
             this.LifeSpan = lifeSpan;
-            this.HealthPoints = hp;
             this.timer = 0;
             this.DropLoot = false;
             this.PowerUp = powerUp;
@@ -29,8 +28,6 @@
         public bool DropLoot { get; set; }
 
         protected double LifeSpan { get; set; }
-
-        protected int HealthPoints { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -52,8 +49,8 @@
                 // Ignore projectiles from fellow enemies/self
                 if (projectile.Parent is Player)
                 {
-                    this.HealthPoints -= projectile.Damage;
-                    if (this.HealthPoints <= 0)
+                    this.HP -= projectile.Damage;
+                    if (this.HP <= 0)
                     {
                         this.IsRemoved = true;
                         Random rnd = new Random();

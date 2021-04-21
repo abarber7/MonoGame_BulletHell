@@ -88,9 +88,72 @@
                 "movementPatternType": "circular",
                 "originXPosition": 0,
                 "originYPosition": 0,
-                "radius": 100,
-                "degreesToRotate": 30,
+                "radius": 20,
+                "degreesToRotate": 5,
                 "startingDegrees": 90
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "waveNumber": 2,
+      "waveDuration": 15,
+      "entityGroups": [
+        {
+          "entityAmount": 1,
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 400 ],
+            "spawnYPosition": [ -275 ],
+            "startXPosition": [ 0 ],
+            "startYPosition": [ 50 ],
+            "endXPosition": [ 800 ],
+            "endYPosition": [ 50 ],
+            "speed": 2
+          },
+
+          "entityProperties": {
+            "entityType": "simpleGrunt",
+            "textureName": "hitboxTestEnemy",
+            "color": "Green",
+            "lifeSpan": 30,
+
+            "powerUp": {
+              "powerUpType": "damageUp",
+              "textureName": "damageUp",
+              "color": "Red",
+              "dropPercent": 100,
+              "movementPattern": {
+                "movementPatternType": "linear",
+                "xVelocity": 0,
+                "yVelocity": 1,
+                "speed": 2
+              }
+            },
+
+            "attack": {
+              "attackName": "circularTriHoming",
+              "projectile": {
+                "projectileType": "bullet",
+                "textureName": "Bullet",
+                "color": "Blue",
+                "damage": 5,
+                "movementPattern": {
+                  "movementPatternType": "linear",
+                  "xVelocity": 0,
+                  "yVelocity": -1,
+                  "speed": 4
+                }
+              },
+              "movementPattern": {
+                "movementPatternType": "circular",
+                "originXPosition": 0,
+                "originYPosition": 0,
+                "radius": 20,
+                "degreesToRotate": 15,
+                "startingDegrees": 0
               }
             }
           }

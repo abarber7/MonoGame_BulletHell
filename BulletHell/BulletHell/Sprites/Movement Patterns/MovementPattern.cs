@@ -28,6 +28,7 @@
         public int Rotation { get; set; }
 
         public bool reachedStart = false; // bool for if entity reached start position
+        public bool exitTime = false; // bool for if it is time to exit
 
         public virtual void Move()
         {

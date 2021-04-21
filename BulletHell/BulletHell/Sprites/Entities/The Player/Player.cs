@@ -27,13 +27,12 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, Attack attack)
-            : base(texture, color, movement, attack)
+        public Player(Texture2D texture, Color color, MovementPattern movement, Attack attack, int hp, double cooldownToAttack)
+            : base(texture, color, movement, attack, hp, cooldownToAttack)
         {
             this.spawning = true;
             this.Invincible = true;
             this.damageLevel = 0;
-            this.Lives = 3;
         }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
@@ -43,8 +42,6 @@
                     new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));
         }
-
-        public int Lives { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> enemies)
         {
@@ -95,7 +92,7 @@
                 }
                 else if (sprite is ExtraLife)
                 {
-                    this.Lives += 1;
+                    this.HP += 1;
                 }
             }
         }
@@ -122,25 +119,25 @@
 
         private void IncreaseDamage()
         {
-            this.damageLevel += 1;
+            /*this.damageLevel += 1;
             switch (this.damageLevel)
             {
                 case 1:
-                    this.attack.Projectile.Damage += 1;
-                    this.attack.Projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet2");
                     break;
                 case 2:
-                    this.attack.Projectile.Damage += 1;
-                    this.attack.Projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet3");
                     break;
                 case 3:
-                    this.attack.Projectile.Damage += 1;
-                    this.attack.Projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.attack.projectile.Damage += 1;
+                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet4");
                     break;
                 default:
                     Debug.WriteLine("At max damage level");
                     break;
-            }
+            }*/
         }
 
         private void SetInvincibility(GameTime gameTime)

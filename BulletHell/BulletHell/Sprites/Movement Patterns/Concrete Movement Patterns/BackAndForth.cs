@@ -10,8 +10,6 @@
         private Vector2 startPosition;
         private Vector2 endPosition;
 
-        private bool exitTime = false; // bool for if it is time to exit
-
         private Timer timer = new Timer(15000); // timer for exit at 15000 mili seconds
 
         public BackAndForth(Vector2 spawnPosition, Vector2 startPosition, Vector2 endPosition, int speed)

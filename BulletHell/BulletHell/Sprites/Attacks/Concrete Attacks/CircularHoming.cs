@@ -9,46 +9,34 @@
 
     internal class CircularHoming : Attack
     {
-        private int numberOfCycles = 1;
-        private float timer;
-        private float delayToAttack = 0.25f;
-
         public new Circular Movement;
 
-        public CircularHoming(Projectile projectile, Circular circularMovement)
-            : base(projectile, circularMovement)
+        public CircularHoming(Projectile projectile, Circular circularMovement, double cooldownToCreateProjectile)
+            : base(projectile, circularMovement, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.timer > this.delayToAttack)
+            if (this.timer > this.cooldownToCreateProjectile)
             {
                 this.timer = 0;
-                this.Move();
                 this.CreateProjectile(sprites);
-
-                if (this.Movement.cycleCount >= this.numberOfCycles)
-                {
-                    this.IsRemoved = true;
-                }
             }
+
+            this.Move();
         }
 
-        public override void CreateProjectile(List<Sprite> sprites)
+        protected override void CreateProjectile(List<Sprite> sprites)
         {
-            Projectile newProjectile = this.Projectile.Clone() as Projectile;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
+            Projectile newProjectile = this.projectile.Clone() as Projectile;
+            newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
 
-            Vector2 targetPosition = GameState.GetPlayerPosition();
-            Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
-
-            newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = this.Movement.Position;
+            newProjectile.Movement.Position = this.Movement.ActualPosition;
             newProjectile.Parent = this;
             sprites.Add(newProjectile);
         }

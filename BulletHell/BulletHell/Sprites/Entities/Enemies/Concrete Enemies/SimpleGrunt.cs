@@ -9,11 +9,8 @@
 
     internal class SimpleGrunt : Enemy
     {
-        private new double timer = 0;
-        private double previousTimer = 0;
-
-        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan)
-            : base(texture, color, movement, attack, powerUp, lifeSpan)
+        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double cooldownToAttack)
+            : base(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack)
         {
         }
 
@@ -23,13 +20,11 @@
 
             this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.timer > 5)
+            if (this.timer > this.cooldownToAttack)
             {
                 this.timer = 0;
                 this.Attack(sprites);
             }
-
-            this.previousTimer = gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

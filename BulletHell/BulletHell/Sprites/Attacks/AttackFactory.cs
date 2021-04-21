@@ -16,14 +16,18 @@
             string attackName = (string)attackProperties["attackName"];
             Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)attackProperties["projectile"]);
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)attackProperties["movementPattern"]);
+            double cooldownToCreateProjectile = (double)attackProperties["cooldown"];
 
             switch (attackName)
             {
                 case "basicLinear":
-                    attack = new BasicLinear(projectile, (Static)movement);
+                    attack = new BasicLinear(projectile, movement, cooldownToCreateProjectile);
                     break;
                 case "circularHoming":
-                    attack = new CircularHoming(projectile, (Circular)movement);
+                    attack = new CircularHoming(projectile, (Circular)movement, cooldownToCreateProjectile);
+                    break;
+                case "circularTriHoming":
+                    attack = new CircularTriHoming(projectile, (Circular)movement, cooldownToCreateProjectile);
                     break;
                 default:
                     throw new Exception("Invalid Entity");

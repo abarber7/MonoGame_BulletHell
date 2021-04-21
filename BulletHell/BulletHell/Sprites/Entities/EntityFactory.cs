@@ -41,11 +41,13 @@
 
             string enemyType = (string)entityProperties["entityType"];
             string entityClassification = (string)entityProperties["entityType"] != "player" ? "enemy" : "player";
+            int hp = (int)entityProperties["hp"];
+            double cooldownToAttack = (double)entityProperties["cooldown"];
 
             switch (entityClassification)
             {
                 case "player":
-                    entity = new Player(texture, color, movement, attack);
+                    entity = new Player(texture, color, movement, attack, hp, cooldownToAttack);
                     break;
                 case "enemy":
                     int lifeSpan = (int)entityProperties["lifeSpan"];
@@ -54,19 +56,19 @@
                     switch (enemyType)
                     {
                         case "exampleEnemy":
-                            entity = new ExampleEnemy(texture, color, movement, attack, powerUp, lifeSpan);
+                            entity = new ExampleEnemy(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack);
                             break;
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, attack, powerUp, lifeSpan);
+                            entity = new SimpleGrunt(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, attack, powerUp, lifeSpan);
+                            entity = new ComplexGrunt(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, attack, powerUp, lifeSpan);
+                            entity = new MidBoss(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, attack, powerUp, lifeSpan);
+                            entity = new FinalBoss(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack);
                             break;
                     }
 
@@ -79,8 +81,6 @@
             {
                 entity.Movement.Parent = entity;
             }
-
-            entity.attack.Projectile.Movement.Parent = entity;
 
             return entity;
         }

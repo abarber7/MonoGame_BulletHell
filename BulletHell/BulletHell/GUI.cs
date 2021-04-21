@@ -8,8 +8,8 @@
 
     public class GUI : Game
     {
-        public static int ScreenWidth = 800;
-        public static int ScreenHeight = 480;
+        public static int ScreenWidth = 480;
+        public static int ScreenHeight = 720;
 
         private SpriteBatch spriteBatch;
 
@@ -18,8 +18,9 @@
         {
             this.Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
+            GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            UtlilityManager.Initialize(this.Content, new GraphicsDeviceManager(this));
+            UtlilityManager.Initialize(this.Content, graphics);
 
             StateManager.ExitEvent += this.ExitGUI;
         }
@@ -52,6 +53,11 @@
             this.IsMouseVisible = true;
 
             base.Initialize();
+
+            // Set the size of the game (fullscreen bad)
+            GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth = ScreenWidth;
+            GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight = ScreenHeight;
+            GraphicManagers.GraphicsDeviceManager.ApplyChanges();
         }
 
         // Load in content (sprites, assets, etc.)
