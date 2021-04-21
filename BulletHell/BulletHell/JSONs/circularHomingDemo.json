@@ -45,13 +45,13 @@
           "entityAmount": 1,
           "movementPattern": {
             "movementPatternType": "backAndForth",
-            "spawnXPosition": [ 400 ],
-            "spawnYPosition": [ -275 ],
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
             "startXPosition": [ 0 ],
             "startYPosition": [ 50 ],
-            "endXPosition": [ 800 ],
+            "endXPosition": [ 430 ],
             "endYPosition": [ 50 ],
-            "speed": 2
+            "speed": 1
           },
 
           "entityProperties": {
@@ -75,7 +75,7 @@
             "attackCooldown": 5,
             "attack": {
               "attackName": "circularHoming",
-              "projectileSpawnCooldown": 0.1,
+              "projectileSpawnCooldown": 0.025,
               "projectile": {
                 "projectileType": "bullet",
                 "textureName": "Bullet",
@@ -93,7 +93,8 @@
                 "timesToCycles": 3,
                 "originXPosition": 0,
                 "originYPosition": 0,
-                "radius": 20,
+                "radius": 0,
+                "amountToIncreaseRadiusBy": 0.375,
                 "degreesToRotate": 5,
                 "startingDegrees": 90
               }
@@ -110,13 +111,13 @@
           "entityAmount": 1,
           "movementPattern": {
             "movementPatternType": "backAndForth",
-            "spawnXPosition": [ 400 ],
-            "spawnYPosition": [ -275 ],
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
             "startXPosition": [ 0 ],
             "startYPosition": [ 50 ],
-            "endXPosition": [ 800 ],
+            "endXPosition": [ 430 ],
             "endYPosition": [ 50 ],
-            "speed": 2
+            "speed": 1
           },
 
           "entityProperties": {
@@ -140,7 +141,7 @@
             "attackCooldown": 5,
             "attack": {
               "attackName": "circularTriHoming",
-              "projectileSpawnCooldown": 0.1,
+              "projectileSpawnCooldown": 0.025,
               "projectile": {
                 "projectileType": "bullet",
                 "textureName": "Bullet",
@@ -155,10 +156,11 @@
               },
               "movementPattern": {
                 "movementPatternType": "circular",
-                "timesToCycles": 1,
+                "timesToCycles": 3,
                 "originXPosition": 0,
                 "originYPosition": 0,
-                "radius": 20,
+                "radius": 0,
+                "amountToIncreaseRadiusBy": 0.375,
                 "degreesToRotate": 15,
                 "startingDegrees": 0
               }

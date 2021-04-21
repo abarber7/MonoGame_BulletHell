@@ -1,13 +1,13 @@
 ﻿namespace BulletHell.Sprites.PowerUps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     internal class PowerUpFactory
     {

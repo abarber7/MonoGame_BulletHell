@@ -5,9 +5,9 @@
 
     internal class Circular : MovementPattern
     {
-        public Vector2 ActualPosition;
         private int numberOfTimesToCycle;
         private double radius;
+        private double amountToIncreaseRadiusBy;
         private double startingDegrees;
         private double degreesToRotate;
         private double currentDegrees;
@@ -15,11 +15,12 @@
         private int currentCycle = 0;
         private bool exceededStartPosition = false;
 
-        public Circular(int numberOfTimesToCycle, Vector2 actualPosition, double radius, double degreesToRotate, double startingDegrees)
+        public Circular(int numberOfTimesToCycle, Vector2 originPosition, double radius, double amountToIncreaseRadiusBy, double degreesToRotate, double startingDegrees)
         {
             this.numberOfTimesToCycle = numberOfTimesToCycle;
-            this.ActualPosition = actualPosition;
+            this.Position = originPosition;
             this.radius = radius;
+            this.amountToIncreaseRadiusBy = amountToIncreaseRadiusBy;
             this.startingDegrees = startingDegrees;
             this.degreesToRotate = degreesToRotate;
             this.currentDegrees = startingDegrees;
@@ -27,8 +28,7 @@
 
         public override void Move()
         {
-            this.ActualPosition.X = Convert.ToSingle(this.Position.X + (Math.Cos(this.currentDegrees * (Math.PI / 180)) * this.radius));
-            this.ActualPosition.Y = Convert.ToSingle(this.Position.Y + (Math.Sin(this.currentDegrees * (Math.PI / 180)) * this.radius));
+            this.radius += this.amountToIncreaseRadiusBy;
 
             if (this.currentDegrees + this.degreesToRotate > this.startingDegrees && !this.exceededStartPosition)
             {
@@ -44,11 +44,23 @@
             }
 
             this.currentDegrees = newDegrees % 360;
+        }
 
+        public Vector2 GetActualPosition(double degreeOffset = 0)
+        {
+            Vector2 actualPosition = default(Vector2);
+            actualPosition.X = Convert.ToSingle(this.Position.X + (Math.Cos((this.currentDegrees + degreeOffset) * (Math.PI / 180)) * this.radius));
+            actualPosition.Y = Convert.ToSingle(this.Position.Y + (Math.Sin((this.currentDegrees + degreeOffset) * (Math.PI / 180)) * this.radius));
+            return actualPosition;
+        }
+
+        public bool IsMovementDone()
+        {
             if (this.currentCycle > this.numberOfTimesToCycle)
             {
-                this.Parent.IsRemoved = true;
+                return true;
             }
+            return false;
         }
     }
 }

@@ -28,6 +28,11 @@
             }
 
             this.Move();
+
+            if (this.Movement.IsMovementDone())
+            {
+                this.IsRemoved = true;
+            }
         }
 
         protected override void CreateProjectile(List<Sprite> sprites)
@@ -36,7 +41,23 @@
             newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
 
-            newProjectile.Movement.Position = this.Movement.ActualPosition;
+            Vector2 targetPosition = GameState.GetPlayerPosition();
+            Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
+
+            newProjectile.Movement.Velocity = velocity;
+            newProjectile.Movement.Position = this.Movement.GetActualPosition();
+            newProjectile.Parent = this;
+            sprites.Add(newProjectile);
+
+            newProjectile = this.projectile.Clone() as Projectile;
+            newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
+            newProjectile.Movement.Parent = newProjectile;
+
+            targetPosition = GameState.GetPlayerPosition();
+            velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
+
+            newProjectile.Movement.Velocity = velocity;
+            newProjectile.Movement.Position = this.Movement.GetActualPosition(180);
             newProjectile.Parent = this;
             sprites.Add(newProjectile);
         }

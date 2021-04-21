@@ -28,7 +28,7 @@
             {
                 Attack attackClone = (Attack)this.attack.Clone();
                 attackClone.Movement.Parent = this;
-                attackClone.Movement.Position = this.Movement.Position;
+                attackClone.Movement.Position = this.GetCenterOfSprite();
 
                 sprites.Add(attackClone);
             }

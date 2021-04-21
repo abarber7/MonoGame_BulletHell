@@ -69,5 +69,10 @@
                 }
             }
         }
+
+        public Vector2 GetCenterOfSprite()
+        {
+            return this.Rectangle.Center.ToVector2();
+        }
     }
 }

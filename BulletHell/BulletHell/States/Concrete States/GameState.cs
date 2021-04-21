@@ -32,7 +32,7 @@
 
         public static Vector2 GetPlayerPosition()
         {
-            return player.Rectangle.Center.ToVector2();
+            return player.GetCenterOfSprite();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

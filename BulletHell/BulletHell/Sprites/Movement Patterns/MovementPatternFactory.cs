@@ -118,10 +118,11 @@
                     originPosition.X = Convert.ToSingle((double)movementPatternProperties["originXPosition"]);
                     originPosition.Y = Convert.ToSingle((double)movementPatternProperties["originYPosition"]);
                     double radius = (double)movementPatternProperties["radius"];
+                    double amountToIncreaseRadiusBy = (double)movementPatternProperties["amountToIncreaseRadiusBy"];
                     double degreesToRotate = (double)movementPatternProperties["degreesToRotate"];
                     double startingDegrees = (double)movementPatternProperties["startingDegrees"];
 
-                    movementPattern = new Circular(numberOfTimesToCycle, originPosition, radius, degreesToRotate, startingDegrees);
+                    movementPattern = new Circular(numberOfTimesToCycle, originPosition, radius, amountToIncreaseRadiusBy, degreesToRotate, startingDegrees);
                     break;
                 default:
                     throw new Exception("Invalid Entity");

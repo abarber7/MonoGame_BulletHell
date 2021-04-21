@@ -1,9 +1,9 @@
 ﻿namespace BulletHell.Sprites.Attacks.Concrete_Attacks
 {
+    using System.Collections.Generic;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
-    using System.Collections.Generic;
 
     internal class BasicLinear : Attack
     {

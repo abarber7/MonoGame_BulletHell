@@ -29,6 +29,11 @@
             }
 
             this.Move();
+
+            if (this.Movement.IsMovementDone())
+            {
+                this.IsRemoved = true;
+            }
         }
 
         protected override void CreateProjectile(List<Sprite> sprites)
@@ -41,7 +46,7 @@
             Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = this.Movement.ActualPosition;
+            newProjectile.Movement.Position = this.Movement.GetActualPosition();
             newProjectile.Parent = this;
             sprites.Add(newProjectile);
 
@@ -54,7 +59,7 @@
             secondVelocity.Y = (float)((velocity.X * Math.Sin(120 * (Math.PI / 180))) + (velocity.Y * Math.Cos(120 * (Math.PI / 180))));
 
             secondProjectile.Movement.Velocity = secondVelocity;
-            secondProjectile.Movement.Position = this.Movement.ActualPosition;
+            secondProjectile.Movement.Position = this.Movement.GetActualPosition();
             secondProjectile.Parent = this;
             sprites.Add(secondProjectile);
 
@@ -67,7 +72,7 @@
             thirdVelocity.Y = (float)((velocity.X * Math.Sin(240 * (Math.PI / 180))) + (velocity.Y * Math.Cos(240 * (Math.PI / 180))));
 
             thirdProjectile.Movement.Velocity = thirdVelocity;
-            thirdProjectile.Movement.Position = this.Movement.ActualPosition;
+            thirdProjectile.Movement.Position = this.Movement.GetActualPosition();
             thirdProjectile.Parent = this;
             sprites.Add(thirdProjectile);
         }
