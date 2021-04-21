@@ -50,7 +50,7 @@
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.texture, this.Position, null, Color.White * this.Opacity, this.Rotation, this.Origin, this.Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(this.texture, this.Position, null, Color.HotPink * this.Opacity, this.Rotation, this.Origin, this.Scale, SpriteEffects.None, 0);
         }
 
         public object Clone()

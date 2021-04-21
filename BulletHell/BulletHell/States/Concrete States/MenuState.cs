@@ -13,13 +13,16 @@
         private List<Component> components;
         private SnowEmitter snowEmitter;
         private Texture2D mainMenuTexture;
+        private Texture2D mainMenuTexture2;
+
 
         public MenuState()
           : base()
         {
             var buttonTexture = TextureFactory.GetTexture("Controls/Button");
             var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
-            this.mainMenuTexture = TextureFactory.GetTexture("Titles/whiteMainMenu");
+            this.mainMenuTexture = TextureFactory.GetTexture("Titles/Bo&Long");
+            this.mainMenuTexture2 = TextureFactory.GetTexture("Titles/gotTo");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -60,7 +63,9 @@
             GraphicManagers.GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(this.mainMenuTexture, new Vector2(150, 50), Color.White);
+            spriteBatch.Draw(this.mainMenuTexture, new Vector2(160, 20), Color.White);
+            spriteBatch.Draw(this.mainMenuTexture2, new Vector2(60, 120), Color.White);
+
 
             foreach (var component in this.components)
             {
