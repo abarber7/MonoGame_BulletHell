@@ -226,6 +226,7 @@
             this.DrawLine(topRight, bottomRight, color); // right edge
         }
 
+        // Source: https://gamedev.stackexchange.com/a/44016
         private void DrawLine(Vector2 start, Vector2 end, Color color)
         {
             Texture2D lineTexture = new Texture2D(GraphicManagers.GraphicsDevice, 1, 1);
