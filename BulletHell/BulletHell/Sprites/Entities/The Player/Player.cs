@@ -1,6 +1,5 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using BulletHell.Sprites.Entities;
@@ -35,6 +34,8 @@
             this.Invincible = true;
             this.damageLevel = 0;
         }
+
+        public int Lives { get; set; }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
@@ -75,18 +76,6 @@
             this.Movement.ZeroXVelocity();
             this.Movement.ZeroYVelocity();
 
-            if (this.Invincible == false)
-            {
-                if (sprite is Projectile projectile && projectile.Parent != this)
-                {
-                    this.IsRemoved = true;
-                }
-                else if (sprite is Enemy)
-                {
-                    this.IsRemoved = true;
-                }
-            }
-
             if (sprite is PowerUp)
             {
                 if (sprite is DamageUp)
@@ -96,6 +85,17 @@
                 else if (sprite is ExtraLife)
                 {
                     this.HP += 1;
+                }
+            }
+            else if (this.Invincible == false)
+            {
+                if (sprite is Projectile projectile && projectile.Parent != this)
+                {
+                    this.IsRemoved = true;
+                }
+                else if (sprite is Enemy)
+                {
+                    this.IsRemoved = true;
                 }
             }
         }
@@ -120,6 +120,25 @@
             this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
+        private void SetInvincibility(GameTime gameTime)
+        {
+            if (this.spawning == true)
+            {
+                if ((gameTime.TotalGameTime.TotalSeconds - this.initialSpawnTime) >= 2)
+                {
+                    this.Invincible = false;
+                    this.spawning = false;
+                }
+            }
+            else
+            {
+                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                {
+                    this.Invincible = !this.Invincible;
+                }
+            }
+        }
+
         private void IncreaseDamage()
         {
             this.damageLevel += 1;
@@ -140,25 +159,6 @@
                 default:
                     Debug.WriteLine("At max damage level");
                     break;
-            }
-        }
-
-        private void SetInvincibility(GameTime gameTime)
-        {
-            if (this.spawning == true)
-            {
-                if ((gameTime.TotalGameTime.TotalSeconds - this.initialSpawnTime) >= 2)
-                {
-                    this.Invincible = false;
-                    this.spawning = false;
-                }
-            }
-            else
-            {
-                if (this.currentKey.IsKeyDown(Input.CheatingMode) && !this.previousKey.IsKeyDown(Input.CheatingMode))
-                {
-                    this.Invincible = !this.Invincible;
-                }
             }
         }
 

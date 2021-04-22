@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Utilities;
@@ -13,8 +12,6 @@
     {
         public static PowerUp CreatePowerUp(Dictionary<string, object> powerUpProperties)
         {
-            PowerUp powerUp = null;
-
             string textureName = (string)powerUpProperties["textureName"];
             Texture2D texture = TextureFactory.GetTexture(textureName);
 
@@ -26,18 +23,12 @@
 
             double dropPercent = (double)powerUpProperties["dropPercent"];
 
-            switch (powerUpProperties["powerUpType"])
+            PowerUp powerUp = powerUpProperties["powerUpType"] switch
             {
-                case "damageUp":
-                    powerUp = new DamageUp(texture, color, movement, dropPercent);
-                    break;
-                case "extraLife":
-                    powerUp = new ExtraLife(texture, color, movement, dropPercent);
-                    break;
-                default:
-                    throw new Exception("Invalid PowerUp Type");
-            }
-
+                "damageUp" => new DamageUp(texture, color, movement, dropPercent),
+                "extraLife" => new ExtraLife(texture, color, movement, dropPercent),
+                _ => throw new Exception("Invalid PowerUp Type"),
+            };
             return powerUp;
         }
     }
