@@ -10,10 +10,10 @@
     internal class Circle : Attack
     {
         private int numberOfProjectiles;
-        private double degreesToStart;
-        private double degreesToEnd;
+        private float degreesToStart;
+        private float degreesToEnd;
 
-        public Circle(Projectile projectile, MovementPattern movement, double cooldownToCreateProjectile, int numberOfProjectiles, double degreesToStart, double degreesToEnd)
+        public Circle(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile, int numberOfProjectiles, float degreesToStart, float degreesToEnd)
             : base(projectile, movement, cooldownToCreateProjectile)
         {
             this.numberOfProjectiles = numberOfProjectiles;
@@ -29,19 +29,19 @@
 
         protected override void CreateProjectile(List<Sprite> sprites)
         {
-            double degreesToIncrement = (this.degreesToEnd - this.degreesToStart) / this.numberOfProjectiles;
+            float degreesToIncrement = (this.degreesToEnd - this.degreesToStart) / this.numberOfProjectiles;
 
             for (int i = 0; i < this.numberOfProjectiles; i++)
             {
-                Projectile newProjectile = this.projectile.Clone() as Projectile;
-                int projectileSpeed = newProjectile.Movement.Speed;
-                newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
+                Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
+                float projectileSpeed = newProjectile.Movement.Speed;
+                newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
                 newProjectile.Movement.Parent = newProjectile;
                 Vector2 velocity = newProjectile.Movement.Velocity;
                 velocity.X = Convert.ToSingle(projectileSpeed * Math.Cos((this.degreesToStart + (degreesToIncrement * i)) * (Math.PI / 180)));
                 velocity.Y = Convert.ToSingle(projectileSpeed * Math.Sin((this.degreesToStart + (degreesToIncrement * i)) * (Math.PI / 180)));
                 newProjectile.Movement.Velocity = velocity;
-                newProjectile.Movement.Position = this.Movement.Position;
+                newProjectile.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 newProjectile.Parent = this.Attacker;
                 sprites.Add(newProjectile);
             }

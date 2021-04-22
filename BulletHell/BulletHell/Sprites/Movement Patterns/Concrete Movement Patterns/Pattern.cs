@@ -9,15 +9,14 @@
         private int previousTargetPoinIndex;
         private int nextTargetPointIndex;
 
-        public Pattern(List<Vector2> points, int speed)
-            : base()
+        public Pattern(Vector2 startPosition, int speed, List<Vector2> points)
+            : base(startPosition, speed)
         {
             this.points = points;
-            this.Speed = speed;
 
             this.previousTargetPoinIndex = 0;
             this.nextTargetPointIndex = 1;
-            this.Position = this.points[0];
+            this.CurrentPosition = this.points[0];
             this.velocity = this.CalculateVelocity(this.points[this.previousTargetPoinIndex], this.points[this.nextTargetPointIndex], this.Speed);
         }
 

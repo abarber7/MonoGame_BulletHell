@@ -79,7 +79,12 @@
 
             if (o is long)
             {
-                return Convert.ToDouble(o);
+                return Convert.ToSingle(o);
+            }
+
+            if (o is double)
+            {
+                return Convert.ToSingle(o);
             }
 
             return o;

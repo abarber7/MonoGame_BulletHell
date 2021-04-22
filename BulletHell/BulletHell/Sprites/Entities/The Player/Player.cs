@@ -27,8 +27,8 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, Attack attack, int hp, double cooldownToAttack)
-            : base(texture, color, movement, attack, hp, cooldownToAttack)
+        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float cooldownToAttack)
+            : base(texture, color, movement, hp, attack, cooldownToAttack)
         {
             this.spawning = true;
             this.Invincible = true;
@@ -41,7 +41,7 @@
         public override Rectangle Rectangle
         {
             get => new Rectangle(
-                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+                    new Point((int)this.Movement.CurrentPosition.X, (int)this.Movement.CurrentPosition.Y),
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));
         }
 
@@ -62,7 +62,7 @@
 
             this.Attack(enemies);
 
-            int previousSpeed = this.Movement.CurrentSpeed;
+            float previousSpeed = this.Movement.CurrentSpeed;
 
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
@@ -145,16 +145,16 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.attack.projectile.Damage += 1;
-                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.attack.ProjectileToLaunch.Damage += 1;
+                    this.attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
                     break;
                 case 2:
-                    this.attack.projectile.Damage += 1;
-                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.attack.ProjectileToLaunch.Damage += 1;
+                    this.attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
                     break;
                 case 3:
-                    this.attack.projectile.Damage += 1;
-                    this.attack.projectile.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.attack.ProjectileToLaunch.Damage += 1;
+                    this.attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
                     break;
                 default:
                     Debug.WriteLine("At max damage level");
@@ -169,11 +169,6 @@
                 this.timer = 0;
                 base.Attack(sprites);
             }
-        }
-
-        private void Move()
-        {
-            this.Movement.Move();
         }
     }
 }

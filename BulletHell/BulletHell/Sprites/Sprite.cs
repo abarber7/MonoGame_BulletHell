@@ -8,7 +8,7 @@
 
     internal abstract class Sprite : ICloneable
     {
-        private bool isRemoved = false;
+        protected bool isRemoved = false;
         private Color color = Color.White;
 
         public Sprite(Texture2D texture, Color color, MovementPattern movement)
@@ -38,7 +38,7 @@
         public virtual Rectangle Rectangle
         {
             get => new Rectangle(
-                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+                    new Point((int)this.Movement.CurrentPosition.X, (int)this.Movement.CurrentPosition.Y),
                     new Point(this.Texture.Width, this.Texture.Height));
         }
 
@@ -50,7 +50,7 @@
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.Texture, this.Movement.Position, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(this.Texture, this.Movement.CurrentPosition, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
         }
 
         public virtual void OnCollision(Sprite sprite)

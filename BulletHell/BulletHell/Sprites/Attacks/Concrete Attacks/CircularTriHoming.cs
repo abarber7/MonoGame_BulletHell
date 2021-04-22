@@ -12,7 +12,7 @@
     {
         public new Circular Movement;
 
-        public CircularTriHoming(Projectile projectile, Circular circularMovement, double cooldownToCreateProjectile)
+        public CircularTriHoming(Projectile projectile, Circular circularMovement, float cooldownToCreateProjectile)
             : base(projectile, circularMovement, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
@@ -38,20 +38,20 @@
 
         protected override void CreateProjectile(List<Sprite> sprites)
         {
-            Projectile newProjectile = this.projectile.Clone() as Projectile;
-            newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
+            Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
+            newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
 
             Vector2 targetPosition = GameState.GetPlayerPosition();
-            Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
+            Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = this.Movement.GetActualPosition();
+            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
             newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
 
-            Projectile secondProjectile = this.projectile.Clone() as Projectile;
-            secondProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
+            Projectile secondProjectile = this.ProjectileToLaunch.Clone() as Projectile;
+            secondProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             secondProjectile.Movement.Parent = secondProjectile;
 
             Vector2 secondVelocity = default(Vector2);
@@ -59,12 +59,12 @@
             secondVelocity.Y = (float)((velocity.X * Math.Sin(120 * (Math.PI / 180))) + (velocity.Y * Math.Cos(120 * (Math.PI / 180))));
 
             secondProjectile.Movement.Velocity = secondVelocity;
-            secondProjectile.Movement.Position = this.Movement.GetActualPosition();
+            secondProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
             secondProjectile.Parent = this.Attacker;
             sprites.Add(secondProjectile);
 
-            Projectile thirdProjectile = this.projectile.Clone() as Projectile;
-            thirdProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
+            Projectile thirdProjectile = this.ProjectileToLaunch.Clone() as Projectile;
+            thirdProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             thirdProjectile.Movement.Parent = thirdProjectile;
 
             Vector2 thirdVelocity = default(Vector2);
@@ -72,7 +72,7 @@
             thirdVelocity.Y = (float)((velocity.X * Math.Sin(240 * (Math.PI / 180))) + (velocity.Y * Math.Cos(240 * (Math.PI / 180))));
 
             thirdProjectile.Movement.Velocity = thirdVelocity;
-            thirdProjectile.Movement.Position = this.Movement.GetActualPosition();
+            thirdProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
             thirdProjectile.Parent = this.Attacker;
             sprites.Add(thirdProjectile);
         }

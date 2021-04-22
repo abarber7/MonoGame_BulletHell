@@ -12,7 +12,7 @@
     {
         private int widthOfArrow;
 
-        public Arrow(Projectile projectile, MovementPattern movement, double cooldownToCreateProjectile, int widthOfArrow)
+        public Arrow(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile, int widthOfArrow)
             : base(projectile, movement, cooldownToCreateProjectile)
         {
             this.widthOfArrow = widthOfArrow;
@@ -26,7 +26,7 @@
 
         protected override void CreateProjectile(List<Sprite> sprites)
         {
-            double spacing = 2;
+            float spacing = 2;
             int verticalOffset = 20;
 
             for (int row = 0; row < this.widthOfArrow; row++)
@@ -34,13 +34,13 @@
                 for (int col = 0; col <= row; col++)
                 {
                     Vector2 targetPosition = GameState.GetPlayerPosition();
-                    Projectile newProjectile = this.projectile.Clone() as Projectile;
-                    newProjectile.Movement = this.projectile.Movement.Clone() as MovementPattern;
+                    Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
+                    newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
                     newProjectile.Movement.Parent = newProjectile;
 
                     if (row < col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         velocity.X = (float)((velocity.X * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))) - (velocity.Y * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))));
                         velocity.Y = (float)((velocity.X * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))) + (velocity.Y * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))));
@@ -49,13 +49,13 @@
                     }
                     else if (row == col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         newProjectile.Movement.Velocity = velocity;
                     }
                     else if (row > col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.Position, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         velocity.X = (float)((velocity.X * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))) - (velocity.Y * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))));
                         velocity.Y = (float)((velocity.X * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))) + (velocity.Y * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))));
@@ -63,11 +63,11 @@
                         newProjectile.Movement.Velocity = velocity;
                     }
 
-                    Vector2 position = this.Movement.Position;
+                    Vector2 position = this.Movement.CurrentPosition;
 
                     position.Y -= verticalOffset * row;
 
-                    newProjectile.Movement.Position = position;
+                    newProjectile.Movement.CurrentPosition = position;
 
                     newProjectile.Parent = this.Attacker;
                     sprites.Add(newProjectile);

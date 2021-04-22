@@ -9,8 +9,8 @@
 
     internal class ComplexGrunt : Enemy
     {
-        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double attackCooldown)
-            : base(texture, color, movement, attack, powerUp, lifeSpan, hp, attackCooldown)
+        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
+            : base(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown)
         {
         }
 
