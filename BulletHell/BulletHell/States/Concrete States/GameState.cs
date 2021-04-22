@@ -73,6 +73,14 @@
 
         public override void LoadContent()
         {
+            this.InitializeLists();
+            this.LoadPlayer();
+            this.LoadWaves();
+            this.CreateStats();
+        }
+
+        private void InitializeLists()
+        {
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
             this.enemies = new List<Sprite>();
@@ -82,12 +90,6 @@
             this.attacks = new List<Sprite>();
 
             this.commandQueue = new List<ICommand>();
-
-            player = GameLoader.LoadPlayer();
-
-            this.CreateWaves();
-
-            this.CreateStats();
         }
 
         public override void Update(GameTime gameTime)
@@ -216,9 +218,14 @@
             }
         }*/
 
-        private void CreateWaves()
+        private void LoadWaves()
         {
             this.waves = GameLoader.LoadWaves();
+        }
+
+        private void LoadPlayer()
+        {
+            player = GameLoader.LoadPlayer();
         }
 
         private void CheckAndDeployWave(GameTime gameTime)

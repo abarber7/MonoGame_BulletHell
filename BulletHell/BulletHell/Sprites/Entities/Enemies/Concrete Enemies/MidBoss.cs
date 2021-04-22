@@ -17,6 +17,14 @@
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             base.Update(gameTime, sprites);
+
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (this.timer > this.attackCooldown)
+            {
+                this.timer = 0;
+                this.Attack(sprites);
+            }
         }
     }
 }

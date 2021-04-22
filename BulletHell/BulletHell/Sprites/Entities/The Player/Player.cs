@@ -10,6 +10,7 @@
     using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
+    using BulletHell.The_Player;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -101,7 +102,7 @@
 
         public bool IsSlowPressed()
         {
-            if (this.currentKey.IsKeyDown(Keys.LeftShift))
+            if (this.currentKey.IsKeyDown(Input.SlowMode))
             {
                 this.Movement.CurrentSpeed = this.Movement.Speed / 2;
                 return true;
@@ -154,7 +155,7 @@
             }
             else
             {
-                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                if (this.currentKey.IsKeyDown(Input.CheatingMode) && !this.previousKey.IsKeyDown(Input.CheatingMode))
                 {
                     this.Invincible = !this.Invincible;
                 }
@@ -163,7 +164,7 @@
 
         private new void Attack(List<Sprite> sprites)
         {
-            if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Keys.Space) && this.previousKey.IsKeyUp(Keys.Space))
+            if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Input.Attack) && this.previousKey.IsKeyUp(Input.Attack))
             {
                 this.timer = 0;
                 base.Attack(sprites);

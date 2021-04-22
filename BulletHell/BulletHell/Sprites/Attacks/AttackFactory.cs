@@ -29,6 +29,16 @@
                 case "circularTriHoming":
                     attack = new CircularTriHoming(projectile, (Circular)movement, projectileSpawnCooldown);
                     break;
+                case "circle":
+                    int numberOfProjectiles = Convert.ToInt32((double)attackProperties["numberOfProjectiles"]);
+                    double degreesToStart = (double)attackProperties["degreesToStart"];
+                    double degreesToEnd = (double)attackProperties["degreesToEnd"];
+                    attack = new Circle(projectile, movement, projectileSpawnCooldown, numberOfProjectiles, degreesToStart, degreesToEnd);
+                    break;
+                case "arrow":
+                    int widthOfArrow = Convert.ToInt32((double)attackProperties["widthOfArrow"]);
+                    attack = new Arrow(projectile, movement, projectileSpawnCooldown, widthOfArrow);
+                    break;
                 default:
                     throw new Exception("Invalid Entity");
             }
