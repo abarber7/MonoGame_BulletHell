@@ -5,7 +5,6 @@
     using System.IO;
     using System.Linq;
     using BulletHell.Sprites.Entities;
-    using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Waves;
     using Newtonsoft.Json.Linq;
@@ -19,14 +18,6 @@
         {
             LoadGameDictionary(jsonToLoad);
             LoadEnemies();
-        }
-
-        private static void LoadGameDictionary(string jsonToLoad)
-        {
-            string jsonFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "JSONs\\" + jsonToLoad + ".json");
-            string json = File.ReadAllText(jsonFilePath);
-            JObject jsonObj = JObject.Parse(json);
-            gameDictionary = (Dictionary<string, object>)ToCollections(jsonObj);
         }
 
         public static List<Wave> LoadWaves()
@@ -43,6 +34,24 @@
             return waves;
         }
 
+        public static Player LoadPlayer()
+        {
+            return (Player)EntityFactory.CreateEntity((Dictionary<string, object>)gameDictionary["player"]);
+        }
+
+        public static Entity GetEnemy(string enemyType)
+        {
+            return entityDictionary[enemyType];
+        }
+
+        private static void LoadGameDictionary(string jsonToLoad)
+        {
+            string jsonFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "JSONs\\" + jsonToLoad + ".json");
+            string json = File.ReadAllText(jsonFilePath);
+            JObject jsonObj = JObject.Parse(json);
+            gameDictionary = (Dictionary<string, object>)ToCollections(jsonObj);
+        }
+
         private static void LoadEnemies()
         {
             List<object> listOfEntityProperties = (List<object>)gameDictionary["enemies"];
@@ -52,16 +61,6 @@
             {
                 entityDictionary.Add((string)((Dictionary<string, object>)entity)["entityType"], EntityFactory.CreateEntity((Dictionary<string, object>)entity));
             }
-        }
-
-        public static Player LoadPlayer()
-        {
-            return (Player)EntityFactory.CreateEntity((Dictionary<string, object>)gameDictionary["player"]);
-        }
-
-        public static Entity GetEnemy(string enemyType)
-        {
-            return entityDictionary[enemyType];
         }
 
         // Source: https://stackoverflow.com/questions/14886800/convert-jobject-into-dictionarystring-object-is-it-possible

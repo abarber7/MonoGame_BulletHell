@@ -5,7 +5,6 @@
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
-    using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
@@ -40,9 +39,15 @@
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
         {
-            get => new Rectangle(
-                    new Point((int)this.Movement.CurrentPosition.X, (int)this.Movement.CurrentPosition.Y),
+            get
+            {
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= this.Texture.Width / 2;
+                upperLeftCorner.Y -= this.Texture.Height / 2;
+                return new Rectangle(
+                    upperLeftCorner.ToPoint(),
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));
+            }
         }
 
         public override void Update(GameTime gameTime, List<Sprite> enemies)

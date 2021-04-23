@@ -1,5 +1,6 @@
 ﻿namespace BulletHell.Sprites.PowerUps
 {
+    using System;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
@@ -20,7 +21,7 @@
         public override Rectangle Rectangle
         {
             get => new Rectangle(
-                    new Point((int)this.Movement.CurrentPosition.X - this.Texture.Width, (int)this.Movement.CurrentPosition.Y - this.Texture.Height),
+                    new Point((int)Math.Round(this.Movement.CurrentPosition.X - (1.5 * this.Texture.Width)), (int)Math.Round(this.Movement.CurrentPosition.Y - (1.5 * this.Texture.Height))),
                     new Point(this.Texture.Width * 2, this.Texture.Height * 2));
         }
 

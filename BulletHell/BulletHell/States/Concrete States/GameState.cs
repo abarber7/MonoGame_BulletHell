@@ -80,19 +80,6 @@
             this.CreateStats();
         }
 
-        private void InitializeLists()
-        {
-            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
-
-            this.enemies = new List<Sprite>();
-
-            this.projectiles = new List<Sprite>();
-
-            this.attacks = new List<Sprite>();
-
-            this.commandQueue = new List<ICommand>();
-        }
-
         public override void Update(GameTime gameTime)
         {
             this.CheckAndDeployWave(gameTime);
@@ -115,13 +102,26 @@
             this.RemoveSprites(gameTime);
         }
 
+        private void InitializeLists()
+        {
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
+
+            this.enemies = new List<Sprite>();
+
+            this.projectiles = new List<Sprite>();
+
+            this.attacks = new List<Sprite>();
+
+            this.commandQueue = new List<ICommand>();
+        }
+
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
             this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // projectiles used here as container where Attack() adds sprites
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
             this.attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles

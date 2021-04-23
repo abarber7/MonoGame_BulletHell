@@ -23,9 +23,16 @@
         // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
         public override Rectangle Rectangle
         {
-            get => new Rectangle(
-                    new Point((int)this.Movement.CurrentPosition.X - this.Texture.Width, (int)this.Movement.CurrentPosition.Y - (int)Math.Round(this.Texture.Height * (3.5 / 2))),
-                    new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
+            get
+            {
+                Vector2 boxUpperLeftCorner = this.Movement.CurrentPosition;
+                boxUpperLeftCorner.X -= this.Texture.Width + (this.Texture.Width / 4);
+                boxUpperLeftCorner.Y -= (float)(this.Texture.Height + (this.Texture.Height * (3.5 / 2)));
+
+                return new Rectangle(
+                    boxUpperLeftCorner.ToPoint(),
+                    new Point(this.Texture.Width * 2, (int)Math.Round(this.Texture.Height * 3.5)));
+            }
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

@@ -41,15 +41,16 @@
                     spawnPosition.Y = (float)movementPatternProperties["spawnYPosition"];
 
                     // movement pattern
-
-
                     movementPattern = new PlayerInput(spawnPosition, startPosition, speed);
                     break;
                 case "linear":
                     Vector2 velocity;
                     velocity.X = (float)movementPatternProperties["xVelocity"];
                     velocity.Y = (float)movementPatternProperties["yVelocity"];
-                    movementPattern = new Linear(velocity, speed);
+
+                    startPosition.X = (float)movementPatternProperties["xPosition"];
+                    startPosition.Y = (float)movementPatternProperties["yPosition"];
+                    movementPattern = new Linear(startPosition, velocity, speed);
                     break;
                 case "backAndForth":
                     // spawning

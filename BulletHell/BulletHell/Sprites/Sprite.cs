@@ -37,9 +37,15 @@
         // Serves as hitbox
         public virtual Rectangle Rectangle
         {
-            get => new Rectangle(
-                    new Point((int)this.Movement.CurrentPosition.X, (int)this.Movement.CurrentPosition.Y),
+            get
+            {
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= this.Texture.Width / 2;
+                upperLeftCorner.Y -= this.Texture.Height / 2;
+                return new Rectangle(
+                    upperLeftCorner.ToPoint(),
                     new Point(this.Texture.Width, this.Texture.Height));
+            }
         }
 
         public virtual object Clone() => this.MemberwiseClone();
@@ -50,7 +56,19 @@
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.Texture, this.Movement.CurrentPosition, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            if (this.Texture != null)
+            {
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= this.Texture.Width / 2;
+                upperLeftCorner.Y -= this.Texture.Height / 2;
+                spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            }
+
+            // Drawing option for texture-less sprites (Attacks)
+            else
+            {
+                spriteBatch.Draw(this.Texture, this.Movement.CurrentPosition, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            }
         }
 
         public virtual void OnCollision(Sprite sprite)
@@ -72,7 +90,7 @@
 
         public Vector2 GetCenterOfSprite()
         {
-            return this.Rectangle.Center.ToVector2();
+            return this.Movement.CurrentPosition;
         }
     }
 }

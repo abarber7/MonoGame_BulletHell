@@ -20,12 +20,6 @@
         private bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
-        public void Respawn()
-        {
-            this.reachedStart = false;
-            this.initializedSpawningPosition = false;
-        }
-
         protected Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
             : base(texture, color, movement)
         {
@@ -34,9 +28,15 @@
             this.attackCooldown = attackCooldown;
         }
 
+        public void Respawn()
+        {
+            this.reachedStart = false;
+            this.initializedSpawningPosition = false;
+        }
+
         protected void Attack(List<Sprite> sprites)
         {
-             if (this.reachedStart && !this.exiting)
+            if (this.reachedStart && !this.exiting)
             {
                 Attack attackClone = (Attack)this.attack.Clone();
                 attackClone.Attacker = this;
