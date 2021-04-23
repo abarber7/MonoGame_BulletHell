@@ -121,7 +121,7 @@
             this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // projectiles used here as container where Attack() adds sprites
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
             this.attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles

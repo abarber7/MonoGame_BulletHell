@@ -36,7 +36,7 @@
 
         protected void Attack(List<Sprite> sprites)
         {
-             if (this.reachedStart && !this.exiting)
+            if (this.reachedStart && !this.exiting)
             {
                 Attack attackClone = (Attack)this.attack.Clone();
                 attackClone.Attacker = this;

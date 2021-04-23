@@ -2,12 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.PowerUps;
-    using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
