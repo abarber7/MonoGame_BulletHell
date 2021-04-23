@@ -64,7 +64,9 @@
                     endPosition.X = (float)movementPatternProperties["endXPosition"];
                     endPosition.Y = (float)movementPatternProperties["endYPosition"];
 
-                    movementPattern = new BackAndForth(startPosition, endPosition, speed);
+                    int numberOfCycles = Convert.ToInt32((float)movementPatternProperties["numberOfCycles"]);
+
+                    movementPattern = new BackAndForth(startPosition, endPosition, speed, numberOfCycles);
                     break;
                 case "static":
                     startPosition.X = (float)movementPatternProperties["xPosition"];
@@ -73,19 +75,17 @@
                     break;
                 case "pattern":
                     List<Vector2> points = new List<Vector2>();
-                    List<List<int>> listOfPoints = (List<List<int>>)movementPatternProperties["points"];
-                    foreach (List<int> point in listOfPoints)
+                    List<object> listOfPoints = (List<object>)movementPatternProperties["points"];
+                    foreach (List<object> point in listOfPoints)
                     {
-                        points.Add(new Vector2(point[0], point[1]));
+                        points.Add(new Vector2((float)point[0], (float)point[1]));
                     }
 
-                    movementPattern = new Pattern(startPosition, speed, points);
+                    numberOfCycles = Convert.ToInt32((float)movementPatternProperties["numberOfCycles"]);
+
+                    movementPattern = new Pattern(points[0], speed, points, numberOfCycles);
                     break;
                 case "runAndGun":
-                    // movement pattern
-                    startPosition.X = (float)movementPatternProperties["startXPosition"];
-                    startPosition.Y = (float)movementPatternProperties["startYPosition"];
-
                     Vector2 stopPosition;
                     stopPosition.X = (float)movementPatternProperties["endXPosition"];
                     stopPosition.Y = (float)movementPatternProperties["endYPosition"];
@@ -131,7 +131,7 @@
                 {
                     if (movementPatternProperties[key] is List<object> list)
                     {
-                        properties.Add(key, (float)list[i]);
+                        properties.Add(key, list[i]);
                     }
                     else
                     {
@@ -148,12 +148,22 @@
         public static List<Vector2> CreateListOfSpawnPositions(Dictionary<string, object> movementPatternProperties, int amountOfMovementPatterns)
         {
             List<Vector2> spawnPositions = new List<Vector2>();
-            List<object> spawnXPositions = (List<object>)movementPatternProperties["spawnXPosition"];
-            List<object> spawnYPositions = (List<object>)movementPatternProperties["spawnYPosition"];
-
-            for (int i = 0; i < amountOfMovementPatterns; i++)
+            if (!(movementPatternProperties["spawnXPosition"] is List<object>))
             {
-                spawnPositions.Add(new Vector2((float)spawnXPositions[i], (float)spawnYPositions[i]));
+                for (int i = 0; i < amountOfMovementPatterns; i++)
+                {
+                    spawnPositions.Add(new Vector2((float)movementPatternProperties["spawnXPosition"], (float)movementPatternProperties["spawnYPosition"]));
+                }
+            }
+            else
+            {
+                List<object> spawnXPositions = (List<object>)movementPatternProperties["spawnXPosition"];
+                List<object> spawnYPositions = (List<object>)movementPatternProperties["spawnYPosition"];
+
+                for (int i = 0; i < amountOfMovementPatterns; i++)
+                {
+                    spawnPositions.Add(new Vector2((float)spawnXPositions[i], (float)spawnYPositions[i]));
+                }
             }
 
             return spawnPositions;
@@ -162,12 +172,22 @@
         public static List<Vector2> CreateListOfDespawnPositions(Dictionary<string, object> movementPatternProperties, int amountOfMovementPatterns)
         {
             List<Vector2> despawnPositions = new List<Vector2>();
-            List<object> despawnXPositions = (List<object>)movementPatternProperties["despawnXPosition"];
-            List<object> despawnYPositions = (List<object>)movementPatternProperties["despawnYPosition"];
-
-            for (int i = 0; i < amountOfMovementPatterns; i++)
+            if (!(movementPatternProperties["despawnXPosition"] is List<object>))
             {
-                despawnPositions.Add(new Vector2((float)despawnXPositions[i], (float)despawnYPositions[i]));
+                for (int i = 0; i < amountOfMovementPatterns; i++)
+                {
+                    despawnPositions.Add(new Vector2((float)movementPatternProperties["despawnXPosition"], (float)movementPatternProperties["despawnYPosition"]));
+                }
+            }
+            else
+            {
+                List<object> spawnXPositions = (List<object>)movementPatternProperties["despawnXPosition"];
+                List<object> spawnYPositions = (List<object>)movementPatternProperties["despawnYPosition"];
+
+                for (int i = 0; i < amountOfMovementPatterns; i++)
+                {
+                    despawnPositions.Add(new Vector2((float)spawnXPositions[i], (float)spawnYPositions[i]));
+                }
             }
 
             return despawnPositions;

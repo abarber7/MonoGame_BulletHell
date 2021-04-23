@@ -68,7 +68,7 @@
                     this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
-            
+
             // For movement
             else if (this.reachedStart == true && this.exiting == false)
             {

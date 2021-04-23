@@ -6,13 +6,15 @@
     internal class BackAndForth : MovementPattern
     {
         private Vector2 endPosition;
+        private int numberOfCycles;
+        private int currentCycle = 0;
+        private bool headingTowardEndPosition = false;
 
-        private Timer timer = new Timer(15000); // timer for exit at 15000 mili seconds
-
-        public BackAndForth(Vector2 startPosition, Vector2 endPosition, float speed)
+        public BackAndForth(Vector2 startPosition, Vector2 endPosition, float speed, int numberOfCycles)
             : base(startPosition, speed)
         {
             this.endPosition = endPosition;
+            this.numberOfCycles = numberOfCycles;
         }
 
         public override void InitializeMovement()
@@ -20,6 +22,7 @@
             this.currentPosition = this.startPosition;
             this.CurrentSpeed = this.Speed;
             this.Velocity = this.CalculateVelocity(this.startPosition, this.endPosition, this.CurrentSpeed);
+            this.headingTowardEndPosition = true;
         }
 
         public override void Move()
@@ -27,6 +30,20 @@
             if (this.ExceededPosition(this.startPosition, this.endPosition, this.Velocity))
             {
                 this.Velocity = -this.Velocity;
+                if (this.headingTowardEndPosition == true)
+                {
+                    this.headingTowardEndPosition = false;
+                }
+                else
+                {
+                    this.currentCycle++;
+                    this.headingTowardEndPosition = true;
+                }
+            }
+
+            if (this.currentCycle == this.numberOfCycles)
+            {
+                this.CompletedMovement = true;
             }
 
             base.Move();

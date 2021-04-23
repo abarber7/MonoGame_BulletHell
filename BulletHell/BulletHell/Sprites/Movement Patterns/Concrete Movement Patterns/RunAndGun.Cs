@@ -10,11 +10,20 @@
         private Timer timer;
 
         public RunAndGun(Vector2 startPosition, Vector2 stopPosition, int speed, Timer timer)
-            : base(startPosition, speed)
+            : base(stopPosition, speed)
         {
             this.stopPosition = stopPosition;
             this.timer = timer;
+            this.timer.Stop();
             this.timer.Elapsed += this.MovementComplete;
+        }
+
+        public override void InitializeMovement()
+        {
+            this.currentPosition = this.stopPosition;
+            this.CurrentSpeed = this.Speed;
+            this.Velocity = default(Vector2);
+            this.timer.Start();
         }
 
         public override void Move()

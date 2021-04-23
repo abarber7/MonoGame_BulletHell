@@ -110,21 +110,21 @@
 
         private void NewGameHardButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("circularHomingDemo");
+            GameLoader.LoadGame("demo");
 
             StateManager.ChangeState(new GameState());
         }
 
         private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("attackdemo");
+            GameLoader.LoadGame("demo");
 
             StateManager.ChangeState(new GameState());
         }
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("attackdemo");
+            GameLoader.LoadGame("demo");
 
             StateManager.ChangeState(new GameState());
         }

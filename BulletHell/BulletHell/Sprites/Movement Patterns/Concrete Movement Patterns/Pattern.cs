@@ -6,18 +6,25 @@
     internal class Pattern : MovementPattern
     {
         private List<Vector2> points;
+        private int numberOfCycles;
+        private int currentCycle = 0;
         private int previousTargetPoinIndex;
         private int nextTargetPointIndex;
 
-        public Pattern(Vector2 startPosition, int speed, List<Vector2> points)
+        public Pattern(Vector2 startPosition, int speed, List<Vector2> points, int numberOfCycles)
             : base(startPosition, speed)
         {
             this.points = points;
+            this.numberOfCycles = numberOfCycles;
 
             this.previousTargetPoinIndex = 0;
             this.nextTargetPointIndex = 1;
-            this.CurrentPosition = this.points[0];
-            this.velocity = this.CalculateVelocity(this.points[this.previousTargetPoinIndex], this.points[this.nextTargetPointIndex], this.Speed);
+        }
+
+        public override void InitializeMovement()
+        {
+            this.CurrentPosition = this.startPosition;
+            this.velocity = this.CalculateVelocity(this.startPosition, this.points[this.nextTargetPointIndex], this.Speed);
         }
 
         public override void Move()
@@ -26,7 +33,17 @@
             {
                 this.previousTargetPoinIndex = this.nextTargetPointIndex;
                 this.nextTargetPointIndex = (this.nextTargetPointIndex + 1) % this.points.Count;
+                if (this.previousTargetPoinIndex > this.nextTargetPointIndex)
+                {
+                    this.currentCycle++;
+                }
+
                 this.velocity = this.CalculateVelocity(this.points[this.previousTargetPoinIndex], this.points[this.nextTargetPointIndex], this.Speed);
+            }
+
+            if (this.currentCycle == this.numberOfCycles)
+            {
+                this.CompletedMovement = true;
             }
 
             base.Move();
