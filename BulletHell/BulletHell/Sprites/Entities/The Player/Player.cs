@@ -55,20 +55,16 @@
 
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
             this.SetInvincibility(gameTime);
 
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
             this.Attack(enemies);
-
-            float previousSpeed = this.Movement.CurrentSpeed;
 
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
 
             this.Move();
-            this.Movement.CurrentSpeed = previousSpeed;
         }
 
         public override void OnCollision(Sprite sprite)
@@ -113,7 +109,7 @@
 
         public void Respawn(GameTime gameTime)
         {
-            ((PlayerInput)this.Movement).Respawn();
+            this.Respawn();
             this.IsRemoved = false;
             this.spawning = true;
             this.Invincible = true;

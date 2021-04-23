@@ -24,15 +24,13 @@
             string colorName = (string)entityProperties["color"];
             Color color = System.Drawing.Color.FromName(colorName).ToXNA();
 
-            MovementPattern movement;
+            Dictionary<string, object> movementPatternProperties = null;
+            MovementPattern movement = null;
             if (entityProperties.ContainsKey("movementPattern"))
             {
-                movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)entityProperties["movementPattern"]);
+                movementPatternProperties = (Dictionary<string, object>)entityProperties["movementPattern"];
+                movement = MovementPatternFactory.CreateMovementPattern(movementPatternProperties);
                 movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
-            }
-            else
-            {
-                movement = null;
             }
 
             string enemyType = (string)entityProperties["entityType"];
@@ -46,6 +44,7 @@
             {
                 case "player":
                     entity = new Player(texture, color, movement, hp, attack, attackCooldown);
+                    entity.SpawnPosition = new Vector2((float)movementPatternProperties["spawnXPosition"], (float)movementPatternProperties["spawnYPosition"]);
                     break;
                 case "enemy":
                     int lifeSpan = Convert.ToInt32((float)entityProperties["lifeSpan"]);

@@ -20,6 +20,12 @@
         private bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
+        public void Respawn()
+        {
+            this.reachedStart = false;
+            this.initializedSpawningPosition = false;
+        }
+
         protected Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
             : base(texture, color, movement)
         {
@@ -42,13 +48,14 @@
 
         protected virtual void Move()
         {
+            // For spawning
             if (this.reachedStart == false && this.exiting == false)
             {
                 if (this.initializedSpawningPosition == false)
                 {
                     this.initializedSpawningPosition = true;
                     this.Movement.CurrentPosition = this.SpawnPosition;
-                    this.Movement.CurrentSpeed = 5;
+                    this.Movement.CurrentSpeed = this.Movement.Speed * 2;
                     this.Movement.Velocity = this.Movement.CalculateVelocity(this.SpawnPosition, this.Movement.StartPosition, this.Movement.CurrentSpeed);
                 }
 
@@ -56,19 +63,32 @@
                 {
                     this.reachedStart = true;
                 }
-
-                this.Movement.CurrentPosition += this.Movement.Velocity;
+                else
+                {
+                    this.Movement.CurrentPosition += this.Movement.Velocity;
+                }
             }
+            
+            // For movement
             else if (this.reachedStart == true && this.exiting == false)
             {
                 if (this.initializedMovementPosition == false)
                 {
                     this.initializedMovementPosition = true;
-                    this.Movement.CurrentPosition = this.Movement.StartPosition;
-                    this.Movement.CurrentSpeed = this.Movement.Speed;
-                    this.Movement.Velocity = this.Movement.CalculateVelocity(this.SpawnPosition, this.Movement.StartPosition, this.Movement.CurrentSpeed);
+                    this.Movement.InitializeMovement();
+                }
+
+                if (this.Movement.CompletedMovement == true)
+                {
+                    this.exiting = true;
+                }
+                else
+                {
+                    this.Movement.Move();
                 }
             }
+
+            // For despawning
             else if (this.reachedStart == true && this.exiting == true)
             {
                 if (this.initializedDespawningPosition == false)
@@ -81,7 +101,8 @@
                         this.DespawnPosition = this.SpawnPosition;
                     }
 
-                    this.Movement.CurrentSpeed = 5;
+                    this.Movement.CurrentSpeed = this.Movement.Speed * 2;
+                    this.positionWhenDespawningBegins = this.Movement.CurrentPosition;
 
                     this.Movement.Velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
                 }
@@ -90,8 +111,10 @@
                 {
                     this.isRemoved = true;
                 }
-
-                this.Movement.CurrentPosition += this.Movement.Velocity;
+                else
+                {
+                    this.Movement.CurrentPosition += this.Movement.Velocity;
+                }
             }
         }
     }

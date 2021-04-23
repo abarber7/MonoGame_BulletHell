@@ -39,7 +39,7 @@
                 this.IsRemoved = true;
             }
 
-            this.Movement.Move();
+            this.Move();
         }
 
         public override void OnCollision(Sprite sprite)
