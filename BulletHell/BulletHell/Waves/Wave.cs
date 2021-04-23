@@ -21,12 +21,15 @@
             }
         }
 
-        public void CreateWave(List<Sprite> sprites)
+        public List<SpawnableSprite> CreateWave()
         {
+            List<SpawnableSprite> spritesToSpawn = new List<SpawnableSprite>();
             foreach (EntityGroup entityGroup in this.entityGroups)
             {
-                entityGroup.CreateEntities(sprites);
+                entityGroup.CreateEntities().ForEach(item => spritesToSpawn.Add(item));
             }
+
+            return spritesToSpawn;
         }
     }
 }

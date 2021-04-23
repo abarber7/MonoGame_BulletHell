@@ -40,12 +40,12 @@
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
+            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
 
             Vector2 targetPosition = GameState.GetPlayerPosition();
             Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
             newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
 
@@ -54,10 +54,10 @@
             newProjectile.Movement.Parent = newProjectile;
 
             targetPosition = GameState.GetPlayerPosition();
+            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition(180);
             velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition(180);
             newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
         }

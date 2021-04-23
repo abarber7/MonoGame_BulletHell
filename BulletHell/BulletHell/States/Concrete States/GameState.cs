@@ -21,6 +21,7 @@
         private List<Sprite> projectiles;
         private List<Sprite> attacks;
         private List<Wave> waves;
+        private List<SpawnableSprite> enemiesToSpawn;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
         private bool finalBossDefeated = false;
@@ -60,7 +61,7 @@
                 this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in this.enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
@@ -89,6 +90,8 @@
             this.projectiles = new List<Sprite>();
 
             this.attacks = new List<Sprite>();
+
+            this.enemiesToSpawn = new List<SpawnableSprite>();
 
             this.commandQueue = new List<ICommand>();
         }
@@ -232,12 +235,28 @@
         private void CheckAndDeployWave(GameTime gameTime)
         {
             this.timeUntilNextWave -= gameTime.ElapsedGameTime.TotalSeconds;
+            List<SpawnableSprite> spritesToSpawn = new List<SpawnableSprite>();
             if (this.timeUntilNextWave <= 0 && this.waves.Count > 0)
             {
                 this.timeUntilNextWave = this.waves[0].WaveDuration;
-                this.waves[0].CreateWave(this.enemies);
+                spritesToSpawn = this.waves[0].CreateWave();
                 this.waves.RemoveRange(0, 1);
             }
+
+            spritesToSpawn.ForEach(item => this.enemiesToSpawn.Add(item));
+
+            spritesToSpawn.ForEach(item =>
+            {
+                item.TimeToSpawn += this.SpawnEnemies;
+                item.GetTimer().Start();
+            });
+        }
+
+        private void SpawnEnemies(object source, EventArgs e)
+        {
+            SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
+            this.enemiesToSpawn.Remove(enemyToSpawn);
+            this.enemies.Add(enemyToSpawn.GetSprite());
         }
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)

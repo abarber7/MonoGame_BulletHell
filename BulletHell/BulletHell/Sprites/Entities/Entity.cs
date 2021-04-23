@@ -8,11 +8,11 @@
     internal abstract class Entity : Sprite
     {
         public int HP;
+        public Attack Attack;
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
         protected double timer;
         protected float attackCooldown;
-        protected Attack attack;
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exiting = false; // bool for if it is time to exit
         private bool initializedSpawningPosition = false;
@@ -29,18 +29,18 @@
         protected Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
             : base(texture, color, movement)
         {
-            this.attack = attack;
+            this.Attack = attack;
             this.HP = hp;
             this.attackCooldown = attackCooldown;
         }
 
-        protected void Attack(List<Sprite> sprites)
+        protected void ExecuteAttack(List<Sprite> sprites)
         {
              if (this.reachedStart && !this.exiting)
             {
-                Attack attackClone = (Attack)this.attack.Clone();
-                attackClone.Attacker = this;
+                Attack attackClone = (Attack)this.Attack.Clone();
                 attackClone.Movement.CurrentPosition = this.GetCenterOfSprite();
+                attackClone.Attacker = this;
 
                 sprites.Add(attackClone);
             }

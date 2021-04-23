@@ -59,7 +59,7 @@
 
             this.SetInvincibility(gameTime);
 
-            this.Attack(enemies);
+            this.ExecuteAttack(enemies);
 
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
@@ -141,16 +141,16 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.attack.ProjectileToLaunch.Damage += 1;
-                    this.attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.Attack.ProjectileToLaunch.Damage += 1;
+                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
                     break;
                 case 2:
-                    this.attack.ProjectileToLaunch.Damage += 1;
-                    this.attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.Attack.ProjectileToLaunch.Damage += 1;
+                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
                     break;
                 case 3:
-                    this.attack.ProjectileToLaunch.Damage += 1;
-                    this.attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.Attack.ProjectileToLaunch.Damage += 1;
+                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
                     break;
                 default:
                     Debug.WriteLine("At max damage level");
@@ -158,12 +158,12 @@
             }
         }
 
-        private new void Attack(List<Sprite> sprites)
+        private new void ExecuteAttack(List<Sprite> sprites)
         {
             if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Input.Attack) && this.previousKey.IsKeyUp(Input.Attack))
             {
                 this.timer = 0;
-                base.Attack(sprites);
+                base.ExecuteAttack(sprites);
             }
         }
     }
