@@ -16,7 +16,7 @@
             string attackName = (string)attackProperties["attackName"];
             Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)attackProperties["projectile"]);
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)attackProperties["movementPattern"]);
-            double projectileSpawnCooldown = (double)attackProperties["projectileSpawnCooldown"];
+            float projectileSpawnCooldown = (float)attackProperties["projectileSpawnCooldown"];
 
             switch (attackName)
             {
@@ -28,6 +28,16 @@
                     break;
                 case "circularTriHoming":
                     attack = new CircularTriHoming(projectile, (Circular)movement, projectileSpawnCooldown);
+                    break;
+                case "circle":
+                    int numberOfProjectiles = Convert.ToInt32((float)attackProperties["numberOfProjectiles"]);
+                    float degreesToStart = (float)attackProperties["degreesToStart"];
+                    float degreesToEnd = (float)attackProperties["degreesToEnd"];
+                    attack = new Circle(projectile, movement, projectileSpawnCooldown, numberOfProjectiles, degreesToStart, degreesToEnd);
+                    break;
+                case "arrow":
+                    int widthOfArrow = Convert.ToInt32((float)attackProperties["widthOfArrow"]);
+                    attack = new Arrow(projectile, movement, projectileSpawnCooldown, widthOfArrow);
                     break;
                 default:
                     throw new Exception("Invalid Entity");

@@ -7,13 +7,13 @@
     internal class Wave
     {
         public int WaveNumber;
-        public double WaveDuration;
+        public float WaveDuration;
         private List<EntityGroup> entityGroups = new List<EntityGroup>();
 
         public Wave(Dictionary<string, object> waveProperties)
         {
-            this.WaveNumber = Convert.ToInt32((double)waveProperties["waveNumber"]);
-            this.WaveDuration = (double)waveProperties["waveDuration"];
+            this.WaveNumber = Convert.ToInt32((float)waveProperties["waveNumber"]);
+            this.WaveDuration = (float)waveProperties["waveDuration"];
 
             foreach (object entityGroupProperties in (List<object>)waveProperties["entityGroups"])
             {

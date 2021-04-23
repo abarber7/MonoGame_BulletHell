@@ -12,8 +12,8 @@
 
     internal abstract class Enemy : Entity
     {
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double attackCooldown)
-            : base(texture, color, movement, attack, hp, attackCooldown)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
+            : base(texture, color, movement, hp, attack, attackCooldown)
         {
             this.LifeSpan = lifeSpan;
             this.timer = 0;
@@ -23,7 +23,7 @@
 
         public bool DropLoot { get; set; }
 
-        protected double LifeSpan { get; set; }
+        protected float LifeSpan { get; set; }
 
         protected int HealthPoints { get; set; }
 
@@ -39,7 +39,7 @@
                 this.IsRemoved = true;
             }
 
-            this.Movement.Move();
+            this.Move();
         }
 
         public override void OnCollision(Sprite sprite)
@@ -73,13 +73,13 @@
             powerUp.Movement = this.PowerUp.Movement.Clone() as MovementPattern;
             Vector2 velocity = powerUp.Movement.Velocity;
             velocity.Normalize();
-            velocity.X *= powerUp.Movement.Speed;
-            velocity.Y *= powerUp.Movement.Speed;
+            velocity.X *= Convert.ToSingle(powerUp.Movement.Speed);
+            velocity.Y *= Convert.ToSingle(powerUp.Movement.Speed);
             powerUp.Movement.Velocity = velocity;
 
             Random random = new Random();
             int screenMiddle = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth / 2;
-            powerUp.Movement.Position = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
+            powerUp.Movement.CurrentPosition = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
             return powerUp;
         }
     }

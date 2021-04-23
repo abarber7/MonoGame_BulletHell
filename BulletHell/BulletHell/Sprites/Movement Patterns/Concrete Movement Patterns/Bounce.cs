@@ -4,12 +4,9 @@
 
     internal class Bounce : MovementPattern
     {
-        public Bounce(Vector2 startPosition, Vector2 velocity, int speed)
-            : base()
+        public Bounce(Vector2 startPosition, int speed)
+            : base(startPosition, speed)
         {
-            this.position = startPosition;
-            this.velocity = velocity;
-            this.Speed = speed;
         }
 
         public override void Move()
