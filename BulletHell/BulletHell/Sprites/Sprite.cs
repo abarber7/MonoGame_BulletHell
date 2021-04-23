@@ -90,7 +90,7 @@
 
         public Vector2 GetCenterOfSprite()
         {
-            return this.Movement.CurrentPosition; //this.Rectangle.Center.ToVector2();
+            return this.Movement.CurrentPosition;
         }
     }
 }

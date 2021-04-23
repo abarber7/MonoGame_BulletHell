@@ -20,18 +20,18 @@
         private bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
-        public void Respawn()
-        {
-            this.reachedStart = false;
-            this.initializedSpawningPosition = false;
-        }
-
         protected Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
             : base(texture, color, movement)
         {
             this.attack = attack;
             this.HP = hp;
             this.attackCooldown = attackCooldown;
+        }
+
+        public void Respawn()
+        {
+            this.reachedStart = false;
+            this.initializedSpawningPosition = false;
         }
 
         protected void Attack(List<Sprite> sprites)

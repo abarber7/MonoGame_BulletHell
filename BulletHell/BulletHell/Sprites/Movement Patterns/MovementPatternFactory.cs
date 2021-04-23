@@ -41,8 +41,6 @@
                     spawnPosition.Y = (float)movementPatternProperties["spawnYPosition"];
 
                     // movement pattern
-
-
                     movementPattern = new PlayerInput(spawnPosition, startPosition, speed);
                     break;
                 case "linear":

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.States;
@@ -10,7 +9,7 @@
 
     internal class Arrow : Attack
     {
-        private int widthOfArrow;
+        private readonly int widthOfArrow;
 
         public Arrow(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile, int widthOfArrow)
             : base(projectile, movement, cooldownToCreateProjectile)

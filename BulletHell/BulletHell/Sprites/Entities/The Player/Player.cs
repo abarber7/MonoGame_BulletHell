@@ -42,8 +42,8 @@
             get
             {
                 Vector2 upperLeftCorner = this.Movement.CurrentPosition;
-                upperLeftCorner.X -= this.Texture.Width / 4;
-                upperLeftCorner.Y -= this.Texture.Height / 4;
+                upperLeftCorner.X -= this.Texture.Width / 2;
+                upperLeftCorner.Y -= this.Texture.Height / 2;
                 return new Rectangle(
                     upperLeftCorner.ToPoint(),
                     new Point(this.Texture.Width / 4, this.Texture.Height / 4));

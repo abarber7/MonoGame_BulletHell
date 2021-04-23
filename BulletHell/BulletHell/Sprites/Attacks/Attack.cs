@@ -1,11 +1,9 @@
 ﻿namespace BulletHell.Sprites
 {
-    using System;
     using System.Collections.Generic;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Attack : Sprite
     {
