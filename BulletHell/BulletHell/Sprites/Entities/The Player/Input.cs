@@ -10,6 +10,8 @@
         private static Keys left = Keys.A;
         private static Keys right = Keys.D;
         private static Keys attack = Keys.Space;
+        private static Keys cheatingMode = Keys.OemTilde;
+        private static Keys slowMode = Keys.LeftShift;
 
         public static Keys Up { get => up; set => up = value; }
 
@@ -20,6 +22,10 @@
         public static Keys Right { get => right; set => right = value; }
 
         public static Keys Attack { get => attack; set => attack = value; }
+
+        public static Keys CheatingMode { get => cheatingMode; set => cheatingMode = value; }
+
+        public static Keys SlowMode { get => slowMode; set => slowMode = value; }
 
         public static void SetKey(string keyNameToSet, Keys newKey)
         {
@@ -40,14 +46,20 @@
                 case "Attack":
                     Attack = newKey;
                     break;
+                case "CheatingMode":
+                    CheatingMode = newKey;
+                    break;
+                case "SlowMode":
+                    SlowMode = newKey;
+                    break;
                 default:
                     return;
             }
         }
 
-        public static bool CheckIfAlreadyBinded(Keys key)
+        public static bool CheckIfAlreadyBinded(Keys keyToBind)
         {
-            if (Up == key || Down == key || Left == key || Right == key || Attack == key)
+            if (Up == keyToBind || Down == keyToBind || Left == keyToBind || Right == keyToBind || Attack == keyToBind || CheatingMode == keyToBind || SlowMode == keyToBind)
             {
                 return true;
             }

@@ -9,15 +9,15 @@
 
     internal abstract class Attack : Sprite
     {
-        public Projectile projectile;
+        public Projectile ProjectileToLaunch;
         public Sprite Attacker;
         protected double timer = 0;
-        protected double projectileSpawnCooldown;
+        protected float projectileSpawnCooldown;
 
-        public Attack(Projectile projectile, MovementPattern movement, double projectileSpawnCooldown)
+        public Attack(Projectile projectile, MovementPattern movement, float projectileSpawnCooldown)
             : base(null, Color.Transparent, movement)
         {
-            this.projectile = projectile;
+            this.ProjectileToLaunch = projectile;
             this.projectileSpawnCooldown = projectileSpawnCooldown;
         }
 

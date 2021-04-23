@@ -9,8 +9,8 @@
 
     internal class SimpleGrunt : Enemy
     {
-        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double cooldownToAttack)
-            : base(texture, color, movement, attack, powerUp, lifeSpan, hp, cooldownToAttack)
+        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float cooldownToAttack)
+            : base(texture, color, movement, powerUp, lifeSpan, hp, attack, cooldownToAttack)
         {
         }
 

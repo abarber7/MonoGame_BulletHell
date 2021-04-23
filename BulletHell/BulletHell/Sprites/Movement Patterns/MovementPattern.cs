@@ -6,22 +6,28 @@
 
     internal abstract class MovementPattern : ICloneable
     {
+        public bool CompletedMovement = false;
         protected Vector2 velocity;
-        protected Vector2 position;
+        protected Vector2 currentPosition;
+        protected Vector2 startPosition;
 
-        public MovementPattern()
+        public MovementPattern(Vector2 startPosition, float speed)
         {
+            this.startPosition = startPosition;
+            this.Speed = speed;
         }
 
         public Sprite Parent { get; set; }
 
         public Vector2 Velocity { get => this.velocity; set => this.velocity = value; }
 
-        public Vector2 Position { get => this.position; set => this.position = value; }
+        public Vector2 CurrentPosition { get => this.currentPosition; set => this.currentPosition = value; }
 
-        public int Speed { get; set; }
+        public Vector2 StartPosition { get => this.startPosition; }
 
-        public int CurrentSpeed { get; set; }
+        public float Speed { get; set; }
+
+        public float CurrentSpeed { get; set; }
 
         // Specifies the rotation axis of sprite, relative to the drawing
         // bounds and based on sprite texture - only needed when using Draw method
@@ -30,12 +36,13 @@
         // For rotating sprites when drawing; should be done in radians
         public int Rotation { get; set; }
 
-        public bool reachedStart = false; // bool for if entity reached start position
-        public bool exitTime = false; // bool for if it is time to exit
+        public virtual void InitializeMovement()
+        {
+        }
 
         public virtual void Move()
         {
-            this.Position += this.Velocity;
+            this.CurrentPosition += this.Velocity;
         }
 
         public object Clone() => this.MemberwiseClone();
@@ -43,11 +50,11 @@
         public bool IsTouchingBottomOfScreen()
         {
             int bottom = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight - (this.Parent.Texture.Height / 2);
-            if (this.Position.Y + this.Velocity.Y > bottom)
+            if (this.CurrentPosition.Y + this.Velocity.Y > bottom)
             {
-                Vector2 position = this.Position;
+                Vector2 position = this.CurrentPosition;
                 position.Y = bottom;
-                this.Position = position;
+                this.CurrentPosition = position;
                 return true;
             }
             else
@@ -59,11 +66,11 @@
         public bool IsTouchingTopOfScreen()
         {
             int top = this.Parent.Texture.Height / 2;
-            if (this.Position.Y + this.Velocity.Y < top)
+            if (this.CurrentPosition.Y + this.Velocity.Y < top)
             {
-                Vector2 position = this.Position;
+                Vector2 position = this.CurrentPosition;
                 position.Y = top;
-                this.Position = position;
+                this.CurrentPosition = position;
                 return true;
             }
             else
@@ -75,11 +82,11 @@
         public bool IsTouchingRightOfScreen()
         {
             int right = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth - (this.Parent.Texture.Width / 2);
-            if (this.Position.X + this.Velocity.X > right)
+            if (this.CurrentPosition.X + this.Velocity.X > right)
             {
-                Vector2 position = this.Position;
+                Vector2 position = this.CurrentPosition;
                 position.X = right;
-                this.Position = position;
+                this.CurrentPosition = position;
                 return true;
             }
             else
@@ -91,11 +98,11 @@
         public bool IsTouchingLeftOfScreen()
         {
             int left = this.Parent.Texture.Width / 2;
-            if (this.Position.X + this.Velocity.X < left)
+            if (this.CurrentPosition.X + this.Velocity.X < left)
             {
-                Vector2 position = this.Position;
+                Vector2 position = this.CurrentPosition;
                 position.X = left;
-                this.Position = position;
+                this.CurrentPosition = position;
                 return true;
             }
             else
@@ -112,7 +119,7 @@
 
         public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
 
-        public Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, int speed)
+        public Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, float speed)
         {
             Vector2 velocity;
             velocity.X = endPosition.X - startPosition.X;
@@ -124,22 +131,22 @@
             return velocity;
         }
 
-        protected bool ExceededPosition(Vector2 startPosition, Vector2 endPosition, Vector2 velocity)
+        public bool ExceededPosition(Vector2 startPosition, Vector2 endPosition, Vector2 velocity)
         {
             // Up
             if (velocity.Y < 0)
             {
                 // Up to start
-                if ((this.Position.Y + velocity.Y - startPosition.Y < this.Position.Y - startPosition.Y)
-                    && this.Position.Y < startPosition.Y
+                if ((this.CurrentPosition.Y + velocity.Y - startPosition.Y < this.CurrentPosition.Y - startPosition.Y)
+                    && this.CurrentPosition.Y < startPosition.Y
                     && startPosition.Y - endPosition.Y < 0)
                 {
                     return true;
                 }
 
                 // Up to end
-                if ((this.Position.Y + velocity.Y - endPosition.Y < this.Position.Y - endPosition.Y)
-                    && this.Position.Y < endPosition.Y
+                if ((this.CurrentPosition.Y + velocity.Y - endPosition.Y < this.CurrentPosition.Y - endPosition.Y)
+                    && this.CurrentPosition.Y < endPosition.Y
                     && endPosition.Y - startPosition.Y < 0)
                 {
                     return true;
@@ -150,16 +157,16 @@
             else if (velocity.Y > 0)
             {
                 // Down to finish
-                if ((endPosition.Y - this.Position.Y + velocity.Y > endPosition.Y - this.Position.Y)
-                    && this.Position.Y > endPosition.Y
+                if ((endPosition.Y - this.CurrentPosition.Y + velocity.Y > endPosition.Y - this.CurrentPosition.Y)
+                    && this.CurrentPosition.Y > endPosition.Y
                     && endPosition.Y - startPosition.Y > 0)
                 {
                     return true;
                 }
 
                 // Down to Start
-                if ((startPosition.Y - this.Position.Y + velocity.Y > startPosition.Y - this.Position.Y)
-                    && this.Position.Y > startPosition.Y
+                if ((startPosition.Y - this.CurrentPosition.Y + velocity.Y > startPosition.Y - this.CurrentPosition.Y)
+                    && this.CurrentPosition.Y > startPosition.Y
                     && endPosition.Y - startPosition.Y < 0)
                 {
                     return true;
@@ -170,16 +177,16 @@
             else if (velocity.X < 0)
             {
                 // Up to start
-                if ((this.Position.X + this.Velocity.X - startPosition.X < this.Position.X - startPosition.X)
-                    && this.Position.X < startPosition.X
+                if ((this.CurrentPosition.X + this.Velocity.X - startPosition.X < this.CurrentPosition.X - startPosition.X)
+                    && this.CurrentPosition.X < startPosition.X
                     && startPosition.X - endPosition.X < 0)
                 {
                     return true;
                 }
 
                 // Up to end
-                if ((this.Position.X + this.Velocity.X - endPosition.X < this.Position.X - endPosition.X)
-                    && this.Position.X < endPosition.X
+                if ((this.CurrentPosition.X + this.Velocity.X - endPosition.X < this.CurrentPosition.X - endPosition.X)
+                    && this.CurrentPosition.X < endPosition.X
                     && endPosition.X - startPosition.X < 0)
                 {
                     return true;
@@ -190,16 +197,16 @@
             else if (velocity.X > 0)
             {
                 // Right to finish
-                if ((endPosition.X - this.Position.X + velocity.X > endPosition.X - this.Position.X)
-                    && this.Position.X > endPosition.X
+                if ((endPosition.X - this.CurrentPosition.X + velocity.X > endPosition.X - this.CurrentPosition.X)
+                    && this.CurrentPosition.X > endPosition.X
                     && endPosition.X - startPosition.X > 0)
                 {
                     return true;
                 }
 
                 // Right to Start
-                if ((startPosition.X - this.Position.X + velocity.X > startPosition.X - this.Position.X)
-                    && this.Position.X > startPosition.X
+                if ((startPosition.X - this.CurrentPosition.X + velocity.X > startPosition.X - this.CurrentPosition.X)
+                    && this.CurrentPosition.X > startPosition.X
                     && endPosition.X - startPosition.X < 0)
                 {
                     return true;
