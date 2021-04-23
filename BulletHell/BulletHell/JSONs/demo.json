@@ -288,15 +288,17 @@
           "entityAmount": 1,
           "entityType": "finalBoss",
           "movementPattern": {
-            "movementPatternType": "backAndForth",
-            "spawnXPosition": [ 240 ],
-            "spawnYPosition": [ -100 ],
-            "startXPosition": [ 0 ],
-            "startYPosition": [ 50 ],
-            "endXPosition": [ 430 ],
-            "endYPosition": [ 50 ],
-            "speed": 1,
-            "numberOfCycles": 3
+            "movementPatternType": "randomWithBounds",
+            "spawnXPosition": 240,
+            "spawnYPosition": -100,
+            "startXPosition": 0,
+            "startYPosition": 50,
+            "upperXBound": 380,
+            "lowerXBound": 100,
+            "upperYBound": 200,
+            "lowerYBound": 50,
+            "speed": 3,
+            "timeBeforeExit": 10
           }
         }
       ]

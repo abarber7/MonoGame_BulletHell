@@ -113,6 +113,15 @@
 
                     movementPattern = new Circular(numberOfTimesToCycle, originPosition, radius, amountToIncreaseRadiusBy, degreesToRotate, startingDegrees);
                     break;
+                case "randomWithBounds":
+                    int upperXBound = Convert.ToInt32((float)movementPatternProperties["upperXBound"]);
+                    int lowerXBound = Convert.ToInt32((float)movementPatternProperties["lowerXBound"]);
+                    int upperYBound = Convert.ToInt32((float)movementPatternProperties["upperYBound"]);
+                    int lowerYBound = Convert.ToInt32((float)movementPatternProperties["lowerYBound"]);
+                    timer = new System.Timers.Timer((float)movementPatternProperties["timeBeforeExit"] * 1000);
+
+                    movementPattern = new RandomWithBounds(startPosition, speed, upperXBound, lowerXBound, upperYBound, lowerYBound, timer);
+                    break;
                 default:
                     throw new Exception("Invalid Entity");
             }
