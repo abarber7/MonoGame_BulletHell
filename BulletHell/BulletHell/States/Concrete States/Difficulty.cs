@@ -14,17 +14,29 @@
         private List<Component> components;
         private SnowEmitter snowEmitter;
         private Texture2D selectDifficultyTexture;
+        private Texture2D selectDifficultyTexture2;
+
 
         public DifficultyState()
           : base()
         {
             var buttonTexture = TextureFactory.GetTexture("Controls/Button");
             var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
-            this.selectDifficultyTexture = TextureFactory.GetTexture("Titles/SelectDifficulty");
+            this.selectDifficultyTexture = TextureFactory.GetTexture("Titles/SELECT");
+            this.selectDifficultyTexture2 = TextureFactory.GetTexture("Titles/DIFFICULTY");
+
+
+            var bossButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(2, 300),
+                Text = "Boss",
+            };
+
+            bossButton.Click += this.BossButton_Click;
 
             var newGameEasyButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
+                Position = new Vector2(161, 450),
                 Text = "Easy",
             };
 
@@ -32,7 +44,7 @@
 
             var newGameNormalButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
+                Position = new Vector2(161, 500),
                 Text = "Normal",
             };
 
@@ -40,7 +52,7 @@
 
             var newGameHardButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
+                Position = new Vector2(161, 550),
                 Text = "Hard",
             };
 
@@ -48,7 +60,7 @@
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 350),
+                Position = new Vector2(161, 600),
                 Text = "Main Menu",
             };
 
@@ -60,6 +72,7 @@
                 newGameNormalButton,
                 newGameHardButton,
                 returnButton,
+                bossButton,
               };
         }
 
@@ -70,7 +83,9 @@
             GraphicManagers.GraphicsDevice.Clear(Color.Green);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(this.selectDifficultyTexture, new Vector2(40, 50), Color.Black);
+            spriteBatch.Draw(this.selectDifficultyTexture, new Vector2(50, 50), Color.Black);
+            spriteBatch.Draw(this.selectDifficultyTexture2, new Vector2(30, 120), Color.Black);
+
 
             foreach (var component in this.components)
             {
@@ -111,6 +126,13 @@
         private void NewGameHardButton_Click(object sender, EventArgs e)
         {
             GameLoader.LoadGame("demo");
+
+            StateManager.ChangeState(new GameState());
+        }
+
+        private void BossButton_Click(object sender, EventArgs e)
+        {
+            GameLoader.LoadGame("boss");
 
             StateManager.ChangeState(new GameState());
         }
