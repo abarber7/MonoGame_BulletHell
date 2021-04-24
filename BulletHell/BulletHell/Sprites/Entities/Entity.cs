@@ -37,7 +37,7 @@
 
         protected void ExecuteAttack(List<Sprite> sprites)
         {
-             if (this.reachedStart && !this.exiting)
+            if (this.reachedStart && !this.exiting)
             {
                 Attack attackClone = AttackFactory.DownCastAttack(this.Attack.Clone());
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
