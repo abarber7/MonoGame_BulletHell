@@ -118,19 +118,6 @@
             this.RemoveSprites(gameTime);
         }
 
-        private void InitializeLists()
-        {
-            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
-
-            this.enemies = new List<Sprite>();
-
-            this.projectiles = new List<Sprite>();
-
-            this.attacks = new List<Sprite>();
-
-            this.commandQueue = new List<ICommand>();
-        }
-
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
