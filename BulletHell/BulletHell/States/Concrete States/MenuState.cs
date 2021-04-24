@@ -14,6 +14,10 @@
         private SnowEmitter snowEmitter;
         private Texture2D mainMenuTexture;
         private Texture2D mainMenuTexture2;
+        private Texture2D mainMenuTexture3;
+        private Texture2D mainMenuTexture4;
+
+
 
 
         public MenuState()
@@ -21,12 +25,17 @@
         {
             var buttonTexture = TextureFactory.GetTexture("Controls/Button");
             var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
-            this.mainMenuTexture = TextureFactory.GetTexture("Titles/Bo&Long");
-            this.mainMenuTexture2 = TextureFactory.GetTexture("Titles/gotTo");
+            this.mainMenuTexture = TextureFactory.GetTexture("Titles/Bo&Long2");
+            this.mainMenuTexture2 = TextureFactory.GetTexture("Titles/GO");
+            this.mainMenuTexture3 = TextureFactory.GetTexture("Titles/PANDA");
+            this.mainMenuTexture4 = TextureFactory.GetTexture("Titles/EXPRESS");
+
+
+
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
+                Position = new Vector2(161, 500),
                 Text = "New Game",
             };
 
@@ -34,7 +43,7 @@
 
             var optionsButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
+                Position = new Vector2(161, 550),
                 Text = "Options",
             };
 
@@ -42,7 +51,7 @@
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
+                Position = new Vector2(161, 600),
                 Text = "Quit",
             };
 
@@ -63,8 +72,11 @@
             GraphicManagers.GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(this.mainMenuTexture, new Vector2(160, 20), Color.White);
-            spriteBatch.Draw(this.mainMenuTexture2, new Vector2(60, 120), Color.White);
+            spriteBatch.Draw(this.mainMenuTexture, new Vector2(15, 35), Color.White);
+            spriteBatch.Draw(this.mainMenuTexture2, new Vector2(85, 120), Color.White);
+            spriteBatch.Draw(this.mainMenuTexture3, new Vector2(85, 220), Color.White);
+            spriteBatch.Draw(this.mainMenuTexture4, new Vector2(15, 320), Color.White);
+
 
 
             foreach (var component in this.components)
