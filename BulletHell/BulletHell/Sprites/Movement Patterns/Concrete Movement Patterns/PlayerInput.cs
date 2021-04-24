@@ -8,23 +8,19 @@
     internal class PlayerInput : MovementPattern
     {
         private Vector2 spawnPosition;
-        private Vector2 startPosition;
         private bool respawning;
 
         public PlayerInput(Vector2 spawnPosition, Vector2 startPosition, int speed)
-            : base()
+            : base(startPosition, speed)
         {
             this.spawnPosition = spawnPosition;
-            this.startPosition = startPosition;
-            this.Speed = speed;
             this.Respawn();
         }
 
         public void Respawn()
         {
             this.respawning = true;
-            this.reachedStart = false;
-            this.position = this.spawnPosition;
+            this.CurrentPosition = this.spawnPosition;
             this.CurrentSpeed = this.Speed * 2;
             this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
         }
@@ -37,7 +33,6 @@
                 if (this.ExceededPosition(this.spawnPosition, this.startPosition, this.Velocity))
                 {
                     this.respawning = false; // change bool so entity will move in the pattern
-                    this.reachedStart = true;
                     this.CurrentSpeed = this.Speed;
                     this.ZeroXVelocity();
                     this.ZeroYVelocity();

@@ -6,7 +6,7 @@
 
     internal class ExtraLife : PowerUp
     {
-        public ExtraLife(Texture2D texture, Color color, MovementPattern movement, double dropPercent)
+        public ExtraLife(Texture2D texture, Color color, MovementPattern movement, float dropPercent)
             : base(texture, color, movement, dropPercent)
         {
         }

@@ -8,8 +8,12 @@
 
     internal abstract class Sprite : ICloneable
     {
-        private bool isRemoved = false;
+
+        protected bool isRemoved = false;
         private Color color = Color.White;
+        private MovementPattern movement;
+
+        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Sprite(Texture2D texture, Color color, MovementPattern movement)
         {
@@ -19,8 +23,6 @@
         }
 
         public Texture2D Texture { get; set; }
-
-        public MovementPattern Movement { get; set; }
 
         public Color Color
         {
@@ -37,12 +39,28 @@
         // Serves as hitbox
         public virtual Rectangle Rectangle
         {
-            get => new Rectangle(
-                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
+            get
+            {
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= this.Texture.Width / 2;
+                upperLeftCorner.Y -= this.Texture.Height / 2;
+                return new Rectangle(
+                    upperLeftCorner.ToPoint(),
                     new Point(this.Texture.Width, this.Texture.Height));
+            }
         }
 
-        public virtual object Clone() => this.MemberwiseClone();
+        public virtual object Clone()
+        {
+            Sprite newSprite = (Sprite)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newSprite.Movement = newMovement;
+            }
+
+            return newSprite;
+        }
 
         public virtual void Update(GameTime gametime, List<Sprite> sprites)
         {
@@ -50,7 +68,19 @@
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.Texture, this.Movement.Position, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            if (this.Texture != null)
+            {
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= this.Texture.Width / 2;
+                upperLeftCorner.Y -= this.Texture.Height / 2;
+                spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            }
+
+            // Drawing option for texture-less sprites (Attacks)
+            else
+            {
+                spriteBatch.Draw(this.Texture, this.Movement.CurrentPosition, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+            }
         }
 
         public virtual void OnCollision(Sprite sprite)
@@ -72,7 +102,7 @@
 
         public Vector2 GetCenterOfSprite()
         {
-            return this.Rectangle.Center.ToVector2();
+            return this.Movement.CurrentPosition;
         }
     }
 }

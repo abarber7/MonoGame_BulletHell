@@ -6,7 +6,7 @@
 
     internal class DamageUp : PowerUp
     {
-        public DamageUp(Texture2D texture, Color color, MovementPattern movement, double dropPercent)
+        public DamageUp(Texture2D texture, Color color, MovementPattern movement, float dropPercent)
             : base(texture, color, movement, dropPercent)
         {
         }

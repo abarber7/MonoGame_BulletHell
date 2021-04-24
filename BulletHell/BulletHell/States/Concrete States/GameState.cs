@@ -21,6 +21,7 @@
         private List<Sprite> projectiles;
         private List<Sprite> attacks;
         private List<Wave> waves;
+        private List<SpawnableSprite> enemiesToSpawn;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
         private bool finalBossDefeated = false;
@@ -60,7 +61,7 @@
                 this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in this.enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
@@ -74,6 +75,14 @@
 
         public override void LoadContent()
         {
+            this.InitializeLists();
+            this.LoadPlayer();
+            this.LoadWaves();
+            this.CreateStats();
+        }
+
+        private void InitializeLists()
+        {
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
             this.enemies = new List<Sprite>();
@@ -82,13 +91,9 @@
 
             this.attacks = new List<Sprite>();
 
+            this.enemiesToSpawn = new List<SpawnableSprite>();
+
             this.commandQueue = new List<ICommand>();
-
-            player = GameLoader.LoadPlayer();
-
-            this.CreateWaves();
-
-            this.CreateStats();
         }
 
         public override void Update(GameTime gameTime)
@@ -119,7 +124,7 @@
             this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // projectiles used here as container where Attack() adds sprites
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
             this.attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles
@@ -217,20 +222,41 @@
             }
         }*/
 
-        private void CreateWaves()
+        private void LoadWaves()
         {
             this.waves = GameLoader.LoadWaves();
+        }
+
+        private void LoadPlayer()
+        {
+            player = GameLoader.LoadPlayer();
         }
 
         private void CheckAndDeployWave(GameTime gameTime)
         {
             this.timeUntilNextWave -= gameTime.ElapsedGameTime.TotalSeconds;
+            List<SpawnableSprite> spritesToSpawn = new List<SpawnableSprite>();
             if (this.timeUntilNextWave <= 0 && this.waves.Count > 0)
             {
                 this.timeUntilNextWave = this.waves[0].WaveDuration;
-                this.waves[0].CreateWave(this.enemies);
+                spritesToSpawn = this.waves[0].CreateWave();
                 this.waves.RemoveRange(0, 1);
             }
+
+            spritesToSpawn.ForEach(item => this.enemiesToSpawn.Add(item));
+
+            spritesToSpawn.ForEach(item =>
+            {
+                item.TimeToSpawn += this.SpawnEnemies;
+                item.GetTimer().Start();
+            });
+        }
+
+        private void SpawnEnemies(object source, EventArgs e)
+        {
+            SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
+            this.enemiesToSpawn.Remove(enemyToSpawn);
+            this.enemies.Add(enemyToSpawn.GetSprite());
         }
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)

@@ -6,19 +6,20 @@
     internal class Circular : MovementPattern
     {
         private int numberOfTimesToCycle;
-        private double radius;
-        private double amountToIncreaseRadiusBy;
-        private double startingDegrees;
-        private double degreesToRotate;
-        private double currentDegrees;
+        private float radius;
+        private float amountToIncreaseRadiusBy;
+        private float startingDegrees;
+        private float degreesToRotate;
+        private float currentDegrees;
 
         private int currentCycle = 0;
         private bool exceededStartPosition = false;
 
-        public Circular(int numberOfTimesToCycle, Vector2 originPosition, double radius, double amountToIncreaseRadiusBy, double degreesToRotate, double startingDegrees)
+        public Circular(int numberOfTimesToCycle, Vector2 originPosition, float radius, float amountToIncreaseRadiusBy, float degreesToRotate, float startingDegrees)
+            : base(originPosition, 0)
         {
             this.numberOfTimesToCycle = numberOfTimesToCycle;
-            this.Position = originPosition;
+            this.CurrentPosition = originPosition;
             this.radius = radius;
             this.amountToIncreaseRadiusBy = amountToIncreaseRadiusBy;
             this.startingDegrees = startingDegrees;
@@ -36,7 +37,7 @@
                 this.exceededStartPosition = true;
             }
 
-            double newDegrees = this.currentDegrees + this.degreesToRotate;
+            float newDegrees = this.currentDegrees + this.degreesToRotate;
 
             if (newDegrees >= 360)
             {
@@ -46,11 +47,11 @@
             this.currentDegrees = newDegrees % 360;
         }
 
-        public Vector2 GetActualPosition(double degreeOffset = 0)
+        public Vector2 GetActualPosition(float degreeOffset = 0)
         {
             Vector2 actualPosition = default(Vector2);
-            actualPosition.X = Convert.ToSingle(this.Position.X + (Math.Cos((this.currentDegrees + degreeOffset) * (Math.PI / 180)) * this.radius));
-            actualPosition.Y = Convert.ToSingle(this.Position.Y + (Math.Sin((this.currentDegrees + degreeOffset) * (Math.PI / 180)) * this.radius));
+            actualPosition.X = Convert.ToSingle(this.CurrentPosition.X + (Math.Cos((this.currentDegrees + degreeOffset) * (Math.PI / 180)) * this.radius));
+            actualPosition.Y = Convert.ToSingle(this.CurrentPosition.Y + (Math.Sin((this.currentDegrees + degreeOffset) * (Math.PI / 180)) * this.radius));
             return actualPosition;
         }
 
@@ -60,7 +61,13 @@
             {
                 return true;
             }
+
             return false;
+        }
+
+        public new object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

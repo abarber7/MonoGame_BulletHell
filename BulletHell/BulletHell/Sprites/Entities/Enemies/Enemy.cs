@@ -6,15 +6,14 @@
     using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.Sprites.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     internal abstract class Enemy : Entity
     {
-        private double timer;
-
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double attackCooldown)
-            : base(texture, color, movement, attack, hp, attackCooldown)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
+            : base(texture, color, movement, hp, attack, attackCooldown)
         {
             this.LifeSpan = lifeSpan;
             this.timer = 0;
@@ -24,14 +23,12 @@
 
         public bool DropLoot { get; set; }
 
-        protected double LifeSpan { get; set; }
+        protected float LifeSpan { get; set; }
 
         protected int HealthPoints { get; set; }
 
         // public because GameState looks at a Sprite version of the enemy?
         protected PowerUp PowerUp { get; set; }
-
-        protected double LifeSpan { get; set; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -42,7 +39,7 @@
                 this.IsRemoved = true;
             }
 
-            this.Movement.Move();
+            this.Move();
         }
 
         public override void OnCollision(Sprite sprite)
@@ -76,20 +73,14 @@
             powerUp.Movement = this.PowerUp.Movement.Clone() as MovementPattern;
             Vector2 velocity = powerUp.Movement.Velocity;
             velocity.Normalize();
-            velocity.X *= powerUp.Movement.Speed;
-            velocity.Y *= powerUp.Movement.Speed;
+            velocity.X *= Convert.ToSingle(powerUp.Movement.Speed);
+            velocity.Y *= Convert.ToSingle(powerUp.Movement.Speed);
             powerUp.Movement.Velocity = velocity;
+
             Random random = new Random();
-            powerUp.Movement.Position = new Vector2(random.Next(100, 700), 70); // Spawn origin x-coordinate randomized in center portion of screen
+            int screenMiddle = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth / 2;
+            powerUp.Movement.CurrentPosition = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
             return powerUp;
-        }
-
-        private void UpdatePowerUpsPosition()
-        {
-            this.PowerUp.Movement.Origin = this.Movement.Origin;
-            this.PowerUp.Movement.Position = this.Movement.Position;
-
-            // this.PowerUp.Movement.
         }
     }
 }

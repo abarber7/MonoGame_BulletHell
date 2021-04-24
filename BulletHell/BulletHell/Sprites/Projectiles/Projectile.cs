@@ -8,7 +8,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Projectile : Sprite, ICloneable
+    internal abstract class Projectile : Sprite
     {
         public Projectile(Texture2D texture, Color color, MovementPattern movement, int damage)
             : base(texture, color, movement)
@@ -23,9 +23,16 @@
         // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
         public override Rectangle Rectangle
         {
-            get => new Rectangle(
-                    new Point((int)this.Movement.Position.X - this.Texture.Width, (int)this.Movement.Position.Y - (int)Math.Round(this.Texture.Height * (3.5 / 2))),
-                    new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
+            get
+            {
+                Vector2 boxUpperLeftCorner = this.Movement.CurrentPosition;
+                boxUpperLeftCorner.X -= this.Texture.Width + (this.Texture.Width / 4);
+                boxUpperLeftCorner.Y -= (float)(this.Texture.Height + (this.Texture.Height * (3.5 / 2)));
+
+                return new Rectangle(
+                    boxUpperLeftCorner.ToPoint(),
+                    new Point(this.Texture.Width * 2, (int)Math.Round(this.Texture.Height * 3.5)));
+            }
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
@@ -58,8 +65,6 @@
             this.Movement.Move();
         }
 
-        public object Clone() => this.MemberwiseClone();
-
         public bool OutOfBounds()
         {
             if (this.Movement.IsTouchingLeftOfScreen() ||
@@ -73,6 +78,18 @@
             {
                 return false;
             }
+        }
+
+        public override object Clone()
+        {
+            Projectile newProjectile = this.MemberwiseClone() as Projectile;
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newProjectile.Movement = newMovement;
+            }
+
+            return newProjectile;
         }
     }
 }

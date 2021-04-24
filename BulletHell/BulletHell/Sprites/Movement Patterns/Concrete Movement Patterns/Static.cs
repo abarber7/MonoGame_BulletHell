@@ -5,9 +5,9 @@
     internal class Static : MovementPattern
     {
         public Static(Vector2 startPosition)
-            : base()
+            : base(startPosition, 0)
         {
-            this.Position = startPosition;
+            this.CurrentPosition = startPosition;
         }
     }
 }

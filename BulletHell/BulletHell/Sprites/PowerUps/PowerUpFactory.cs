@@ -19,11 +19,11 @@
             Color color = System.Drawing.Color.FromName(colorName).ToXNA();
 
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)powerUpProperties["movementPattern"]);
-            movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Origin is based on texture
+            movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
 
-            double dropPercent = (double)powerUpProperties["dropPercent"];
+            float dropPercent = (float)powerUpProperties["dropPercent"];
 
-            switch (powerUpProperties["powerUpType"])
+            PowerUp powerUp = powerUpProperties["powerUpType"] switch
             {
                 "damageUp" => new DamageUp(texture, color, movement, dropPercent),
                 "extraLife" => new ExtraLife(texture, color, movement, dropPercent),

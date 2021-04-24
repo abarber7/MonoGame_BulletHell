@@ -9,14 +9,22 @@
 
     internal class MidBoss : Enemy
     {
-        public MidBoss(Texture2D texture, Color color, MovementPattern movement, Attack attack, PowerUp powerUp, int lifeSpan, int hp, double attackCooldown)
-            : base(texture, color, movement, attack, powerUp, lifeSpan, hp, attackCooldown)
+        public MidBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
+            : base(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown)
         {
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             base.Update(gameTime, sprites);
+
+            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (this.timer > this.attackCooldown)
+            {
+                this.timer = 0;
+                this.ExecuteAttack(sprites);
+            }
         }
     }
 }

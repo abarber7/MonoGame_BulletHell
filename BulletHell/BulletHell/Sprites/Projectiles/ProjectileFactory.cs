@@ -23,7 +23,7 @@
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)projectileProperties["movementPattern"]);
             movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Origin is based on texture
 
-            int damage = Convert.ToInt32((double)projectileProperties["damage"]);
+            int damage = Convert.ToInt32((float)projectileProperties["damage"]);
 
             switch (projectileProperties["projectileType"])
             {
@@ -35,7 +35,7 @@
                     break;
                 case "bounceBullet":
                     int numberOfTimesToBounce = (int)projectileProperties["bounceTimes"];
-                    projectile = new BounceBullet(texture, color, movement, numberOfTimesToBounce, damage);
+                    projectile = new BounceBullet(texture, color, movement, damage, numberOfTimesToBounce);
                     break;
                 default:
                     throw new Exception("Invalid Projectile Type");
