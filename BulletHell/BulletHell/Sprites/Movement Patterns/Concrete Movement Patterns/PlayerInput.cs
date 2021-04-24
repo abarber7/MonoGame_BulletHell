@@ -20,7 +20,7 @@
         public void Respawn()
         {
             this.respawning = true;
-            this.currentPosition = this.spawnPosition;
+            this.CurrentPosition = this.spawnPosition;
             this.CurrentSpeed = this.Speed * 2;
             this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
         }

@@ -8,7 +8,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Projectile : Sprite, ICloneable
+    internal abstract class Projectile : Sprite
     {
         public Projectile(Texture2D texture, Color color, MovementPattern movement, int damage)
             : base(texture, color, movement)
@@ -78,6 +78,18 @@
             {
                 return false;
             }
+        }
+
+        public override object Clone()
+        {
+            Projectile newProjectile = this.MemberwiseClone() as Projectile;
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newProjectile.Movement = newMovement;
+            }
+
+            return newProjectile;
         }
     }
 }

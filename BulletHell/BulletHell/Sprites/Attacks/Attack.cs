@@ -22,5 +22,25 @@
         protected virtual void CreateProjectile(List<Sprite> sprites)
         {
         }
+
+        public override object Clone()
+        {
+            Attack newAttack = (Attack)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newAttack.Movement = newMovement;
+            }
+
+            Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
+            newAttack.ProjectileToLaunch = newProjectile;
+            if (this.Attacker != null)
+            {
+                Sprite newAttacker = (Sprite)this.Attacker.Clone();
+                newAttack.Attacker = newAttacker;
+            }
+
+            return newAttack;
+        }
     }
 }
