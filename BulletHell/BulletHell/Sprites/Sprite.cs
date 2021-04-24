@@ -8,9 +8,12 @@
 
     internal abstract class Sprite : ICloneable
     {
+
         protected bool isRemoved = false;
         private Color color = Color.White;
         private MovementPattern movement;
+
+        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Sprite(Texture2D texture, Color color, MovementPattern movement)
         {
@@ -20,8 +23,6 @@
         }
 
         public Texture2D Texture { get; set; }
-
-        public MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Color Color
         {

@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
     using System.Collections.Generic;
+    using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +27,7 @@
             this.initializedSpawningPosition = false;
         }
 
-        protected Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
             : base(texture, color, movement)
         {
             this.Attack = attack;
@@ -38,8 +39,8 @@
         {
              if (this.reachedStart && !this.exiting)
             {
-                Attack attackClone = (Attack)this.Attack.Clone();
-                attackClone.Movement.CurrentPosition = this.GetCenterOfSprite();
+                Attack attackClone = AttackFactory.DownCastAttack(this.Attack.Clone());
+                attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
                 sprites.Add(attackClone);

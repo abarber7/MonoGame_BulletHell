@@ -29,7 +29,7 @@
 
         public override void InitializeMovement()
         {
-            this.currentPosition = this.startPosition;
+            this.CurrentPosition = this.startPosition;
             this.CurrentSpeed = this.Speed;
             this.previousPosition = this.startPosition;
             this.nextPosition = this.GetNextPosition();
@@ -62,7 +62,7 @@
                 float xPosition = this.random.Next(this.lowerXBound, this.upperXBound);
                 float yPosition = this.random.Next(this.lowerYBound, this.upperYBound);
                 newPosition = new Vector2(xPosition, yPosition);
-            } while (Vector2.Distance(this.currentPosition, newPosition) < 100);
+            } while (Vector2.Distance(this.CurrentPosition, newPosition) < 100);
             
             return newPosition;
         }

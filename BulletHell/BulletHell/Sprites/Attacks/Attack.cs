@@ -28,7 +28,12 @@
         public override object Clone()
         {
             Attack newAttack = (Attack)this.MemberwiseClone();
-            newAttack.Movement = ((Sprite)base.Clone()).Movement;
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newAttack.Movement = newMovement;
+            }
+
             Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
             newAttack.ProjectileToLaunch = newProjectile;
             if (this.Attacker != null)
