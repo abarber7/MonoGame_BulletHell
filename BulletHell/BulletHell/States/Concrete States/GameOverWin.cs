@@ -23,7 +23,7 @@
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
+                Position = new Vector2(161, 500),
                 Text = "Play Again",
             };
 
@@ -31,7 +31,7 @@
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
+                Position = new Vector2(161, 550),
                 Text = "Main Menu",
             };
 
@@ -39,7 +39,7 @@
 
             var exitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
+                Position = new Vector2(161, 600),
                 Text = "Exit Game",
             };
 
@@ -60,7 +60,7 @@
             GraphicManagers.GraphicsDevice.Clear(Color.LightSeaGreen);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(this.youWinTexture, new Vector2(190, 50), Color.Gold);
+            spriteBatch.Draw(this.youWinTexture, new Vector2(30, 50), Color.Gold);
 
             foreach (var component in this.components)
             {
