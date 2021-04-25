@@ -303,7 +303,7 @@
             }
             else if (this.finalBossDefeated == true)
             {
-                StateManager.ChangeState(new GameOverWin());
+                StateManager.ChangeState(new EndingState());
             }
         }
 

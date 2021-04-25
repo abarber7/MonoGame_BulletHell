@@ -17,9 +17,6 @@
         private Texture2D mainMenuTexture3;
         private Texture2D mainMenuTexture4;
 
-
-
-
         public MenuState()
           : base()
         {
@@ -29,9 +26,6 @@
             this.mainMenuTexture2 = TextureFactory.GetTexture("Titles/GO");
             this.mainMenuTexture3 = TextureFactory.GetTexture("Titles/PANDA");
             this.mainMenuTexture4 = TextureFactory.GetTexture("Titles/EXPRESS");
-
-
-
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
