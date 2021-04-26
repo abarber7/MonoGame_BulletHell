@@ -20,7 +20,7 @@
 
         public override void InitializeMovement()
         {
-            this.currentPosition = this.stopPosition;
+            this.CurrentPosition = this.stopPosition;
             this.CurrentSpeed = this.Speed;
             this.Velocity = default(Vector2);
             this.timer.Start();

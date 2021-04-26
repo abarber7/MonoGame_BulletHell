@@ -15,6 +15,7 @@
         private List<Component> components;
         private SnowEmitter snowEmitter;
         private Texture2D configureControlsTexture;
+        private Texture2D configureControlsTexture2;
         private KeyboardState preivousState;
         private bool rebinding = false;
         private string functionToRebind;
@@ -31,11 +32,13 @@
         {
             var buttonTexture = TextureFactory.Content.Load<Texture2D>("Controls/Button");
             var buttonFont = TextureFactory.Content.Load<SpriteFont>("Fonts/Font");
-            this.configureControlsTexture = TextureFactory.Content.Load<Texture2D>("Titles/ConfigureControls");
+            this.configureControlsTexture = TextureFactory.Content.Load<Texture2D>("Titles/CONFIGURE");
+            this.configureControlsTexture2 = TextureFactory.Content.Load<Texture2D>("Titles/CONTROLS");
+
 
             this.upButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(150, 150),
+                Position = new Vector2(82, 357),
                 Text = "Up | " + Input.Up.ToString(),
             };
 
@@ -43,7 +46,7 @@
 
             this.downButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(150, 250),
+                Position = new Vector2(82, 444),
                 Text = "Down | " + Input.Down.ToString(),
             };
 
@@ -51,7 +54,7 @@
 
             this.leftButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(50, 200),
+                Position = new Vector2(2, 400),
                 Text = "Left | " + Input.Left.ToString(),
             };
 
@@ -59,7 +62,7 @@
 
             this.rightButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(250, 200),
+                Position = new Vector2(165, 400),
                 Text = "Right | " + Input.Right.ToString(),
             };
 
@@ -67,7 +70,7 @@
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
+                Position = new Vector2(161, 600),
                 Text = "Return to Main Menu",
             };
 
@@ -75,7 +78,7 @@
 
             this.attackButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(500, 200),
+                Position = new Vector2(318, 500),
                 Text = "Attack | " + Input.Attack.ToString(),
             };
 
@@ -99,7 +102,9 @@
             GraphicManagers.GraphicsDevice.Clear(Color.DarkGray);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(this.configureControlsTexture, new Vector2(-7, 0), Color.Black);
+            spriteBatch.Draw(this.configureControlsTexture, new Vector2(20, 50), Color.Black);
+            spriteBatch.Draw(this.configureControlsTexture2, new Vector2(40, 120), Color.Black);
+
 
             foreach (var component in this.components)
             {

@@ -9,7 +9,9 @@
 
     internal class CircularHoming : Attack
     {
-        public new Circular Movement;
+        private Circular movement;
+
+        public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
         public CircularHoming(Projectile projectile, Circular circularMovement, float cooldownToCreateProjectile)
             : base(projectile, circularMovement, cooldownToCreateProjectile)
@@ -29,7 +31,7 @@
 
             this.Move();
 
-            if (this.Movement.IsMovementDone())
+            if (this.movement.IsMovementDone())
             {
                 this.IsRemoved = true;
             }
@@ -38,26 +40,24 @@
         protected override void CreateProjectile(List<Sprite> sprites)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
-            newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
+            newProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
 
             Vector2 targetPosition = GameState.GetPlayerPosition();
             Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
             newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
 
             newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
-            newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
 
             targetPosition = GameState.GetPlayerPosition();
+            newProjectile.Movement.CurrentPosition = this.movement.GetActualPosition(180);
             velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition(180);
             newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
         }
@@ -65,6 +65,26 @@
         private void Move()
         {
             this.Movement.Move();
+        }
+
+        public override object Clone()
+        {
+            CircularHoming newAttack = (CircularHoming)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                Circular newMovement = (Circular)this.Movement.Clone();
+                newAttack.Movement = newMovement;
+            }
+
+            Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
+            newAttack.ProjectileToLaunch = newProjectile;
+            if (this.Attacker != null)
+            {
+                Sprite newAttacker = (Sprite)this.Attacker.Clone();
+                newAttack.Attacker = newAttacker;
+            }
+
+            return newAttack;
         }
     }
 }

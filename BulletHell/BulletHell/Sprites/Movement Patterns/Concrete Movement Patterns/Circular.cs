@@ -64,5 +64,10 @@
 
             return false;
         }
+
+        public new object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

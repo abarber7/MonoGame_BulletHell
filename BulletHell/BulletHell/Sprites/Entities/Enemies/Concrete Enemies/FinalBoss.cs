@@ -23,7 +23,7 @@
             if (this.timer > this.attackCooldown)
             {
                 this.timer = 0;
-                this.Attack(sprites);
+                this.ExecuteAttack(sprites);
             }
         }
     }

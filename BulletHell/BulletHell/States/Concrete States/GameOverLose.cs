@@ -13,17 +13,21 @@
         private List<Component> components;
         private SnowEmitter snowEmitter;
         private Texture2D gameOverTexture;
+        private Texture2D gameOverTexture2;
+
 
         public GameOverLose()
           : base()
         {
             var buttonTexture = TextureFactory.GetTexture("Controls/Button");
             var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
-            this.gameOverTexture = TextureFactory.GetTexture("Titles/GameOver");
+            this.gameOverTexture = TextureFactory.GetTexture("Titles/GAME");
+            this.gameOverTexture2 = TextureFactory.GetTexture("Titles/OVER");
+
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
+                Position = new Vector2(161, 500),
                 Text = "Play Again",
             };
 
@@ -31,7 +35,7 @@
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
+                Position = new Vector2(161, 550),
                 Text = "Main Menu",
             };
 
@@ -39,7 +43,7 @@
 
             var exitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
+                Position = new Vector2(161, 600),
                 Text = "Exit Game",
             };
 
@@ -61,6 +65,8 @@
 
             spriteBatch.Begin();
             spriteBatch.Draw(this.gameOverTexture, new Vector2(90, 50), Color.Black);
+            spriteBatch.Draw(this.gameOverTexture2, new Vector2(90, 140), Color.Black);
+
 
             foreach (var component in this.components)
             {

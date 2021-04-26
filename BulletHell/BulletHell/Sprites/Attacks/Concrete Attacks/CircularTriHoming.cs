@@ -10,7 +10,9 @@
 
     internal class CircularTriHoming : Attack
     {
-        public new Circular Movement;
+        private Circular movement;
+
+        public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
         public CircularTriHoming(Projectile projectile, Circular circularMovement, float cooldownToCreateProjectile)
             : base(projectile, circularMovement, cooldownToCreateProjectile)
@@ -30,7 +32,7 @@
 
             this.Move();
 
-            if (this.Movement.IsMovementDone())
+            if (this.movement.IsMovementDone())
             {
                 this.IsRemoved = true;
             }
@@ -46,7 +48,7 @@
             Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
+            newProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             newProjectile.Parent = this.Attacker;
             sprites.Add(newProjectile);
 
@@ -59,7 +61,7 @@
             secondVelocity.Y = (float)((velocity.X * Math.Sin(120 * (Math.PI / 180))) + (velocity.Y * Math.Cos(120 * (Math.PI / 180))));
 
             secondProjectile.Movement.Velocity = secondVelocity;
-            secondProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
+            secondProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             secondProjectile.Parent = this.Attacker;
             sprites.Add(secondProjectile);
 
@@ -72,7 +74,7 @@
             thirdVelocity.Y = (float)((velocity.X * Math.Sin(240 * (Math.PI / 180))) + (velocity.Y * Math.Cos(240 * (Math.PI / 180))));
 
             thirdProjectile.Movement.Velocity = thirdVelocity;
-            thirdProjectile.Movement.CurrentPosition = this.Movement.GetActualPosition();
+            thirdProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             thirdProjectile.Parent = this.Attacker;
             sprites.Add(thirdProjectile);
         }

@@ -23,7 +23,7 @@
 
             var configureKeysButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
+                Position = new Vector2(161, 500),
                 Text = "Configure Controls",
             };
 
@@ -31,7 +31,7 @@
 
             var returnButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
+                Position = new Vector2(161, 550),
                 Text = "Main Menu",
             };
 
@@ -57,7 +57,7 @@
                 component.Draw(gameTime, spriteBatch);
             }
 
-            spriteBatch.Draw(this.optionsTexture, new Vector2(220, 50), Color.Black);
+            spriteBatch.Draw(this.optionsTexture, new Vector2(75, 50), Color.Black);
 
             this.snowEmitter.Draw(gameTime, spriteBatch);
 

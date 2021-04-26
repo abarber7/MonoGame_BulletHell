@@ -19,7 +19,7 @@
 
         public override void InitializeMovement()
         {
-            this.currentPosition = this.startPosition;
+            this.CurrentPosition = this.startPosition;
             this.CurrentSpeed = this.Speed;
             this.Velocity = this.CalculateVelocity(this.startPosition, this.endPosition, this.CurrentSpeed);
             this.headingTowardEndPosition = true;

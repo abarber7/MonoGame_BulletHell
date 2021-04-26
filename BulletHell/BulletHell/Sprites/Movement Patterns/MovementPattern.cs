@@ -7,8 +7,8 @@
     internal abstract class MovementPattern : ICloneable
     {
         public bool CompletedMovement = false;
+        public Vector2 CurrentPosition;
         protected Vector2 velocity;
-        protected Vector2 currentPosition;
         protected Vector2 startPosition;
 
         public MovementPattern(Vector2 startPosition, float speed)
@@ -20,8 +20,6 @@
         public Sprite Parent { get; set; }
 
         public Vector2 Velocity { get => this.velocity; set => this.velocity = value; }
-
-        public Vector2 CurrentPosition { get => this.currentPosition; set => this.currentPosition = value; }
 
         public Vector2 StartPosition { get => this.startPosition; }
 

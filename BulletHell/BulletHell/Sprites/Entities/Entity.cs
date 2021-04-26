@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
     using System.Collections.Generic;
+    using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Movement_Patterns;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -8,11 +9,11 @@
     internal abstract class Entity : Sprite
     {
         public int HP;
+        public Attack Attack;
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
         protected double timer;
         protected float attackCooldown;
-        protected Attack attack;
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exiting = false; // bool for if it is time to exit
         private bool initializedSpawningPosition = false;
@@ -20,27 +21,27 @@
         private bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
-        protected Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
-            : base(texture, color, movement)
-        {
-            this.attack = attack;
-            this.HP = hp;
-            this.attackCooldown = attackCooldown;
-        }
-
         public void Respawn()
         {
             this.reachedStart = false;
             this.initializedSpawningPosition = false;
         }
 
-        protected void Attack(List<Sprite> sprites)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
+            : base(texture, color, movement)
+        {
+            this.Attack = attack;
+            this.HP = hp;
+            this.attackCooldown = attackCooldown;
+        }
+
+        protected void ExecuteAttack(List<Sprite> sprites)
         {
             if (this.reachedStart && !this.exiting)
             {
-                Attack attackClone = (Attack)this.attack.Clone();
+                Attack attackClone = AttackFactory.DownCastAttack(this.Attack.Clone());
+                attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
-                attackClone.Movement.CurrentPosition = this.GetCenterOfSprite();
 
                 sprites.Add(attackClone);
             }

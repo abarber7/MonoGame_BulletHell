@@ -8,8 +8,12 @@
 
     internal abstract class Sprite : ICloneable
     {
+
         protected bool isRemoved = false;
         private Color color = Color.White;
+        private MovementPattern movement;
+
+        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Sprite(Texture2D texture, Color color, MovementPattern movement)
         {
@@ -19,8 +23,6 @@
         }
 
         public Texture2D Texture { get; set; }
-
-        public MovementPattern Movement { get; set; }
 
         public Color Color
         {
@@ -48,7 +50,17 @@
             }
         }
 
-        public virtual object Clone() => this.MemberwiseClone();
+        public virtual object Clone()
+        {
+            Sprite newSprite = (Sprite)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newSprite.Movement = newMovement;
+            }
+
+            return newSprite;
+        }
 
         public virtual void Update(GameTime gametime, List<Sprite> sprites)
         {
