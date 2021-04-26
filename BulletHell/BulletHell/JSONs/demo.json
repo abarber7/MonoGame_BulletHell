@@ -159,9 +159,9 @@
         "attackName": "circle",
         "projectileSpawnCooldown": 0.025,
         "projectile": {
-          "projectileType": "bullet",
-          "textureName": "Bullet",
-          "color": "Blue",
+          "projectileType": "pushBullet",
+          "textureName": "Bullet4",
+          "color": "Yellow",
           "damage": 5,
           "movementPattern": {
             "movementPatternType": "linear",

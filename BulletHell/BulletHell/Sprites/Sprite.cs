@@ -75,12 +75,6 @@
                 upperLeftCorner.Y -= this.Texture.Height / 2;
                 spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
             }
-
-            // Drawing option for texture-less sprites (Attacks)
-            else
-            {
-                spriteBatch.Draw(this.Texture, this.Movement.CurrentPosition, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
-            }
         }
 
         public virtual void OnCollision(Sprite sprite)
