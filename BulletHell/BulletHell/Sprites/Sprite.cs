@@ -6,7 +6,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Sprite : ICloneable
+    public abstract class Sprite : ICloneable
     {
 
         protected bool isRemoved = false;

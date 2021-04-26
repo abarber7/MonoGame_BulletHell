@@ -16,10 +16,10 @@
 
     public class GameState : State
     {
+        public static List<Sprite> Attacks;
         private static Player player;
         private List<Sprite> enemies;
         private List<Sprite> projectiles;
-        private List<Sprite> attacks;
         private List<Wave> waves;
         private List<SpawnableSprite> enemiesToSpawn;
         private double timeUntilNextWave = 0;
@@ -89,7 +89,7 @@
 
             this.projectiles = new List<Sprite>();
 
-            this.attacks = new List<Sprite>();
+            Attacks = new List<Attack>();
 
             this.enemiesToSpawn = new List<SpawnableSprite>();
 
@@ -121,13 +121,13 @@
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
-            this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
+            this.commandQueue.Add(new UpdateCommand(player, gameTime, GameState.Attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
+            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, Attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
-            this.attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles
+            this.Attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
             this.projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
@@ -187,11 +187,11 @@
                 }
             }
 
-            for (int i = this.attacks.Count - 1; i >= 0; i--)
+            for (int i = this.Attacks.Count - 1; i >= 0; i--)
             {
-                if (this.attacks[i].IsRemoved)
+                if (this.Attacks[i].IsRemoved)
                 {
-                    this.attacks.RemoveAt(i);
+                    this.Attacks.RemoveAt(i);
                 }
             }
         }

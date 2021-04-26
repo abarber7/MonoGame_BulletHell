@@ -8,7 +8,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Projectile : Sprite
+    public abstract class Projectile : Sprite
     {
         public Projectile(Texture2D texture, Color color, MovementPattern movement, int damage)
             : base(texture, color, movement)

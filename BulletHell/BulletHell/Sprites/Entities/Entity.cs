@@ -9,7 +9,7 @@
     internal abstract class Entity : Sprite
     {
         public int HP;
-        public Attack Attack;
+        public List<Attack> Attack = new List<Attack>();
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
         protected double timer;
@@ -27,7 +27,7 @@
             this.initializedSpawningPosition = false;
         }
 
-        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attack, float attackCooldown)
             : base(texture, color, movement)
         {
             this.Attack = attack;

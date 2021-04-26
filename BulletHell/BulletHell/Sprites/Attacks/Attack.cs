@@ -5,7 +5,7 @@
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
 
-    internal abstract class Attack : Sprite
+    public abstract class Attack : Sprite
     {
         public Projectile ProjectileToLaunch;
         public Sprite Attacker;
