@@ -13,7 +13,7 @@
 
         public override void OnCollision(Sprite sprite)
         {
-            if (sprite is Projectile projectile)
+            if (sprite is Projectile projectile && !(projectile is PushBullet))
             {
                 projectile.Movement.Velocity = this.Movement.Velocity;
             }

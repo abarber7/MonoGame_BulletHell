@@ -160,7 +160,7 @@
         "projectileSpawnCooldown": 0.025,
         "projectile": {
           "projectileType": "pushBullet",
-          "textureName": "Bullet4",
+          "textureName": "Bullet",
           "color": "Yellow",
           "damage": 5,
           "movementPattern": {
