@@ -8,6 +8,7 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.Projectiles.Concrete_Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using BulletHell.Waves;
@@ -58,7 +59,7 @@
             {
                 projectile.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                //this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var enemy in this.enemies.ToArray())
@@ -124,19 +125,29 @@
             this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
+            this.enemies.ForEach((enemy) => { this.commandQueue.Add(new UpdateCommand(enemy, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
-            this.attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, this.projectiles)); }); // attacks add projectiles
+            this.attacks.ForEach((attack) => { this.commandQueue.Add(new UpdateCommand(attack, gameTime, this.projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
-            this.projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+            this.projectiles.ForEach((projectile) => { this.commandQueue.Add(new UpdateCommand(projectile, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
 
             // Create player collision check command, using both enemies and projectiles to check against
             this.commandQueue.Add(new CollisionCheckCommand(player, this.enemies.Concat(this.projectiles).ToList())); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new CollisionCheckCommand(e, this.projectiles)); }); // Did player projectiles hit any enemies
+            this.enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, this.projectiles)); }); // Did player projectiles hit any enemies
+
+            // Create projectile collision checks (purpose for the moment is check projectile on projectile collision for PushBullet
+            this.projectiles.ForEach((projectile) =>
+            {
+                // Optimize by only setting up checks when PushBullet is involved
+                if (projectile is PushBullet)
+                {
+                    this.commandQueue.Add(new CollisionCheckCommand(projectile, this.projectiles));
+                }
+            });
         }
 
         private void ExecuteCommands()
