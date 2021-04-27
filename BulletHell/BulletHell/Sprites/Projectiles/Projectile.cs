@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -90,6 +92,26 @@
             }
 
             return newProjectile;
+        }
+
+        public void SetTextureBasedOnDamageLevel()
+        {
+            float damageModifier = ((Attack)this.Parent).Attacker.DamageModifier;
+
+            switch (damageModifier)
+            {
+                case 1:
+                    this.Texture = TextureFactory.GetTexture("Bullet2");
+                    break;
+                case 2:
+                    this.Texture = TextureFactory.GetTexture("Bullet3");
+                    break;
+                case 3:
+                    this.Texture = TextureFactory.GetTexture("Bullet4");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Timers;
+    using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
@@ -14,8 +15,8 @@
 
         public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
-        public CircularHoming(Projectile projectile, Circular circularMovement, Timer cooldownToCreateProjectile)
-            : base(projectile, circularMovement, cooldownToCreateProjectile)
+        public CircularHoming(Projectile projectile, Circular circularMovement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
+            : base(projectile, circularMovement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
         }
@@ -74,11 +75,11 @@
             newAttack.ProjectileToLaunch = newProjectile;
             if (this.Attacker != null)
             {
-                Sprite newAttacker = (Sprite)this.Attacker.Clone();
+                Entity newAttacker = (Entity)this.Attacker.Clone();
                 newAttack.Attacker = newAttacker;
             }
 
-            this.cooldownToCreateProjectile.Start();
+            this.CooldownToCreateProjectile.Start();
             return newAttack;
         }
     }

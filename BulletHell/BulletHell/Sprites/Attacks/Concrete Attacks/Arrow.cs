@@ -12,8 +12,8 @@
     {
         private readonly int widthOfArrow;
 
-        public Arrow(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile, int widthOfArrow)
-            : base(projectile, movement, cooldownToCreateProjectile)
+        public Arrow(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile, int widthOfArrow)
+            : base(projectile, movement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.widthOfArrow = widthOfArrow;
         }

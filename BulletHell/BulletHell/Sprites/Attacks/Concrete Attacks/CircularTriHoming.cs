@@ -15,8 +15,8 @@
 
         public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
-        public CircularTriHoming(Projectile projectile, Circular circularMovement, Timer cooldownToCreateProjectile)
-            : base(projectile, circularMovement, cooldownToCreateProjectile)
+        public CircularTriHoming(Projectile projectile, Circular circularMovement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
+            : base(projectile, circularMovement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
         }

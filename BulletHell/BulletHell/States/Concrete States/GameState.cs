@@ -54,7 +54,7 @@
                 Player.SlowMode = false;
             }
 
-            foreach (var projectile in Projectiles)
+            foreach (var projectile in Projectiles.ToArray())
             {
                 projectile.Draw(this.spriteBatch);
 
@@ -130,7 +130,7 @@
             Attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, Projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
-            Projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, Projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+            Projectiles.ToArray().ToList().ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, Projectiles)); }); // Note: Projectile's Update does nothing with sprite list
 
             // Create player collision check command, using both enemies and projectiles to check against
             this.commandQueue.Add(new CollisionCheckCommand(Player, Enemies.Concat(Projectiles).ToList())); // Did player hit any enemies or projectiles

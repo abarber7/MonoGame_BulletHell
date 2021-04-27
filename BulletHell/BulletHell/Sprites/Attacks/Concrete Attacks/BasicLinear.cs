@@ -10,8 +10,8 @@
 
     internal class BasicLinear : Attack
     {
-        public BasicLinear(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile)
-            : base(projectile, movement, cooldownToCreateProjectile)
+        public BasicLinear(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
+            : base(projectile, movement, cooldownToAttack, cooldownToCreateProjectile)
         {
         }
 

@@ -1,8 +1,11 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
+    using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.States;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -12,8 +15,8 @@
         public List<Attack> Attacks = new List<Attack>();
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
-        protected double timer;
-        protected float attackCooldown;
+        public float DamageModifier = 0;
+        protected float damageLevel;
         private bool reachedStart = false; // bool for if entity reached start position
         private bool exiting = false; // bool for if it is time to exit
         private bool initializedSpawningPosition = false;
@@ -27,23 +30,22 @@
             this.initializedSpawningPosition = false;
         }
 
-        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks, float attackCooldown)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement)
         {
             this.Attacks = attacks;
             this.HP = hp;
-            this.attackCooldown = attackCooldown;
         }
 
-        protected void ExecuteAttack(List<Sprite> sprites)
+        public virtual void ExecuteAttack(object source, EventArgs args)
         {
             if (this.reachedStart && !this.exiting)
             {
-                Attack attackClone = AttackFactory.DownCastAttack(this.Attacks[0].Clone());
+                Attack attackClone = (Attack)((Attack)source).Clone();
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
-                sprites.Add(attackClone);
+                GameState.Attacks.Add(attackClone);
             }
         }
 
@@ -76,6 +78,7 @@
                 if (this.initializedMovementPosition == false)
                 {
                     this.initializedMovementPosition = true;
+                    this.Attacks.ForEach(item => item.CooldownToCreateProjectile.Start());
                     this.Movement.InitializeMovement();
                 }
 
@@ -106,6 +109,8 @@
                     this.positionWhenDespawningBegins = this.Movement.CurrentPosition;
 
                     this.Movement.Velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
+
+                    this.Attacks.ForEach(item => item.CooldownToCreateProjectile.Stop());
                 }
 
                 if (this.Movement.ExceededPosition(this.positionWhenDespawningBegins, this.DespawnPosition, this.Movement.Velocity))

@@ -1,7 +1,9 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Timers;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
@@ -26,8 +28,8 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attack, float cooldownToAttack)
-            : base(texture, color, movement, hp, attack, cooldownToAttack)
+        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attack)
+            : base(texture, color, movement, hp, attack)
         {
             this.spawning = true;
             this.Invincible = true;
@@ -60,11 +62,8 @@
 
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
             this.SetInvincibility(gameTime);
-
-            this.ExecuteAttack(enemies);
 
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
@@ -146,29 +145,27 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.Attacks.ProjectileToLaunch.Damage += 1;
-                    this.Attacks.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.DamageModifier += 1;
                     break;
                 case 2:
-                    this.Attacks.ProjectileToLaunch.Damage += 1;
-                    this.Attacks.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.DamageModifier += 1;
                     break;
                 case 3:
-                    this.Attacks.ProjectileToLaunch.Damage += 1;
-                    this.Attacks.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.DamageModifier += 1;
                     break;
                 default:
                     Debug.WriteLine("At max damage level");
                     break;
             }
+
+            this.Attacks.ForEach(item => item.ProjectileToLaunch.SetTextureBasedOnDamageLevel());
         }
 
-        private new void ExecuteAttack(List<Sprite> sprites)
+        public override void ExecuteAttack(object source, EventArgs args)
         {
-            if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Input.Attack) && this.previousKey.IsKeyUp(Input.Attack))
+            if (this.currentKey.IsKeyDown(Input.Attack))
             {
-                this.timer = 0;
-                base.ExecuteAttack(sprites);
+                base.ExecuteAttack(source, args);
             }
         }
     }

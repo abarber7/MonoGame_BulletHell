@@ -14,8 +14,8 @@
         private float degreesToStart;
         private float degreesToEnd;
 
-        public Circle(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile, int numberOfProjectiles, float degreesToStart, float degreesToEnd)
-            : base(projectile, movement, cooldownToCreateProjectile)
+        public Circle(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile, int numberOfProjectiles, float degreesToStart, float degreesToEnd)
+            : base(projectile, movement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.numberOfProjectiles = numberOfProjectiles;
             this.degreesToStart = degreesToStart;

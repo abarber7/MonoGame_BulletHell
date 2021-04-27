@@ -9,22 +9,14 @@
 
     internal class SimpleGrunt : Enemy
     {
-        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, List<Attack> attacks, float cooldownToAttack)
-            : base(texture, color, movement, powerUp, lifeSpan, hp, attacks, cooldownToAttack)
+        public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks)
+            : base(texture, color, movement, powerUp, hp, attacks)
         {
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             base.Update(gameTime, sprites);
-
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer > this.attackCooldown)
-            {
-                this.timer = 0;
-                this.ExecuteAttack(sprites);
-            }
         }
     }
 }

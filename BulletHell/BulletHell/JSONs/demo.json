@@ -4,7 +4,6 @@
     "textureName": "block",
     "color": "Blue",
     "hp": 3,
-    "attackCooldown": 0.25,
     "movementPattern": {
       "movementPatternType": "playerInput",
       "spawnXPosition": 240,
@@ -13,9 +12,10 @@
       "startYPosition": 600,
       "speed": 2
     },
-    "attack": {
+    "attacks": {
       "attackName": "basicLinear",
-      "projectileSpawnCooldown": 0,
+      "cooldownToAttack": 0.25,
+      "cooldownToCreateProjectile": 0,
       "projectile": {
         "projectileType": "bullet",
         "textureName": "Bullet",
@@ -58,10 +58,11 @@
           "speed": 2
         }
       },
-      "attackCooldown": 5,
-      "attack": {
+
+      "attacks": {
         "attackName": "circularHoming",
-        "projectileSpawnCooldown": 0.025,
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",
@@ -108,10 +109,11 @@
           "speed": 2
         }
       },
-      "attackCooldown": 1,
-      "attack": {
+
+      "attacks": {
         "attackName": "arrow",
-        "projectileSpawnCooldown": 0.025,
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",
@@ -126,7 +128,7 @@
             "speed": 3
           }
         },
-        "widthOfArrow" : 3,
+        "widthOfArrow": 3,
         "movementPattern": {
           "movementPatternType": "static",
           "xPosition": 0,
@@ -154,10 +156,11 @@
           "speed": 2
         }
       },
-      "attackCooldown": 5,
-      "attack": {
+
+      "attacks": {
         "attackName": "circle",
-        "projectileSpawnCooldown": 0.025,
+        "cooldownToAttack": 5,
+        "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",
@@ -202,10 +205,11 @@
           "speed": 2
         }
       },
-      "attackCooldown": 1,
-      "attack": {
+
+      "attacks": {
         "attackName": "circularTriHoming",
-        "projectileSpawnCooldown": 0.025,
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",

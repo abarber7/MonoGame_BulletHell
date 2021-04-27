@@ -12,10 +12,9 @@
 
     internal abstract class Enemy : Entity
     {
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, List<Attack> attacks, float attackCooldown)
-            : base(texture, color, movement, hp, attacks, attackCooldown)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks)
+            : base(texture, color, movement, hp, attacks)
         {
-            this.timer = 0;
             this.DropLoot = false;
             this.PowerUp = powerUp;
         }
@@ -29,7 +28,6 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
             this.Move();
         }

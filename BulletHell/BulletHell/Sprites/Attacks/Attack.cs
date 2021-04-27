@@ -1,7 +1,8 @@
 ﻿namespace BulletHell.Sprites
 {
-    using System.Collections.Generic;
+    using System;
     using System.Timers;
+    using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
@@ -9,22 +10,22 @@
     public abstract class Attack : Sprite
     {
         public Projectile ProjectileToLaunch;
-        public Sprite Attacker;
-        protected Timer cooldownToCreateProjectile;
+        public Entity Attacker;
+        public Timer CooldownToAttack;
+        public Timer CooldownToCreateProjectile;
 
-        public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile)
+        public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
             : base(null, Color.Transparent, movement)
         {
             this.ProjectileToLaunch = projectile;
-            this.cooldownToCreateProjectile = cooldownToCreateProjectile;
-            this.cooldownToCreateProjectile.Stop();
-            this.cooldownToCreateProjectile.AutoReset = true;
-            this.cooldownToCreateProjectile.Elapsed += this.CreateProjectile;
+
+            this.CooldownToAttack = cooldownToAttack;
+            this.CooldownToAttack.Elapsed += this.ExecuteAttack;
+
+            this.CooldownToCreateProjectile = cooldownToCreateProjectile;
         }
 
-        protected virtual void CreateProjectile(object source, ElapsedEventArgs args)
-        {
-        }
+        public event EventHandler ExecuteAttackEventHandler;
 
         public override object Clone()
         {
@@ -39,13 +40,25 @@
             newAttack.ProjectileToLaunch = newProjectile;
             if (this.Attacker != null)
             {
-                Sprite newAttacker = (Sprite)this.Attacker.Clone();
+                Entity newAttacker = (Entity)this.Attacker.Clone();
                 newAttack.Attacker = newAttacker;
             }
 
-            this.cooldownToCreateProjectile.Start();
+            newAttack.CooldownToCreateProjectile.Elapsed += this.CreateProjectile;
+            newAttack.ExecuteAttackEventHandler += this.Attacker.ExecuteAttack;
+
+            this.CooldownToCreateProjectile.Start();
 
             return newAttack;
+        }
+
+        protected virtual void CreateProjectile(object source, ElapsedEventArgs args)
+        {
+        }
+
+        protected virtual void ExecuteAttack(object source, ElapsedEventArgs args)
+        {
+            this.ExecuteAttackEventHandler.Invoke(this, null);
         }
     }
 }
