@@ -8,7 +8,6 @@
 
     public abstract class Sprite : ICloneable
     {
-
         protected bool isRemoved = false;
         private Color color = Color.White;
         private MovementPattern movement;

@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.Sprites.Attacks.Concrete_Attacks
 {
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
@@ -13,7 +14,7 @@
 
         public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
-        public CircularHoming(Projectile projectile, Circular circularMovement, float cooldownToCreateProjectile)
+        public CircularHoming(Projectile projectile, Circular circularMovement, Timer cooldownToCreateProjectile)
             : base(projectile, circularMovement, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
@@ -21,13 +22,6 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer > this.projectileSpawnCooldown)
-            {
-                this.timer = 0;
-                this.CreateProjectile(sprites);
-            }
 
             this.Move();
 
@@ -37,7 +31,7 @@
             }
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        protected override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement.Parent = newProjectile;
@@ -48,7 +42,7 @@
 
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Parent = this.Attacker;
-            sprites.Add(newProjectile);
+            GameState.Projectiles.Add(newProjectile);
 
             newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement.Parent = newProjectile;
@@ -59,7 +53,7 @@
 
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Parent = this.Attacker;
-            sprites.Add(newProjectile);
+            GameState.Projectiles.Add(newProjectile);
         }
 
         private void Move()
@@ -84,6 +78,7 @@
                 newAttack.Attacker = newAttacker;
             }
 
+            this.cooldownToCreateProjectile.Start();
             return newAttack;
         }
     }

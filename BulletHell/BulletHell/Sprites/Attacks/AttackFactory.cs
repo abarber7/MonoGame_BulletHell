@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Attacks.Concrete_Attacks;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
@@ -9,41 +10,48 @@
 
     internal class AttackFactory
     {
-        public static Attack CreateAttack(Dictionary<string, object> attackProperties)
+        public static List<Attack> CreateAttacks(List<Dictionary<string, object>> listOfAttackProperties)
         {
-            Attack attack = null;
+            List<Attack> attacks = new List<Attack>();
 
-            string attackName = (string)attackProperties["attackName"];
-            Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)attackProperties["projectile"]);
-            MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)attackProperties["movementPattern"]);
-            float projectileSpawnCooldown = (float)attackProperties["projectileSpawnCooldown"];
-
-            switch (attackName)
+            foreach (Dictionary<string, object> attackProperties in listOfAttackProperties)
             {
-                case "basicLinear":
-                    attack = new BasicLinear(projectile, movement, projectileSpawnCooldown);
-                    break;
-                case "circularHoming":
-                    attack = new CircularHoming(projectile, (Circular)movement, projectileSpawnCooldown);
-                    break;
-                case "circularTriHoming":
-                    attack = new CircularTriHoming(projectile, (Circular)movement, projectileSpawnCooldown);
-                    break;
-                case "circle":
-                    int numberOfProjectiles = Convert.ToInt32((float)attackProperties["numberOfProjectiles"]);
-                    float degreesToStart = (float)attackProperties["degreesToStart"];
-                    float degreesToEnd = (float)attackProperties["degreesToEnd"];
-                    attack = new Circle(projectile, movement, projectileSpawnCooldown, numberOfProjectiles, degreesToStart, degreesToEnd);
-                    break;
-                case "arrow":
-                    int widthOfArrow = Convert.ToInt32((float)attackProperties["widthOfArrow"]);
-                    attack = new Arrow(projectile, movement, projectileSpawnCooldown, widthOfArrow);
-                    break;
-                default:
-                    throw new Exception("Invalid Entity");
+                Attack attack = null;
+
+                string attackName = (string)attackProperties["attackName"];
+                Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)attackProperties["projectile"]);
+                MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)attackProperties["movementPattern"]);
+                Timer projectileSpawnCooldown = new Timer((float)attackProperties["projectileSpawnCooldown"]);
+
+                switch (attackName)
+                {
+                    case "basicLinear":
+                        attack = new BasicLinear(projectile, movement, projectileSpawnCooldown);
+                        break;
+                    case "circularHoming":
+                        attack = new CircularHoming(projectile, (Circular)movement, projectileSpawnCooldown);
+                        break;
+                    case "circularTriHoming":
+                        attack = new CircularTriHoming(projectile, (Circular)movement, projectileSpawnCooldown);
+                        break;
+                    case "circle":
+                        int numberOfProjectiles = Convert.ToInt32((float)attackProperties["numberOfProjectiles"]);
+                        float degreesToStart = (float)attackProperties["degreesToStart"];
+                        float degreesToEnd = (float)attackProperties["degreesToEnd"];
+                        attack = new Circle(projectile, movement, projectileSpawnCooldown, numberOfProjectiles, degreesToStart, degreesToEnd);
+                        break;
+                    case "arrow":
+                        int widthOfArrow = Convert.ToInt32((float)attackProperties["widthOfArrow"]);
+                        attack = new Arrow(projectile, movement, projectileSpawnCooldown, widthOfArrow);
+                        break;
+                    default:
+                        throw new Exception("Invalid Entity");
+                }
+
+                attacks.Add(attack);
             }
 
-            return attack;
+            return attacks;
         }
 
         public static Attack DownCastAttack(object attack)

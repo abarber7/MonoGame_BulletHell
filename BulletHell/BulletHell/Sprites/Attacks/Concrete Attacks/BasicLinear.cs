@@ -2,24 +2,25 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
+    using BulletHell.States;
     using Microsoft.Xna.Framework;
 
     internal class BasicLinear : Attack
     {
-        public BasicLinear(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile)
+        public BasicLinear(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile)
             : base(projectile, movement, cooldownToCreateProjectile)
         {
         }
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            this.CreateProjectile(sprites);
             this.IsRemoved = true;
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        protected override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             float projectileSpeed = newProjectile.Movement.Speed;
@@ -32,7 +33,7 @@
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Movement.CurrentPosition = this.Movement.CurrentPosition;
             newProjectile.Parent = this.Attacker;
-            sprites.Add(newProjectile);
+            GameState.Projectiles.Add(newProjectile);
         }
     }
 }

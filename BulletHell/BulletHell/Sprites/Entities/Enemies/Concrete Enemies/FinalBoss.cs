@@ -9,8 +9,8 @@
 
     internal class FinalBoss : Enemy
     {
-        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
-            : base(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown)
+        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, List<Attack> attacks, float attackCooldown)
+            : base(texture, color, movement, powerUp, lifeSpan, hp, attacks, attackCooldown)
         {
         }
 

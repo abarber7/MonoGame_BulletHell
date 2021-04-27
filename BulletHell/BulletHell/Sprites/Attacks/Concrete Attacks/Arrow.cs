@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.States;
@@ -11,7 +12,7 @@
     {
         private readonly int widthOfArrow;
 
-        public Arrow(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile, int widthOfArrow)
+        public Arrow(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile, int widthOfArrow)
             : base(projectile, movement, cooldownToCreateProjectile)
         {
             this.widthOfArrow = widthOfArrow;
@@ -19,11 +20,10 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            this.CreateProjectile(sprites);
             this.IsRemoved = true;
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        protected override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             float spacing = 2;
             int verticalOffset = 20;
@@ -69,7 +69,7 @@
                     newProjectile.Movement.CurrentPosition = position;
 
                     newProjectile.Parent = this.Attacker;
-                    sprites.Add(newProjectile);
+                    GameState.Projectiles.Add(newProjectile);
                 }
             }
         }

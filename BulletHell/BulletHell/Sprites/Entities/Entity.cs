@@ -6,10 +6,10 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Entity : Sprite
+    public abstract class Entity : Sprite
     {
         public int HP;
-        public List<Attack> Attack = new List<Attack>();
+        public List<Attack> Attacks = new List<Attack>();
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
         protected double timer;
@@ -27,10 +27,10 @@
             this.initializedSpawningPosition = false;
         }
 
-        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attack, float attackCooldown)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks, float attackCooldown)
             : base(texture, color, movement)
         {
-            this.Attack = attack;
+            this.Attacks = attacks;
             this.HP = hp;
             this.attackCooldown = attackCooldown;
         }
@@ -39,7 +39,7 @@
         {
             if (this.reachedStart && !this.exiting)
             {
-                Attack attackClone = AttackFactory.DownCastAttack(this.Attack.Clone());
+                Attack attackClone = AttackFactory.DownCastAttack(this.Attacks[0].Clone());
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
@@ -117,6 +117,28 @@
                     this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
+        }
+
+        public override object Clone()
+        {
+            Entity newEntity = (Entity)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            return newEntity;
         }
     }
 }

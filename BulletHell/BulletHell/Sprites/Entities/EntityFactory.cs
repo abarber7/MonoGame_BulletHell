@@ -35,13 +35,13 @@
             string entityClassification = (string)entityProperties["entityType"] != "player" ? "enemy" : "player";
 
             int hp = Convert.ToInt32((float)entityProperties["hp"]);
-            Attack attack = AttackFactory.CreateAttack((Dictionary<string, object>)entityProperties["attack"]);
+            List<Attack> attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["attacks"]);
             float attackCooldown = (float)entityProperties["attackCooldown"];
 
             switch (entityClassification)
             {
                 case "player":
-                    entity = new Player(texture, color, movement, hp, attack, attackCooldown);
+                    entity = new Player(texture, color, movement, hp, attacks, attackCooldown);
                     entity.SpawnPosition = new Vector2((float)movementPatternProperties["spawnXPosition"], (float)movementPatternProperties["spawnYPosition"]);
                     break;
                 case "enemy":
@@ -51,16 +51,16 @@
                     switch (enemyType)
                     {
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown);
+                            entity = new SimpleGrunt(texture, color, movement, powerUp, lifeSpan, hp, attacks, attackCooldown);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown);
+                            entity = new ComplexGrunt(texture, color, movement, powerUp, lifeSpan, hp, attacks, attackCooldown);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown);
+                            entity = new MidBoss(texture, color, movement, powerUp, lifeSpan, hp, attacks, attackCooldown);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown);
+                            entity = new FinalBoss(texture, color, movement, powerUp, lifeSpan, hp, attacks, attackCooldown);
                             break;
                     }
 

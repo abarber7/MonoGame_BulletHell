@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.Sprites
 {
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
@@ -9,17 +10,19 @@
     {
         public Projectile ProjectileToLaunch;
         public Sprite Attacker;
-        protected double timer = 0;
-        protected float projectileSpawnCooldown;
+        protected Timer cooldownToCreateProjectile;
 
-        public Attack(Projectile projectile, MovementPattern movement, float projectileSpawnCooldown)
+        public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToCreateProjectile)
             : base(null, Color.Transparent, movement)
         {
             this.ProjectileToLaunch = projectile;
-            this.projectileSpawnCooldown = projectileSpawnCooldown;
+            this.cooldownToCreateProjectile = cooldownToCreateProjectile;
+            this.cooldownToCreateProjectile.Stop();
+            this.cooldownToCreateProjectile.AutoReset = true;
+            this.cooldownToCreateProjectile.Elapsed += this.CreateProjectile;
         }
 
-        protected virtual void CreateProjectile(List<Sprite> sprites)
+        protected virtual void CreateProjectile(object source, ElapsedEventArgs args)
         {
         }
 
@@ -39,6 +42,8 @@
                 Sprite newAttacker = (Sprite)this.Attacker.Clone();
                 newAttack.Attacker = newAttacker;
             }
+
+            this.cooldownToCreateProjectile.Start();
 
             return newAttack;
         }

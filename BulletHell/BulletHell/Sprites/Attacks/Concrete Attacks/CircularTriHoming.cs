@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
@@ -14,7 +15,7 @@
 
         public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
-        public CircularTriHoming(Projectile projectile, Circular circularMovement, float cooldownToCreateProjectile)
+        public CircularTriHoming(Projectile projectile, Circular circularMovement, Timer cooldownToCreateProjectile)
             : base(projectile, circularMovement, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
@@ -22,14 +23,6 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer > this.projectileSpawnCooldown)
-            {
-                this.timer = 0;
-                this.CreateProjectile(sprites);
-            }
-
             this.Move();
 
             if (this.movement.IsMovementDone())
@@ -38,7 +31,7 @@
             }
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        protected override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
@@ -50,7 +43,7 @@
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             newProjectile.Parent = this.Attacker;
-            sprites.Add(newProjectile);
+            GameState.Projectiles.Add(newProjectile);
 
             Projectile secondProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             secondProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
@@ -63,7 +56,7 @@
             secondProjectile.Movement.Velocity = secondVelocity;
             secondProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             secondProjectile.Parent = this.Attacker;
-            sprites.Add(secondProjectile);
+            GameState.Projectiles.Add(secondProjectile);
 
             Projectile thirdProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             thirdProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
@@ -76,7 +69,7 @@
             thirdProjectile.Movement.Velocity = thirdVelocity;
             thirdProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             thirdProjectile.Parent = this.Attacker;
-            sprites.Add(thirdProjectile);
+            GameState.Projectiles.Add(thirdProjectile);
         }
 
         private void Move()

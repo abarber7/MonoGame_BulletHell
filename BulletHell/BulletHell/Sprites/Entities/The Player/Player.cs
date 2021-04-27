@@ -14,7 +14,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
-    internal class Player : Entity
+    public class Player : Entity
     {
         public bool SlowMode;
         public bool Invincible;
@@ -26,7 +26,7 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float cooldownToAttack)
+        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attack, float cooldownToAttack)
             : base(texture, color, movement, hp, attack, cooldownToAttack)
         {
             this.spawning = true;
@@ -146,16 +146,16 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.Attack.ProjectileToLaunch.Damage += 1;
-                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.Attacks.ProjectileToLaunch.Damage += 1;
+                    this.Attacks.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
                     break;
                 case 2:
-                    this.Attack.ProjectileToLaunch.Damage += 1;
-                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.Attacks.ProjectileToLaunch.Damage += 1;
+                    this.Attacks.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
                     break;
                 case 3:
-                    this.Attack.ProjectileToLaunch.Damage += 1;
-                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.Attacks.ProjectileToLaunch.Damage += 1;
+                    this.Attacks.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
                     break;
                 default:
                     Debug.WriteLine("At max damage level");

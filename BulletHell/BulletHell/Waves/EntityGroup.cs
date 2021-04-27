@@ -32,10 +32,6 @@
             for (int i = 0; i < this.entityAmount; i++)
             {
                 Entity enemy = (Entity)this.entityType.Clone();
-                Attack enemyAttack = (Attack)enemy.Attack.Clone();
-                MovementPattern enemyAttackMovement = (MovementPattern)enemyAttack.Movement.Clone();
-                enemyAttack.Movement = enemyAttackMovement;
-                enemy.Attack = enemyAttack;
                 enemy.SpawnPosition = this.spawnPositions[i];
                 if (this.despawnPositions.Count == this.entityAmount)
                 {
