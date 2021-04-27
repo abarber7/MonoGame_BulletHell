@@ -79,24 +79,5 @@
 
             return attack;
         }
-
-        public static Attack DownCastAttack(object attack)
-        {
-            switch (attack)
-            {
-                case BasicLinear _:
-                    return attack as BasicLinear;
-                case CircularHoming _:
-                    return attack as CircularHoming;
-                case CircularTriHoming _:
-                    return attack as CircularTriHoming;
-                case Circle _:
-                    return attack as Circle;
-                case Arrow _:
-                    return attack as Arrow;
-                default:
-                    return null;
-            }
-        }
     }
 }

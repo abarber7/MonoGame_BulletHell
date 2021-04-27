@@ -9,10 +9,12 @@
 
     public abstract class Attack : Sprite
     {
+        public int NumberOfTimesToAttack = 1;
         public Projectile ProjectileToLaunch;
         public Entity Attacker;
         public Timer CooldownToAttack;
         public Timer CooldownToCreateProjectile;
+        protected int numberOfTimesAttacksHaveExecuted = 0;
 
         public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
             : base(null, Color.Transparent, movement)
@@ -20,7 +22,6 @@
             this.ProjectileToLaunch = projectile;
 
             this.CooldownToAttack = cooldownToAttack;
-            this.CooldownToAttack.Elapsed += this.ExecuteAttack;
 
             this.CooldownToCreateProjectile = cooldownToCreateProjectile;
         }
@@ -38,27 +39,26 @@
 
             Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
             newAttack.ProjectileToLaunch = newProjectile;
-            if (this.Attacker != null)
-            {
-                Entity newAttacker = (Entity)this.Attacker.Clone();
-                newAttack.Attacker = newAttacker;
-            }
 
-            newAttack.CooldownToCreateProjectile.Elapsed += this.CreateProjectile;
-            newAttack.ExecuteAttackEventHandler += this.Attacker.ExecuteAttack;
+            newAttack.Attacker = this.Attacker;
 
-            this.CooldownToCreateProjectile.Start();
+            newAttack.CooldownToAttack.Elapsed -= this.ExecuteAttack;
+            newAttack.CooldownToAttack.Elapsed += newAttack.ExecuteAttack;
+            newAttack.CooldownToCreateProjectile.Elapsed -= this.CreateProjectile;
+            newAttack.CooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
 
             return newAttack;
         }
 
-        protected virtual void CreateProjectile(object source, ElapsedEventArgs args)
+        public virtual void CreateProjectile(object source, ElapsedEventArgs args)
         {
         }
 
-        protected virtual void ExecuteAttack(object source, ElapsedEventArgs args)
+        public virtual void ExecuteAttack(object source, ElapsedEventArgs args)
         {
-            this.ExecuteAttackEventHandler.Invoke(this, null);
+            this.CooldownToCreateProjectile.Start();
+            this.numberOfTimesAttacksHaveExecuted++;
+            this.ExecuteAttackEventHandler.Invoke(this.Clone(), null);
         }
     }
 }

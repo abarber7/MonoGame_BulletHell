@@ -16,7 +16,6 @@
         private Texture2D selectDifficultyTexture;
         private Texture2D selectDifficultyTexture2;
 
-
         public DifficultyState()
           : base()
         {
@@ -24,7 +23,6 @@
             var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
             this.selectDifficultyTexture = TextureFactory.GetTexture("Titles/SELECT");
             this.selectDifficultyTexture2 = TextureFactory.GetTexture("Titles/DIFFICULTY");
-
 
             var bossButton = new Button(buttonTexture, buttonFont)
             {
@@ -146,7 +144,7 @@
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("demo");
+            GameLoader.LoadGame("noEnemies");
 
             StateManager.ChangeState(new GameState());
         }

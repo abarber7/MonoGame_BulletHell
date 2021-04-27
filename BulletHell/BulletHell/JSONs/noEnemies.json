@@ -160,7 +160,7 @@
       "attacks": {
         "attackName": "circle",
         "cooldownToAttack": 5,
-        "cooldownToCreateProjectile": 0.25,
+        "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",
@@ -237,97 +237,5 @@
       }
     }
   ],
-  "waves": [
-    {
-      "waveNumber": 1,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
-          "entityAmount": 2,
-          "entityType": "simpleGrunt",
-          "delayTillSpawn": [ 1, 2 ],
-          "movementPattern": {
-            "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
-            "endXPosition": [ 150, 330 ],
-            "endYPosition": 50,
-            "speed": 2,
-            "timeBeforeExit": 5
-          }
-        }
-      ]
-    },
-    {
-      "waveNumber": 2,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
-          "entityAmount": 1,
-          "entityType": "midBoss",
-          "delayTillSpawn": 0,
-          "movementPattern": {
-            "movementPatternType": "pattern",
-            "spawnXPosition": [ 240 ],
-            "spawnYPosition": [ -100 ],
-            "points": [
-              [
-                [ 100, 100 ],
-                [ 380, 100 ],
-                [ 240, 200 ]
-              ]
-            ],
-            "speed": 2.5,
-            "numberOfCycles": 3
-          }
-        }
-      ]
-    },
-    {
-      "waveNumber": 3,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
-          "entityAmount": 1,
-          "entityType": "complexGrunt",
-          "delayTillSpawn": 0,
-          "movementPattern": {
-            "movementPatternType": "backAndForth",
-            "spawnXPosition": [ 240 ],
-            "spawnYPosition": [ -100 ],
-            "startXPosition": [ 100 ],
-            "startYPosition": [ 50 ],
-            "endXPosition": [ 380 ],
-            "endYPosition": [ 50 ],
-            "speed": 2,
-            "numberOfCycles": 3
-          }
-        }
-      ]
-    },
-    {
-      "waveNumber": 4,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
-          "entityAmount": 1,
-          "entityType": "finalBoss",
-          "delayTillSpawn" : 0,
-          "movementPattern": {
-            "movementPatternType": "randomWithBounds",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
-            "startXPosition": 0,
-            "startYPosition": 50,
-            "upperXBound": 380,
-            "lowerXBound": 100,
-            "upperYBound": 200,
-            "lowerYBound": 50,
-            "speed": 3,
-            "timeBeforeExit": 10
-          }
-        }
-      ]
-    }
-  ]
+  "waves": []
 }

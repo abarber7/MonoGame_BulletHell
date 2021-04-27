@@ -23,16 +23,17 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-
             this.Move();
 
             if (this.movement.IsMovementDone())
             {
                 this.IsRemoved = true;
+                this.CooldownToAttack.Stop();
+                this.CooldownToCreateProjectile.Stop();
             }
         }
 
-        protected override void CreateProjectile(object source, ElapsedEventArgs args)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement.Parent = newProjectile;
@@ -64,7 +65,7 @@
 
         public override object Clone()
         {
-            CircularHoming newAttack = (CircularHoming)this.MemberwiseClone();
+            Attack newAttack = (Attack)this.MemberwiseClone();
             if (this.Movement != null)
             {
                 Circular newMovement = (Circular)this.Movement.Clone();
@@ -73,13 +74,14 @@
 
             Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
             newAttack.ProjectileToLaunch = newProjectile;
-            if (this.Attacker != null)
-            {
-                Entity newAttacker = (Entity)this.Attacker.Clone();
-                newAttack.Attacker = newAttacker;
-            }
 
-            this.CooldownToCreateProjectile.Start();
+            newAttack.Attacker = this.Attacker;
+
+            newAttack.CooldownToAttack.Elapsed -= this.ExecuteAttack;
+            newAttack.CooldownToAttack.Elapsed += newAttack.ExecuteAttack;
+            newAttack.CooldownToCreateProjectile.Elapsed -= this.CreateProjectile;
+            newAttack.CooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
+
             return newAttack;
         }
     }

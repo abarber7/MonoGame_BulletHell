@@ -24,10 +24,15 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            this.IsRemoved = true;
+            if (this.NumberOfTimesToAttack == this.numberOfTimesAttacksHaveExecuted)
+            {
+                this.IsRemoved = true;
+                this.CooldownToAttack.Stop();
+                this.CooldownToCreateProjectile.Stop();
+            }
         }
 
-        protected override void CreateProjectile(object source, ElapsedEventArgs args)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             float degreesToIncrement = (this.degreesToEnd - this.degreesToStart) / this.numberOfProjectiles;
 

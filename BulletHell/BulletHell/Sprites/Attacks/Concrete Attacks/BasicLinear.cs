@@ -18,9 +18,11 @@
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
             this.IsRemoved = true;
+            this.CooldownToAttack.Stop();
+            this.CooldownToCreateProjectile.Stop();
         }
 
-        protected override void CreateProjectile(object source, ElapsedEventArgs args)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             float projectileSpeed = newProjectile.Movement.Speed;

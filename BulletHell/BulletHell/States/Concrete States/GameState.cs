@@ -58,14 +58,14 @@
             {
                 projectile.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                // this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var enemy in Enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                // this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);
@@ -133,7 +133,7 @@
             Projectiles.ToArray().ToList().ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, Projectiles)); }); // Note: Projectile's Update does nothing with sprite list
 
             // Create player collision check command, using both enemies and projectiles to check against
-            this.commandQueue.Add(new CollisionCheckCommand(Player, Enemies.Concat(Projectiles).ToList())); // Did player hit any enemies or projectiles
+            this.commandQueue.Add(new CollisionCheckCommand(Player, Enemies.Concat(Projectiles).ToArray().ToList())); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
             Enemies.ForEach((e) => { this.commandQueue.Add(new CollisionCheckCommand(e, Projectiles)); }); // Did player projectiles hit any enemies

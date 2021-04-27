@@ -28,10 +28,12 @@
             if (this.movement.IsMovementDone())
             {
                 this.IsRemoved = true;
+                this.CooldownToAttack.Stop();
+                this.CooldownToCreateProjectile.Stop();
             }
         }
 
-        protected override void CreateProjectile(object source, ElapsedEventArgs args)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
@@ -70,6 +72,28 @@
             thirdProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             thirdProjectile.Parent = this.Attacker;
             GameState.Projectiles.Add(thirdProjectile);
+        }
+
+        public override object Clone()
+        {
+            Attack newAttack = (Attack)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                Circular newMovement = (Circular)this.Movement.Clone();
+                newAttack.Movement = newMovement;
+            }
+
+            Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
+            newAttack.ProjectileToLaunch = newProjectile;
+
+            newAttack.Attacker = this.Attacker;
+
+            newAttack.CooldownToAttack.Elapsed -= this.ExecuteAttack;
+            newAttack.CooldownToAttack.Elapsed += newAttack.ExecuteAttack;
+            newAttack.CooldownToCreateProjectile.Elapsed -= this.CreateProjectile;
+            newAttack.CooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
+
+            return newAttack;
         }
 
         private void Move()

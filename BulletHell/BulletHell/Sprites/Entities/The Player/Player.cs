@@ -23,7 +23,6 @@
         private double initialSpawnTime;
         private bool spawning;
         private bool resetGameTime = true;
-        private int damageLevel;
 
         private KeyboardState currentKey;
         private KeyboardState previousKey;
@@ -69,6 +68,14 @@
             this.SlowMode = this.IsSlowPressed();
 
             this.Move();
+        }
+
+        public override void ExecuteAttack(object source, EventArgs args)
+        {
+            if (this.currentKey.IsKeyDown(Input.Attack))
+            {
+                base.ExecuteAttack(source, args);
+            }
         }
 
         public override void OnCollision(Sprite sprite)
@@ -118,6 +125,10 @@
             this.spawning = true;
             this.Invincible = true;
             this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
+            this.Attacks.ForEach(item =>
+            {
+                item.CooldownToAttack.Stop();
+            });
         }
 
         private void SetInvincibility(GameTime gameTime)
@@ -159,14 +170,6 @@
             }
 
             this.Attacks.ForEach(item => item.ProjectileToLaunch.SetTextureBasedOnDamageLevel());
-        }
-
-        public override void ExecuteAttack(object source, EventArgs args)
-        {
-            if (this.currentKey.IsKeyDown(Input.Attack))
-            {
-                base.ExecuteAttack(source, args);
-            }
         }
     }
 }

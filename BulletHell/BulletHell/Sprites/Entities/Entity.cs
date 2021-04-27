@@ -15,10 +15,10 @@
         public List<Attack> Attacks = new List<Attack>();
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
+        public bool ReachedStart = false; // bool for if entity reached start position
+        public bool Exiting = false; // bool for if it is time to exit
         public float DamageModifier = 0;
         protected float damageLevel;
-        private bool reachedStart = false; // bool for if entity reached start position
-        private bool exiting = false; // bool for if it is time to exit
         private bool initializedSpawningPosition = false;
         private bool initializedDespawningPosition = false;
         private bool initializedMovementPosition = false;
@@ -26,7 +26,7 @@
 
         public void Respawn()
         {
-            this.reachedStart = false;
+            this.ReachedStart = false;
             this.initializedSpawningPosition = false;
         }
 
@@ -39,7 +39,7 @@
 
         public virtual void ExecuteAttack(object source, EventArgs args)
         {
-            if (this.reachedStart && !this.exiting)
+            if (this.ReachedStart && !this.Exiting)
             {
                 Attack attackClone = (Attack)((Attack)source).Clone();
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
@@ -52,7 +52,7 @@
         protected virtual void Move()
         {
             // For spawning
-            if (this.reachedStart == false && this.exiting == false)
+            if (this.ReachedStart == false && this.Exiting == false)
             {
                 if (this.initializedSpawningPosition == false)
                 {
@@ -64,7 +64,7 @@
 
                 if (this.Movement.ExceededPosition(this.SpawnPosition, this.Movement.StartPosition, this.Movement.Velocity))
                 {
-                    this.reachedStart = true;
+                    this.ReachedStart = true;
                 }
                 else
                 {
@@ -73,18 +73,24 @@
             }
 
             // For movement
-            else if (this.reachedStart == true && this.exiting == false)
+            else if (this.ReachedStart == true && this.Exiting == false)
             {
                 if (this.initializedMovementPosition == false)
                 {
                     this.initializedMovementPosition = true;
-                    this.Attacks.ForEach(item => item.CooldownToCreateProjectile.Start());
+                    this.Attacks.ForEach(item =>
+                    {
+                        item.Attacker = this;
+                        item.CooldownToAttack.Start();
+                        // item.ExecuteAttackEventHandler += this.ExecuteAttack;
+                    });
+
                     this.Movement.InitializeMovement();
                 }
 
                 if (this.Movement.CompletedMovement == true)
                 {
-                    this.exiting = true;
+                    this.Exiting = true;
                 }
                 else
                 {
@@ -93,7 +99,7 @@
             }
 
             // For despawning
-            else if (this.reachedStart == true && this.exiting == true)
+            else if (this.ReachedStart == true && this.Exiting == true)
             {
                 if (this.initializedDespawningPosition == false)
                 {
@@ -110,7 +116,7 @@
 
                     this.Movement.Velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
 
-                    this.Attacks.ForEach(item => item.CooldownToCreateProjectile.Stop());
+                    this.Attacks.ForEach(item => item.CooldownToAttack.Stop());
                 }
 
                 if (this.Movement.ExceededPosition(this.positionWhenDespawningBegins, this.DespawnPosition, this.Movement.Velocity))
@@ -138,6 +144,10 @@
             foreach (Attack attack in this.Attacks)
             {
                 Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+                newAttack.ExecuteAttackEventHandler -= this.ExecuteAttack;
+                newAttack.ExecuteAttackEventHandler += newEntity.ExecuteAttack;
+
                 newAttacks.Add(newAttack);
             }
 
