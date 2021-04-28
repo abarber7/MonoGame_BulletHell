@@ -88,11 +88,6 @@
 
             newAttack.Attacker = this.Attacker;
 
-            newAttack.CooldownToAttack.Elapsed -= this.ExecuteAttack;
-            newAttack.CooldownToAttack.Elapsed += newAttack.ExecuteAttack;
-            newAttack.CooldownToCreateProjectile.Elapsed -= this.CreateProjectile;
-            newAttack.CooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
-
             newAttack.numberOfTimesAttacksHaveExecuted = 0;
 
             return newAttack;

@@ -42,19 +42,6 @@
 
             newAttack.Attacker = this.Attacker;
 
-            if (this.ExecuteAttackEventHandler != null)
-            {
-                foreach (Delegate d in this.ExecuteAttackEventHandler.GetInvocationList())
-                {
-                    this.ExecuteAttackEventHandler -= (EventHandler)d;
-                }
-            }
-
-            newAttack.CooldownToAttack.Elapsed -= this.ExecuteAttack;
-            newAttack.CooldownToAttack.Elapsed += newAttack.ExecuteAttack;
-            newAttack.CooldownToCreateProjectile.Elapsed -= this.CreateProjectile;
-            newAttack.CooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
-
             newAttack.numberOfTimesAttacksHaveExecuted = 0;
 
             return newAttack;
@@ -66,6 +53,7 @@
 
         public virtual void ExecuteAttack(object source, ElapsedEventArgs args)
         {
+            this.CooldownToCreateProjectile.Elapsed += this.CreateProjectile;
             this.CooldownToCreateProjectile.Start();
             this.numberOfTimesAttacksHaveExecuted++;
             this.ExecuteAttackEventHandler.Invoke(this, null);

@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Timers;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
@@ -11,7 +10,6 @@
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.The_Player;
-    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -27,12 +25,17 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attack)
-            : base(texture, color, movement, hp, attack)
+        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
+            : base(texture, color, movement, hp, attacks)
         {
             this.spawning = true;
             this.Invincible = true;
             this.damageLevel = 0;
+
+            foreach (Attack attack in attacks)
+            {
+                attack.ExecuteAttackEventHandler += this.ExecuteAttack;
+            }
         }
 
         public int Lives { get; set; }

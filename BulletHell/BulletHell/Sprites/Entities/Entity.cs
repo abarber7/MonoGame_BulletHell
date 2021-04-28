@@ -81,10 +81,8 @@
                     this.Attacks.ForEach(item =>
                     {
                         item.Attacker = this;
+                        item.CooldownToAttack.Elapsed += item.ExecuteAttack;
                         item.CooldownToAttack.Start();
-                        //item.CooldownToAttack.Elapsed += item.ExecuteAttack;
-                        //item.CooldownToCreateProjectile.Elapsed += item.CreateProjectile;
-                        //item.ExecuteAttackEventHandler += item.Attacker.ExecuteAttack;
                     });
 
                     this.Movement.InitializeMovement();
@@ -147,7 +145,6 @@
             {
                 Attack newAttack = (Attack)attack.Clone();
                 newAttack.Attacker = newEntity;
-                newAttack.ExecuteAttackEventHandler -= this.ExecuteAttack;
 
                 newAttack.ExecuteAttackEventHandler += newEntity.ExecuteAttack;
 
