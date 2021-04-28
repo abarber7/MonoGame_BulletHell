@@ -17,9 +17,12 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            this.IsRemoved = true;
-            this.CooldownToAttack.Stop();
-            this.CooldownToCreateProjectile.Stop();
+            if (this.NumberOfTimesToAttack >= this.numberOfTimesAttacksHaveExecuted)
+            {
+                this.IsRemoved = true;
+                this.CooldownToAttack.Stop();
+                this.CooldownToCreateProjectile.Stop();
+            }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)

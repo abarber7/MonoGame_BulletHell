@@ -65,7 +65,7 @@
 
         public override object Clone()
         {
-            Attack newAttack = (Attack)this.MemberwiseClone();
+            CircularHoming newAttack = (CircularHoming)this.MemberwiseClone();
             if (this.Movement != null)
             {
                 Circular newMovement = (Circular)this.Movement.Clone();
@@ -81,6 +81,8 @@
             newAttack.CooldownToAttack.Elapsed += newAttack.ExecuteAttack;
             newAttack.CooldownToCreateProjectile.Elapsed -= this.CreateProjectile;
             newAttack.CooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
+
+            newAttack.numberOfTimesAttacksHaveExecuted = 0;
 
             return newAttack;
         }

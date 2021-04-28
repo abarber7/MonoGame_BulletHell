@@ -82,7 +82,9 @@
                     {
                         item.Attacker = this;
                         item.CooldownToAttack.Start();
-                        // item.ExecuteAttackEventHandler += this.ExecuteAttack;
+                        //item.CooldownToAttack.Elapsed += item.ExecuteAttack;
+                        //item.CooldownToCreateProjectile.Elapsed += item.CreateProjectile;
+                        //item.ExecuteAttackEventHandler += item.Attacker.ExecuteAttack;
                     });
 
                     this.Movement.InitializeMovement();
@@ -146,6 +148,7 @@
                 Attack newAttack = (Attack)attack.Clone();
                 newAttack.Attacker = newEntity;
                 newAttack.ExecuteAttackEventHandler -= this.ExecuteAttack;
+
                 newAttack.ExecuteAttackEventHandler += newEntity.ExecuteAttack;
 
                 newAttacks.Add(newAttack);
