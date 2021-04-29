@@ -67,7 +67,7 @@
 
         public void ExecuteAttack(object source, ElapsedEventArgs args)
         {
-            // this.PauseTimersWhileDebugging(source as Timer);
+            this.PauseTimersWhileDebugging(source as Timer);
             this.ExecuteAttackEventHandler.Invoke(this, null);
         }
 

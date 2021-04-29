@@ -30,7 +30,7 @@
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
-            // this.PauseTimersWhileDebugging(source as Timer);
+            this.PauseTimersWhileDebugging(source as Timer);
 
             float spacing = 2;
             int verticalOffset = 20;
