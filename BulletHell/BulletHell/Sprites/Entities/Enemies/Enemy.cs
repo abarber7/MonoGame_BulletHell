@@ -71,5 +71,33 @@
             powerUp.Movement.CurrentPosition = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
             return powerUp;
         }
+
+        public override object Clone()
+        {
+            Enemy newEntity = (Enemy)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
+
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            PowerUp newPowerUp = (PowerUp)this.PowerUp.Clone();
+
+            return newEntity;
+        }
     }
 }

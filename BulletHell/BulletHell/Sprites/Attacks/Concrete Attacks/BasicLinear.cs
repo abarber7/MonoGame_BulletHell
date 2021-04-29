@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
@@ -17,7 +18,7 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            if (this.NumberOfTimesToAttack >= this.numberOfTimesAttacksHaveExecuted)
+            if (this.NumberOfTimesToAttack >= this.NumberOfTimesAttacksHaveExecuted)
             {
                 this.IsRemoved = true;
                 this.CooldownToAttack.Stop();
@@ -27,6 +28,8 @@
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            this.PauseTimersWhileDebugging(source as Timer);
+
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             float projectileSpeed = newProjectile.Movement.Speed;
             newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;

@@ -33,5 +33,10 @@
                 this.IsRemoved = true;
             }
         }
+
+        public override object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

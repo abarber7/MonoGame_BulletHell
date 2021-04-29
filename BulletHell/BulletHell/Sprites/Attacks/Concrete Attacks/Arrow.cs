@@ -20,7 +20,7 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            if (this.NumberOfTimesToAttack >= this.numberOfTimesAttacksHaveExecuted)
+            if (this.NumberOfTimesToAttack >= this.NumberOfTimesAttacksHaveExecuted)
             {
                 this.IsRemoved = true;
                 this.CooldownToAttack.Stop();

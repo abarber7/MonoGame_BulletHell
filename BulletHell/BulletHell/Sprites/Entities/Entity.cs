@@ -37,11 +37,14 @@
             this.HP = hp;
         }
 
-        public virtual void ExecuteAttack(object source, EventArgs args)
+        public virtual void LaunchAttack(object source, EventArgs args)
         {
             if (this.ReachedStart && !this.Exiting)
             {
                 Attack attackClone = (Attack)((Attack)source).Clone();
+                attackClone.CooldownToAttack.Stop();
+                attackClone.CooldownToCreateProjectile.Start();
+                attackClone.NumberOfTimesAttacksHaveExecuted++;
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
@@ -83,6 +86,7 @@
                         item.Attacker = this;
                         item.CooldownToAttack.Elapsed += item.ExecuteAttack;
                         item.CooldownToAttack.Start();
+                        item.CooldownToCreateProjectile.Elapsed += item.CreateProjectile;
                     });
 
                     this.Movement.InitializeMovement();
@@ -146,7 +150,7 @@
                 Attack newAttack = (Attack)attack.Clone();
                 newAttack.Attacker = newEntity;
 
-                newAttack.ExecuteAttackEventHandler += newEntity.ExecuteAttack;
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
 
                 newAttacks.Add(newAttack);
             }

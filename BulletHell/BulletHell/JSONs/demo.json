@@ -73,7 +73,7 @@
             "xPosition": 0,
             "yPosition": 0,
             "xVelocity": 0,
-            "yVelocity": -1,
+            "yVelocity": 1,
             "speed": 3
           }
         },
@@ -159,7 +159,7 @@
 
       "attacks": {
         "attackName": "circle",
-        "cooldownToAttack": 5,
+        "cooldownToAttack": 1,
         "cooldownToCreateProjectile": 0.25,
         "projectile": {
           "projectileType": "bullet",
@@ -171,7 +171,7 @@
             "xPosition": 0,
             "yPosition": 0,
             "xVelocity": 0,
-            "yVelocity": -1,
+            "yVelocity": 1,
             "speed": 3
           }
         },

@@ -77,7 +77,7 @@
 
             newAttack.Attacker = this.Attacker;
 
-            newAttack.numberOfTimesAttacksHaveExecuted = 0;
+            newAttack.NumberOfTimesAttacksHaveExecuted = 0;
 
             return newAttack;
         }

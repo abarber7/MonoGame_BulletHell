@@ -34,7 +34,7 @@
 
             foreach (Attack attack in attacks)
             {
-                attack.ExecuteAttackEventHandler += this.ExecuteAttack;
+                attack.ExecuteAttackEventHandler += this.LaunchAttack;
             }
         }
 
@@ -73,11 +73,11 @@
             this.Move();
         }
 
-        public override void ExecuteAttack(object source, EventArgs args)
+        public override void LaunchAttack(object source, EventArgs args)
         {
-            if (this.currentKey.IsKeyDown(Input.Attack))
+            if (true /*this.currentKey.IsKeyDown(Input.Attack)*/)
             {
-                base.ExecuteAttack(source, args);
+                base.LaunchAttack(source, args);
             }
         }
 

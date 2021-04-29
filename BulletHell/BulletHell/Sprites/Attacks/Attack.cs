@@ -1,6 +1,7 @@
 ﻿namespace BulletHell.Sprites
 {
     using System;
+    using System.Diagnostics;
     using System.Timers;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Movement_Patterns;
@@ -14,7 +15,7 @@
         public Entity Attacker;
         public Timer CooldownToAttack;
         public Timer CooldownToCreateProjectile;
-        protected int numberOfTimesAttacksHaveExecuted = 0;
+        public int NumberOfTimesAttacksHaveExecuted = 0;
 
         public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
             : base(null, Color.Transparent, movement)
@@ -42,7 +43,7 @@
 
             newAttack.Attacker = this.Attacker;
 
-            newAttack.numberOfTimesAttacksHaveExecuted = 0;
+            newAttack.NumberOfTimesAttacksHaveExecuted = 0;
 
             return newAttack;
         }
@@ -51,12 +52,17 @@
         {
         }
 
-        public virtual void ExecuteAttack(object source, ElapsedEventArgs args)
+        public void ExecuteAttack(object source, ElapsedEventArgs args)
         {
-            this.CooldownToCreateProjectile.Elapsed += this.CreateProjectile;
-            this.CooldownToCreateProjectile.Start();
-            this.numberOfTimesAttacksHaveExecuted++;
+            this.PauseTimersWhileDebugging(source as Timer);
             this.ExecuteAttackEventHandler.Invoke(this, null);
+        }
+
+        protected void PauseTimersWhileDebugging(Timer source)
+        {
+#if DEBUG
+            source.Stop();
+#endif
         }
     }
 }
