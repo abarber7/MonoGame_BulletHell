@@ -23,13 +23,15 @@
             if (this.NumberOfTimesToAttack >= this.NumberOfTimesAttacksHaveExecuted)
             {
                 this.IsRemoved = true;
-                this.CooldownToAttack.Stop();
+                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            // this.PauseTimersWhileDebugging(source as Timer);
+
             float spacing = 2;
             int verticalOffset = 20;
 

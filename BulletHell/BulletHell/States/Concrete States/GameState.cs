@@ -127,7 +127,7 @@
             Enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, Attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
-            Attacks.ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, Projectiles)); }); // attacks add projectiles
+            Attacks.ToArray().ToList().ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, Projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
             Projectiles.ToArray().ToList().ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, Projectiles)); }); // Note: Projectile's Update does nothing with sprite list

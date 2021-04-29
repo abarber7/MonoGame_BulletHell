@@ -75,7 +75,7 @@
 
         public override void LaunchAttack(object source, EventArgs args)
         {
-            if (true /*this.currentKey.IsKeyDown(Input.Attack)*/)
+            if (this.currentKey.IsKeyDown(Input.Attack))
             {
                 base.LaunchAttack(source, args);
             }

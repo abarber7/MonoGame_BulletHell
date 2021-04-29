@@ -48,6 +48,16 @@
 
             newAttack.isClone = true;
 
+            Timer newCooldownToAttackTimer = new Timer(newAttack.CooldownToAttack.Interval);
+            newCooldownToAttackTimer.AutoReset = newAttack.CooldownToAttack.AutoReset;
+            newCooldownToAttackTimer.Enabled = newAttack.CooldownToAttack.Enabled;
+            newAttack.CooldownToAttack = newCooldownToAttackTimer;
+
+            Timer newCooldownToCreateProjectile = new Timer(newAttack.CooldownToCreateProjectile.Interval);
+            newCooldownToCreateProjectile.AutoReset = newAttack.CooldownToCreateProjectile.AutoReset;
+            newCooldownToCreateProjectile.Enabled = newAttack.CooldownToCreateProjectile.Enabled;
+            newAttack.CooldownToCreateProjectile = newCooldownToCreateProjectile;
+
             return newAttack;
         }
 
@@ -57,7 +67,7 @@
 
         public void ExecuteAttack(object source, ElapsedEventArgs args)
         {
-            this.PauseTimersWhileDebugging(source as Timer);
+            // this.PauseTimersWhileDebugging(source as Timer);
             this.ExecuteAttackEventHandler.Invoke(this, null);
         }
 

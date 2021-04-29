@@ -137,7 +137,7 @@
 
         private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("demo");
+            GameLoader.LoadGame("single");
 
             StateManager.ChangeState(new GameState());
         }

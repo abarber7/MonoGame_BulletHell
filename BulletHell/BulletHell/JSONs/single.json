@@ -14,7 +14,7 @@
     },
     "attacks": {
       "attackName": "basicLinear",
-      "cooldownToAttack": 0.01,
+      "cooldownToAttack": 0.25,
       "cooldownToCreateProjectile": 0,
       "projectile": {
         "projectileType": "bullet",
@@ -73,7 +73,7 @@
             "xPosition": 0,
             "yPosition": 0,
             "xVelocity": 0,
-            "yVelocity": -1,
+            "yVelocity": 1,
             "speed": 3
           }
         },
@@ -159,8 +159,8 @@
 
       "attacks": {
         "attackName": "circle",
-        "cooldownToAttack": 5,
-        "cooldownToCreateProjectile": 0.025,
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.25,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",
@@ -171,7 +171,7 @@
             "xPosition": 0,
             "yPosition": 0,
             "xVelocity": 0,
-            "yVelocity": -1,
+            "yVelocity": 1,
             "speed": 3
           }
         },
@@ -237,5 +237,28 @@
       }
     }
   ],
-  "waves": []
+  "waves": [
+    {
+      "waveNumber": 1,
+      "waveDuration": 10,
+      "entityGroups": [
+        {
+          "entityAmount": 1,
+          "entityType": "complexGrunt",
+          "delayTillSpawn": 0,
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "startXPosition": [ 100 ],
+            "startYPosition": [ 50 ],
+            "endXPosition": [ 380 ],
+            "endYPosition": [ 50 ],
+            "speed": 2,
+            "numberOfCycles": 3
+          }
+        }
+      ]
+    }
+  ]
 }

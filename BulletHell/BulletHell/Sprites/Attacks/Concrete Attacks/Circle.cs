@@ -27,7 +27,7 @@
             if (this.NumberOfTimesToAttack == this.NumberOfTimesAttacksHaveExecuted)
             {
                 this.IsRemoved = true;
-                this.CooldownToAttack.Stop();
+                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }

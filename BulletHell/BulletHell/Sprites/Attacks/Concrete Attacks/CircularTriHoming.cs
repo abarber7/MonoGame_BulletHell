@@ -28,13 +28,15 @@
             if (this.movement.IsMovementDone())
             {
                 this.IsRemoved = true;
-                this.CooldownToAttack.Stop();
+                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            // this.PauseTimersWhileDebugging(source as Timer);
+
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement = this.ProjectileToLaunch.Movement.Clone() as MovementPattern;
             newProjectile.Movement.Parent = newProjectile;
@@ -91,6 +93,16 @@
             newAttack.NumberOfTimesAttacksHaveExecuted = 0;
 
             newAttack.isClone = true;
+
+            Timer newCooldownToAttackTimer = new Timer(newAttack.CooldownToAttack.Interval);
+            newCooldownToAttackTimer.AutoReset = newAttack.CooldownToAttack.AutoReset;
+            newCooldownToAttackTimer.Enabled = newAttack.CooldownToAttack.Enabled;
+            newAttack.CooldownToAttack = newCooldownToAttackTimer;
+
+            Timer newCooldownToCreateProjectile = new Timer(newAttack.CooldownToCreateProjectile.Interval);
+            newCooldownToCreateProjectile.AutoReset = newAttack.CooldownToCreateProjectile.AutoReset;
+            newCooldownToCreateProjectile.Enabled = newAttack.CooldownToCreateProjectile.Enabled;
+            newAttack.CooldownToCreateProjectile = newCooldownToCreateProjectile;
 
             return newAttack;
         }

@@ -21,14 +21,14 @@
             if (this.NumberOfTimesToAttack >= this.NumberOfTimesAttacksHaveExecuted)
             {
                 this.IsRemoved = true;
-                this.CooldownToAttack.Stop();
+                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
-            this.PauseTimersWhileDebugging(source as Timer);
+            // this.PauseTimersWhileDebugging(source as Timer);
 
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             float projectileSpeed = newProjectile.Movement.Speed;
