@@ -90,6 +90,8 @@
 
             newAttack.NumberOfTimesAttacksHaveExecuted = 0;
 
+            newAttack.isClone = true;
+
             return newAttack;
         }
 

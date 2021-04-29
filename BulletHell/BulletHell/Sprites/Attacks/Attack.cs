@@ -16,6 +16,7 @@
         public Timer CooldownToAttack;
         public Timer CooldownToCreateProjectile;
         public int NumberOfTimesAttacksHaveExecuted = 0;
+        protected bool isClone = false;
 
         public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
             : base(null, Color.Transparent, movement)
@@ -44,6 +45,8 @@
             newAttack.Attacker = this.Attacker;
 
             newAttack.NumberOfTimesAttacksHaveExecuted = 0;
+
+            newAttack.isClone = true;
 
             return newAttack;
         }

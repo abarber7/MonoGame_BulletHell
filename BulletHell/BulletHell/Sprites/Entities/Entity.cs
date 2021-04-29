@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Timers;
-    using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.States;
     using Microsoft.Xna.Framework;
@@ -43,12 +41,13 @@
             {
                 Attack attackClone = (Attack)((Attack)source).Clone();
                 attackClone.CooldownToAttack.Stop();
-                attackClone.CooldownToCreateProjectile.Start();
                 attackClone.NumberOfTimesAttacksHaveExecuted++;
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
                 GameState.Attacks.Add(attackClone);
+                attackClone.CooldownToCreateProjectile.Elapsed += attackClone.CreateProjectile;
+                attackClone.CooldownToCreateProjectile.Start();
             }
         }
 
@@ -86,7 +85,6 @@
                         item.Attacker = this;
                         item.CooldownToAttack.Elapsed += item.ExecuteAttack;
                         item.CooldownToAttack.Start();
-                        item.CooldownToCreateProjectile.Elapsed += item.CreateProjectile;
                     });
 
                     this.Movement.InitializeMovement();
