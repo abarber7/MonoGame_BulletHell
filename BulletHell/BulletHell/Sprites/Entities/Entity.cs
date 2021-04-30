@@ -44,6 +44,38 @@
             }
         }
 
+        public override object Clone()
+        {
+            Entity newEntity = (Entity)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
+
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            return newEntity;
+        }
+
+        public void Respawn()
+        {
+            this.ReachedStart = false;
+            this.initializedSpawningPosition = false;
+        }
+
         protected virtual void Move()
         {
             // For spawning
@@ -123,38 +155,6 @@
                     this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
-        }
-
-        public override object Clone()
-        {
-            Entity newEntity = (Entity)this.MemberwiseClone();
-            if (this.Movement != null)
-            {
-                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
-                newEntity.Movement = newMovement;
-            }
-
-            List<Attack> newAttacks = new List<Attack>();
-
-            foreach (Attack attack in this.Attacks)
-            {
-                Attack newAttack = (Attack)attack.Clone();
-                newAttack.Attacker = newEntity;
-
-                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
-
-                newAttacks.Add(newAttack);
-            }
-
-            newEntity.Attacks = newAttacks;
-
-            return newEntity;
-        }
-
-        public void Respawn()
-        {
-            this.ReachedStart = false;
-            this.initializedSpawningPosition = false;
         }
     }
 }

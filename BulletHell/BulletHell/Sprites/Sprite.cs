@@ -12,14 +12,14 @@
         private Color color = Color.White;
         private MovementPattern movement;
 
-        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
-
         public Sprite(Texture2D texture, Color color, MovementPattern movement)
         {
             this.Texture = texture;
             this.Color = color;
             this.Movement = movement;
         }
+
+        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Texture2D Texture { get; set; }
 
