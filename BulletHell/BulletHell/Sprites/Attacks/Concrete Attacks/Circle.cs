@@ -33,7 +33,7 @@
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
-            this.PauseTimersWhileDebugging(source as Timer);
+            // this.PauseTimersWhileDebugging(source as Timer);
 
             float degreesToIncrement = (this.degreesToEnd - this.degreesToStart) / this.numberOfProjectiles;
 
