@@ -8,6 +8,7 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
+    using BulletHell.Sprites.Projectiles.Concrete_Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using BulletHell.Waves;
@@ -138,7 +139,17 @@
             this.commandQueue.Add(new CollisionCheckCommand(Player, enemiesAndProjectileList)); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
-            Enemies.ForEach((e) => { this.commandQueue.Add(new CollisionCheckCommand(e, Projectiles)); }); // Did player projectiles hit any enemies
+            this.enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, this.projectiles)); }); // Did player projectiles hit any enemies
+
+            // Create projectile collision checks (purpose for the moment is check projectile on projectile collision for PushBullet
+            this.projectiles.ForEach((projectile) =>
+            {
+                // Optimize by only setting up checks when PushBullet is involved
+                if (projectile is PushBullet)
+                {
+                    this.commandQueue.Add(new CollisionCheckCommand(projectile, this.projectiles));
+                }
+            });
         }
 
         private void ExecuteCommands()

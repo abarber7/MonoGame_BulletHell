@@ -37,6 +37,9 @@
                     int numberOfTimesToBounce = (int)projectileProperties["bounceTimes"];
                     projectile = new BounceBullet(texture, color, movement, damage, numberOfTimesToBounce);
                     break;
+                case "pushBullet":
+                    projectile = new PushBullet(texture, color, movement, damage);
+                    break;
                 default:
                     throw new Exception("Invalid Projectile Type");
             }

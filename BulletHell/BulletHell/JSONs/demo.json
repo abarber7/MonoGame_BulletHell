@@ -162,9 +162,9 @@
         "cooldownToAttack": 1,
         "cooldownToCreateProjectile": 0.25,
         "projectile": {
-          "projectileType": "bullet",
+          "projectileType": "pushBullet",
           "textureName": "Bullet",
-          "color": "Blue",
+          "color": "Yellow",
           "damage": 5,
           "movementPattern": {
             "movementPatternType": "linear",
