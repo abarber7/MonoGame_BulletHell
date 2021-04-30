@@ -13,13 +13,13 @@
     {
         private Circular movement;
 
-        public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
-
         public CircularHoming(Projectile projectile, Circular circularMovement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
             : base(projectile, circularMovement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
         }
+
+        public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {

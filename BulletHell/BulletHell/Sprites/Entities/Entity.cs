@@ -22,12 +22,6 @@
         private bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
-        public void Respawn()
-        {
-            this.ReachedStart = false;
-            this.initializedSpawningPosition = false;
-        }
-
         public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement)
         {
@@ -48,6 +42,38 @@
                 attackClone.CooldownToCreateProjectile.Elapsed += attackClone.CreateProjectile;
                 attackClone.CooldownToCreateProjectile.Start();
             }
+        }
+
+        public override object Clone()
+        {
+            Entity newEntity = (Entity)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
+
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            return newEntity;
+        }
+
+        public void Respawn()
+        {
+            this.ReachedStart = false;
+            this.initializedSpawningPosition = false;
         }
 
         protected virtual void Move()
@@ -129,32 +155,6 @@
                     this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
-        }
-
-        public override object Clone()
-        {
-            Entity newEntity = (Entity)this.MemberwiseClone();
-            if (this.Movement != null)
-            {
-                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
-                newEntity.Movement = newMovement;
-            }
-
-            List<Attack> newAttacks = new List<Attack>();
-
-            foreach (Attack attack in this.Attacks)
-            {
-                Attack newAttack = (Attack)attack.Clone();
-                newAttack.Attacker = newEntity;
-
-                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
-
-                newAttacks.Add(newAttack);
-            }
-
-            newEntity.Attacks = newAttacks;
-
-            return newEntity;
         }
     }
 }

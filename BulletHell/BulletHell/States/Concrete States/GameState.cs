@@ -82,21 +82,6 @@
             this.CreateStats();
         }
 
-        private void InitializeLists()
-        {
-            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
-
-            Enemies = new List<Sprite>();
-
-            Projectiles = new List<Sprite>();
-
-            Attacks = new List<Sprite>();
-
-            this.enemiesToSpawn = new List<SpawnableSprite>();
-
-            this.commandQueue = new List<ICommand>();
-        }
-
         public override void Update(GameTime gameTime)
         {
             this.CheckAndDeployWave(gameTime);
@@ -117,6 +102,21 @@
         public override void PostUpdate(GameTime gameTime)
         {
             this.RemoveSprites(gameTime);
+        }
+
+        private void InitializeLists()
+        {
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
+
+            Enemies = new List<Sprite>();
+
+            Projectiles = new List<Sprite>();
+
+            Attacks = new List<Sprite>();
+
+            this.enemiesToSpawn = new List<SpawnableSprite>();
+
+            this.commandQueue = new List<ICommand>();
         }
 
         private void CreateCommands(GameTime gameTime)
