@@ -59,14 +59,14 @@
             {
                 projectile.Draw(this.spriteBatch);
 
-                // this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var enemy in Enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
-                // this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);
@@ -139,15 +139,17 @@
             this.commandQueue.Add(new CollisionCheckCommand(Player, enemiesAndProjectileList)); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
-            this.enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, this.projectiles)); }); // Did player projectiles hit any enemies
+            Enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, Projectiles)); }); // Did player projectiles hit any enemies
 
             // Create projectile collision checks (purpose for the moment is check projectile on projectile collision for PushBullet
-            this.projectiles.ForEach((projectile) =>
+            List<Sprite> projectiles = Projectiles.ToArray().ToList();
+
+            projectiles.ForEach((projectile) =>
             {
                 // Optimize by only setting up checks when PushBullet is involved
                 if (projectile is PushBullet)
                 {
-                    this.commandQueue.Add(new CollisionCheckCommand(projectile, this.projectiles));
+                    this.commandQueue.Add(new CollisionCheckCommand(projectile, projectiles));
                 }
             });
         }
