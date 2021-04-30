@@ -18,10 +18,9 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            if (this.NumberOfTimesToAttack >= this.NumberOfTimesAttacksHaveExecuted)
+            if (this.NumberOfTimesToLaunchProjectiles <= this.NumberOfTimesProjectilesHaveLaunched || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
-                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
@@ -42,6 +41,8 @@
             newProjectile.Movement.CurrentPosition = this.Movement.CurrentPosition;
             newProjectile.Parent = this.Attacker;
             GameState.Projectiles.Add(newProjectile);
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
     }
 }

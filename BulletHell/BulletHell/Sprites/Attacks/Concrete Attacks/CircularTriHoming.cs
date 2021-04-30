@@ -25,10 +25,9 @@
         {
             this.Move();
 
-            if (this.movement.IsMovementDone())
+            if (this.movement.IsMovementDone() || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
-                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
@@ -74,6 +73,8 @@
             thirdProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
             thirdProjectile.Parent = this.Attacker;
             GameState.Projectiles.Add(thirdProjectile);
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
 
         public override object Clone()
@@ -90,7 +91,7 @@
 
             newAttack.Attacker = this.Attacker;
 
-            newAttack.NumberOfTimesAttacksHaveExecuted = 0;
+            newAttack.NumberOfTimesProjectilesHaveLaunched = 0;
 
             newAttack.isClone = true;
 

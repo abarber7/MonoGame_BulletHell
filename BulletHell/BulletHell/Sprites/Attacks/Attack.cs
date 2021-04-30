@@ -10,12 +10,12 @@
 
     public abstract class Attack : Sprite
     {
-        public int NumberOfTimesToAttack = 1;
+        public int NumberOfTimesToLaunchProjectiles = 1;
         public Projectile ProjectileToLaunch;
         public Entity Attacker;
         public Timer CooldownToAttack;
         public Timer CooldownToCreateProjectile;
-        public int NumberOfTimesAttacksHaveExecuted = 0;
+        public int NumberOfTimesProjectilesHaveLaunched = 0;
         protected bool isClone = false;
 
         public Attack(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
@@ -44,7 +44,7 @@
 
             newAttack.Attacker = this.Attacker;
 
-            newAttack.NumberOfTimesAttacksHaveExecuted = 0;
+            newAttack.NumberOfTimesProjectilesHaveLaunched = 0;
 
             newAttack.isClone = true;
 
@@ -67,7 +67,7 @@
 
         public void ExecuteAttack(object source, ElapsedEventArgs args)
         {
-            this.PauseTimersWhileDebugging(source as Timer);
+            // this.PauseTimersWhileDebugging(source as Timer);
             this.ExecuteAttackEventHandler.Invoke(this, null);
         }
 

@@ -20,17 +20,16 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            if (this.NumberOfTimesToAttack >= this.NumberOfTimesAttacksHaveExecuted)
+            if (this.NumberOfTimesToLaunchProjectiles <= this.NumberOfTimesProjectilesHaveLaunched || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
-                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
-            this.PauseTimersWhileDebugging(source as Timer);
+            // this.PauseTimersWhileDebugging(source as Timer);
 
             float spacing = 2;
             int verticalOffset = 20;
@@ -79,6 +78,8 @@
                     GameState.Projectiles.Add(newProjectile);
                 }
             }
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
     }
 }

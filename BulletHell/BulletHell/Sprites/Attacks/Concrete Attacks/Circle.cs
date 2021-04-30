@@ -24,16 +24,17 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            if (this.NumberOfTimesToAttack == this.NumberOfTimesAttacksHaveExecuted)
+            if (this.NumberOfTimesToLaunchProjectiles <= this.NumberOfTimesProjectilesHaveLaunched || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
-                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            this.PauseTimersWhileDebugging(source as Timer);
+
             float degreesToIncrement = (this.degreesToEnd - this.degreesToStart) / this.numberOfProjectiles;
 
             for (int i = 0; i < this.numberOfProjectiles; i++)
@@ -50,6 +51,8 @@
                 newProjectile.Parent = this.Attacker;
                 GameState.Projectiles.Add(newProjectile);
             }
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
     }
 }

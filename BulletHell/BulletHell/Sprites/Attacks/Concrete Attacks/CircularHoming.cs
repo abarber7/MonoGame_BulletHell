@@ -25,10 +25,9 @@
         {
             this.Move();
 
-            if (this.movement.IsMovementDone())
+            if (this.movement.IsMovementDone() || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
-                // this.CooldownToAttack.Stop();
                 this.CooldownToCreateProjectile.Stop();
             }
         }
@@ -58,6 +57,8 @@
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Parent = this.Attacker;
             GameState.Projectiles.Add(newProjectile);
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
 
         private void Move()
@@ -79,7 +80,7 @@
 
             newAttack.Attacker = this.Attacker;
 
-            newAttack.NumberOfTimesAttacksHaveExecuted = 0;
+            newAttack.NumberOfTimesProjectilesHaveLaunched = 0;
 
             newAttack.isClone = true;
 

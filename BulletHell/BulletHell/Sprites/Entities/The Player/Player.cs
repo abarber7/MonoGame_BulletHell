@@ -35,6 +35,8 @@
             foreach (Attack attack in attacks)
             {
                 attack.ExecuteAttackEventHandler += this.LaunchAttack;
+                attack.Attacker = this;
+                attack.ProjectileToLaunch.Parent = attack;
             }
         }
 

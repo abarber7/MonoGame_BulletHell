@@ -41,7 +41,6 @@
             {
                 Attack attackClone = (Attack)((Attack)source).Clone();
                 attackClone.CooldownToAttack.Stop();
-                attackClone.NumberOfTimesAttacksHaveExecuted++;
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 

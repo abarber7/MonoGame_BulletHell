@@ -61,7 +61,7 @@
 
       "attacks": {
         "attackName": "circularHoming",
-        "cooldownToAttack": 5,
+        "cooldownToAttack": 3,
         "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
