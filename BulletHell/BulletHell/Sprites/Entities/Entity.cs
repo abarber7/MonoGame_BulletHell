@@ -1,21 +1,22 @@
 ﻿namespace BulletHell.Sprites.Entities
 {
+    using System;
     using System.Collections.Generic;
-    using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.States;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Entity : Sprite
+    public abstract class Entity : Sprite
     {
         public int HP;
-        public Attack Attack;
+        public List<Attack> Attacks = new List<Attack>();
         public Vector2 SpawnPosition;
         public Vector2 DespawnPosition;
-        protected double timer;
-        protected float attackCooldown;
-        private bool reachedStart = false; // bool for if entity reached start position
-        private bool exiting = false; // bool for if it is time to exit
+        public bool ReachedStart = false; // bool for if entity reached start position
+        public bool Exiting = false; // bool for if it is time to exit
+        public float DamageModifier = 0;
+        protected float damageLevel;
         private bool initializedSpawningPosition = false;
         private bool initializedDespawningPosition = false;
         private bool initializedMovementPosition = false;
@@ -23,34 +24,36 @@
 
         public void Respawn()
         {
-            this.reachedStart = false;
+            this.ReachedStart = false;
             this.initializedSpawningPosition = false;
         }
 
-        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float attackCooldown)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement)
         {
-            this.Attack = attack;
+            this.Attacks = attacks;
             this.HP = hp;
-            this.attackCooldown = attackCooldown;
         }
 
-        protected void ExecuteAttack(List<Sprite> sprites)
+        public virtual void LaunchAttack(object source, EventArgs args)
         {
-            if (this.reachedStart && !this.exiting)
+            if (this.ReachedStart && !this.Exiting)
             {
-                Attack attackClone = AttackFactory.DownCastAttack(this.Attack.Clone());
+                Attack attackClone = (Attack)((Attack)source).Clone();
+                attackClone.CooldownToAttack.Stop();
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
-                sprites.Add(attackClone);
+                GameState.Attacks.Add(attackClone);
+                attackClone.CooldownToCreateProjectile.Elapsed += attackClone.CreateProjectile;
+                attackClone.CooldownToCreateProjectile.Start();
             }
         }
 
         protected virtual void Move()
         {
             // For spawning
-            if (this.reachedStart == false && this.exiting == false)
+            if (this.ReachedStart == false && this.Exiting == false)
             {
                 if (this.initializedSpawningPosition == false)
                 {
@@ -62,7 +65,7 @@
 
                 if (this.Movement.ExceededPosition(this.SpawnPosition, this.Movement.StartPosition, this.Movement.Velocity))
                 {
-                    this.reachedStart = true;
+                    this.ReachedStart = true;
                 }
                 else
                 {
@@ -71,17 +74,24 @@
             }
 
             // For movement
-            else if (this.reachedStart == true && this.exiting == false)
+            else if (this.ReachedStart == true && this.Exiting == false)
             {
                 if (this.initializedMovementPosition == false)
                 {
                     this.initializedMovementPosition = true;
+                    this.Attacks.ForEach(item =>
+                    {
+                        item.Attacker = this;
+                        item.CooldownToAttack.Elapsed += item.ExecuteAttack;
+                        item.CooldownToAttack.Start();
+                    });
+
                     this.Movement.InitializeMovement();
                 }
 
                 if (this.Movement.CompletedMovement == true)
                 {
-                    this.exiting = true;
+                    this.Exiting = true;
                 }
                 else
                 {
@@ -90,7 +100,7 @@
             }
 
             // For despawning
-            else if (this.reachedStart == true && this.exiting == true)
+            else if (this.ReachedStart == true && this.Exiting == true)
             {
                 if (this.initializedDespawningPosition == false)
                 {
@@ -106,6 +116,8 @@
                     this.positionWhenDespawningBegins = this.Movement.CurrentPosition;
 
                     this.Movement.Velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
+
+                    this.Attacks.ForEach(item => item.CooldownToAttack.Stop());
                 }
 
                 if (this.Movement.ExceededPosition(this.positionWhenDespawningBegins, this.DespawnPosition, this.Movement.Velocity))
@@ -117,6 +129,32 @@
                     this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
+        }
+
+        public override object Clone()
+        {
+            Entity newEntity = (Entity)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
+
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            return newEntity;
         }
     }
 }

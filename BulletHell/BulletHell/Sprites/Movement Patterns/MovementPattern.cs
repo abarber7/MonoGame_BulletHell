@@ -4,7 +4,7 @@
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
 
-    internal abstract class MovementPattern : ICloneable
+    public abstract class MovementPattern : ICloneable
     {
         public bool CompletedMovement = false;
         public Vector2 CurrentPosition;

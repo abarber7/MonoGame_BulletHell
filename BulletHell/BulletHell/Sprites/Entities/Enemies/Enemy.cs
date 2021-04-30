@@ -12,18 +12,14 @@
 
     internal abstract class Enemy : Entity
     {
-        public Enemy(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
-            : base(texture, color, movement, hp, attack, attackCooldown)
+        public Enemy(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks)
+            : base(texture, color, movement, hp, attacks)
         {
-            this.LifeSpan = lifeSpan;
-            this.timer = 0;
             this.DropLoot = false;
             this.PowerUp = powerUp;
         }
 
         public bool DropLoot { get; set; }
-
-        protected float LifeSpan { get; set; }
 
         protected int HealthPoints { get; set; }
 
@@ -32,13 +28,6 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer >= this.LifeSpan)
-            {
-                this.IsRemoved = true;
-            }
-
             this.Move();
         }
 
@@ -81,6 +70,34 @@
             int screenMiddle = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth / 2;
             powerUp.Movement.CurrentPosition = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
             return powerUp;
+        }
+
+        public override object Clone()
+        {
+            Enemy newEntity = (Enemy)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
+
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            PowerUp newPowerUp = (PowerUp)this.PowerUp.Clone();
+
+            return newEntity;
         }
     }
 }

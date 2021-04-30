@@ -1,6 +1,8 @@
 ﻿namespace BulletHell.Sprites.Attacks.Concrete_Attacks
 {
     using System.Collections.Generic;
+    using System.Timers;
+    using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
@@ -13,32 +15,27 @@
 
         public override MovementPattern Movement { get => this.movement; set => this.movement = (Circular)value; }
 
-        public CircularHoming(Projectile projectile, Circular circularMovement, float cooldownToCreateProjectile)
-            : base(projectile, circularMovement, cooldownToCreateProjectile)
+        public CircularHoming(Projectile projectile, Circular circularMovement, Timer cooldownToAttack, Timer cooldownToCreateProjectile)
+            : base(projectile, circularMovement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.Movement = circularMovement;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer > this.projectileSpawnCooldown)
-            {
-                this.timer = 0;
-                this.CreateProjectile(sprites);
-            }
-
             this.Move();
 
-            if (this.movement.IsMovementDone())
+            if (this.movement.IsMovementDone() || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
+                this.CooldownToCreateProjectile.Stop();
             }
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            // this.PauseTimersWhileDebugging(source as Timer);
+
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement.Parent = newProjectile;
             newProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();
@@ -48,7 +45,7 @@
 
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Parent = this.Attacker;
-            sprites.Add(newProjectile);
+            GameState.Projectiles.Add(newProjectile);
 
             newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             newProjectile.Movement.Parent = newProjectile;
@@ -59,7 +56,9 @@
 
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Parent = this.Attacker;
-            sprites.Add(newProjectile);
+            GameState.Projectiles.Add(newProjectile);
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
 
         private void Move()
@@ -78,11 +77,22 @@
 
             Projectile newProjectile = (Projectile)this.ProjectileToLaunch.Clone();
             newAttack.ProjectileToLaunch = newProjectile;
-            if (this.Attacker != null)
-            {
-                Sprite newAttacker = (Sprite)this.Attacker.Clone();
-                newAttack.Attacker = newAttacker;
-            }
+
+            newAttack.Attacker = this.Attacker;
+
+            newAttack.NumberOfTimesProjectilesHaveLaunched = 0;
+
+            newAttack.isClone = true;
+
+            Timer newCooldownToAttackTimer = new Timer(newAttack.CooldownToAttack.Interval);
+            newCooldownToAttackTimer.AutoReset = newAttack.CooldownToAttack.AutoReset;
+            newCooldownToAttackTimer.Enabled = newAttack.CooldownToAttack.Enabled;
+            newAttack.CooldownToAttack = newCooldownToAttackTimer;
+
+            Timer newCooldownToCreateProjectile = new Timer(newAttack.CooldownToCreateProjectile.Interval);
+            newCooldownToCreateProjectile.AutoReset = newAttack.CooldownToCreateProjectile.AutoReset;
+            newCooldownToCreateProjectile.Enabled = newAttack.CooldownToCreateProjectile.Enabled;
+            newAttack.CooldownToCreateProjectile = newCooldownToCreateProjectile;
 
             return newAttack;
         }

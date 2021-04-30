@@ -53,7 +53,7 @@
             return timers;
         }
 
-        private static Timer CreateTimer(float timeInSeconds)
+        public static Timer CreateTimer(float timeInSeconds)
         {
             Timer timer;
             if (timeInSeconds > 0)

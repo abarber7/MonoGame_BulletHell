@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
+    using BulletHell.States;
     using Microsoft.Xna.Framework;
 
     internal class Circle : Attack
@@ -12,8 +14,8 @@
         private float degreesToStart;
         private float degreesToEnd;
 
-        public Circle(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile, int numberOfProjectiles, float degreesToStart, float degreesToEnd)
-            : base(projectile, movement, cooldownToCreateProjectile)
+        public Circle(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile, int numberOfProjectiles, float degreesToStart, float degreesToEnd)
+            : base(projectile, movement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.numberOfProjectiles = numberOfProjectiles;
             this.degreesToStart = degreesToStart;
@@ -22,12 +24,17 @@
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            this.CreateProjectile(sprites);
-            this.IsRemoved = true;
+            if (this.NumberOfTimesToLaunchProjectiles <= this.NumberOfTimesProjectilesHaveLaunched || this.Attacker.IsRemoved)
+            {
+                this.IsRemoved = true;
+                this.CooldownToCreateProjectile.Stop();
+            }
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            // this.PauseTimersWhileDebugging(source as Timer);
+
             float degreesToIncrement = (this.degreesToEnd - this.degreesToStart) / this.numberOfProjectiles;
 
             for (int i = 0; i < this.numberOfProjectiles; i++)
@@ -42,8 +49,10 @@
                 newProjectile.Movement.Velocity = velocity;
                 newProjectile.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 newProjectile.Parent = this.Attacker;
-                sprites.Add(newProjectile);
+                GameState.Projectiles.Add(newProjectile);
             }
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
     }
 }
