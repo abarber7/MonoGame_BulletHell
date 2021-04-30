@@ -145,7 +145,7 @@
             }
             else
             {
-                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                if (this.currentKey.IsKeyDown(Input.CheatingMode) && !this.previousKey.IsKeyDown(Input.CheatingMode))
                 {
                     this.Invincible = !this.Invincible;
                 }

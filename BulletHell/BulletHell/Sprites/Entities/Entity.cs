@@ -22,12 +22,6 @@
         private bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
-        public void Respawn()
-        {
-            this.ReachedStart = false;
-            this.initializedSpawningPosition = false;
-        }
-
         public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement)
         {
@@ -155,6 +149,12 @@
             newEntity.Attacks = newAttacks;
 
             return newEntity;
+        }
+
+        public void Respawn()
+        {
+            this.ReachedStart = false;
+            this.initializedSpawningPosition = false;
         }
     }
 }
