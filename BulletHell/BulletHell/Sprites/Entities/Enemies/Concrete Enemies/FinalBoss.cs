@@ -20,13 +20,13 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            if (this.HP <= this.initialHP)
+            /*if (this.HP <= this.initialHP)
             {
                 this.phase2Attacks.ForEach(item =>
                 {
                     // TODO: Intitialize attacks and their events
                 });
-            }
+            }*/
 
             base.Update(gameTime, sprites);
         }

@@ -39,7 +39,7 @@
             List<Attack> attacks = null;
             if (entityProperties["attacks"] is List<Dictionary<string, object>>)
             {
-                 attacks = AttackFactory.CreateAttacks((List <Dictionary<string, object>>) entityProperties["attacks"]);
+                 attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["attacks"]);
             }
             else if (entityProperties["attacks"] is Dictionary<string, object>)
             {

@@ -62,8 +62,9 @@
                 float xPosition = this.random.Next(this.lowerXBound, this.upperXBound);
                 float yPosition = this.random.Next(this.lowerYBound, this.upperYBound);
                 newPosition = new Vector2(xPosition, yPosition);
-            } while (Vector2.Distance(this.CurrentPosition, newPosition) < 100);
-            
+            }
+            while (Vector2.Distance(this.CurrentPosition, newPosition) < 100);
+
             return newPosition;
         }
     }

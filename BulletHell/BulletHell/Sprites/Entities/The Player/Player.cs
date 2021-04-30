@@ -43,15 +43,15 @@
         public int Lives { get; set; }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
-        //public override Rectangle Rectangle
-        //{
-        //    get
-        //    {
-        //        //int xPos = (int)(this.Movement.CurrentPosition.X + (this.Texture.Width / 4));
-        //        //int yPos = (int)(this.Movement.CurrentPosition.Y + (this.Texture.Height / 4));
-        //        return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(this.Texture.Width, this.Texture.Height));
-        //    }
-        //}
+        /*public override Rectangle Rectangle
+        {
+            get
+            {
+                //int xPos = (int)(this.Movement.CurrentPosition.X + (this.Texture.Width / 4));
+                //int yPos = (int)(this.Movement.CurrentPosition.Y + (this.Texture.Height / 4));
+                return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(this.Texture.Width, this.Texture.Height));
+            }
+        }*/
 
         public override void Update(GameTime gameTime, List<Sprite> enemies)
         {

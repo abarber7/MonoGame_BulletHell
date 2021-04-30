@@ -5,7 +5,6 @@
 
     internal class SpawnableSprite
     {
-
         private Sprite spriteToSpawn;
         private Timer timerTillSpawn;
 
