@@ -31,7 +31,7 @@
             this.textureScale = 0.5F;
             this.spawning = true;
             this.Invincible = true;
-            this.damageLevel = 0;
+            this.DamageLevel = 0;
 
             foreach (Attack attack in attacks)
             {
@@ -44,15 +44,15 @@
         public int Lives { get; set; }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
-        public override Rectangle Rectangle
-        {
-            get
-            {
-                int x = Convert.ToInt32(this.Texture.Width * this.textureScale);
-                int y = Convert.ToInt32(this.Texture.Height * this.textureScale);
-                return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(x, y));
-            }
-        }
+        //public override Rectangle Rectangle
+        //{
+        //    get
+        //    {
+        //        int x = Convert.ToInt32(this.Texture.Width * this.textureScale);
+        //        int y = Convert.ToInt32(this.Texture.Height * this.textureScale);
+        //        return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(x, y));
+        //    }
+        //}
 
         public override void Update(GameTime gameTime, List<Sprite> enemies)
         {
@@ -158,8 +158,8 @@
 
         private void IncreaseDamage()
         {
-            this.damageLevel += 1;
-            switch (this.damageLevel)
+            this.DamageLevel += 1;
+            switch (this.DamageLevel)
             {
                 case 1:
                     this.DamageModifier += 0.2F;

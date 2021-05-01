@@ -52,7 +52,7 @@
 
         public int TextureWidth { get => Convert.ToInt32(this.Texture.Width * this.textureScale); }
 
-        public int TextureHeight { get => Convert.ToInt32(this.Texture.Width * this.textureScale); }
+        public int TextureHeight { get => Convert.ToInt32(this.Texture.Height * this.textureScale); }
 
         public virtual object Clone()
         {
@@ -75,8 +75,8 @@
             if (this.Texture != null)
             {
                 Vector2 upperLeftCorner = this.Movement.CurrentPosition;
-                upperLeftCorner.X -= this.Texture.Width / 2;
-                upperLeftCorner.Y -= this.Texture.Height / 2;
+                upperLeftCorner.X -= this.TextureWidth / 2;
+                upperLeftCorner.Y -= this.TextureHeight / 2;
                 spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, this.textureScale, SpriteEffects.None, 0);
             }
         }

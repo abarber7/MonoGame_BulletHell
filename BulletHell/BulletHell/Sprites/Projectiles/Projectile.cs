@@ -98,20 +98,20 @@
 
         public void SetTextureScaleBasedOnDamageLevel()
         {
-            float damageModifier = (this.Parent as Attack).Attacker.DamageModifier;
+            float damageLevel = (this.Parent as Attack).Attacker.DamageLevel;
 
-            switch (damageModifier)
+            switch (damageLevel)
             {
                 case 1:
-                    this.textureScale *= 0.2F;
+                    this.textureScale *= 1.2F;
                     this.Color = Color.Orange;
                     break;
                 case 2:
-                    this.textureScale *= 0.2F;
+                    this.textureScale *= 1.2F;
                     this.Color = Color.Yellow;
                     break;
                 case 3:
-                    this.textureScale *= 0.2F;
+                    this.textureScale *= 1.2F;
                     this.Color = Color.White;
                     break;
                 default:
