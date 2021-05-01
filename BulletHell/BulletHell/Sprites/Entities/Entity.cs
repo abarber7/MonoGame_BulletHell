@@ -95,7 +95,7 @@
                 }
                 else
                 {
-                    this.Movement.CurrentPosition += this.Movement.Velocity;
+                    this.Movement.Move();
                 }
             }
 
@@ -152,7 +152,7 @@
                 }
                 else
                 {
-                    this.Movement.CurrentPosition += this.Movement.Velocity;
+                    this.Movement.Move();
                 }
             }
         }
