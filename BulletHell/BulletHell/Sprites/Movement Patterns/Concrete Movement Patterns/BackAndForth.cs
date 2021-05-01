@@ -21,7 +21,7 @@
         {
             this.CurrentPosition = this.startPosition;
             this.CurrentSpeed = this.Speed;
-            this.Velocity = this.CalculateVelocity(this.startPosition, this.endPosition, this.CurrentSpeed);
+            this.Velocity = CalculateVelocity(this.startPosition, this.endPosition, this.CurrentSpeed);
             this.headingTowardEndPosition = true;
         }
 

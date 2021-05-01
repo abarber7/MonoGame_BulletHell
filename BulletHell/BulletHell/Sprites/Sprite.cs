@@ -9,6 +9,7 @@
     public abstract class Sprite : ICloneable
     {
         protected bool isRemoved = false;
+        protected float textureScale = 1;
         private Color color = Color.White;
         private MovementPattern movement;
 
@@ -41,13 +42,17 @@
             get
             {
                 Vector2 upperLeftCorner = this.Movement.CurrentPosition;
-                upperLeftCorner.X -= this.Texture.Width / 2;
-                upperLeftCorner.Y -= this.Texture.Height / 2;
+                upperLeftCorner.X -= this.TextureWidth / 2;
+                upperLeftCorner.Y -= this.TextureHeight / 2;
                 return new Rectangle(
                     upperLeftCorner.ToPoint(),
-                    new Point(this.Texture.Width, this.Texture.Height));
+                    new Point(this.TextureWidth, this.TextureHeight));
             }
         }
+
+        public int TextureWidth { get => Convert.ToInt32(this.Texture.Width * this.textureScale); }
+
+        public int TextureHeight { get => Convert.ToInt32(this.Texture.Width * this.textureScale); }
 
         public virtual object Clone()
         {
@@ -72,7 +77,7 @@
                 Vector2 upperLeftCorner = this.Movement.CurrentPosition;
                 upperLeftCorner.X -= this.Texture.Width / 2;
                 upperLeftCorner.Y -= this.Texture.Height / 2;
-                spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, this.textureScale, SpriteEffects.None, 0);
             }
         }
 

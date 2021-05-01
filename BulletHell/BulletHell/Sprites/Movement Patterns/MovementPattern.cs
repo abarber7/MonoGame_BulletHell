@@ -47,7 +47,7 @@
 
         public bool IsTouchingBottomOfScreen()
         {
-            int bottom = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight - (this.Parent.Texture.Height / 2);
+            int bottom = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight - (this.Parent.TextureHeight / 2);
             if (this.CurrentPosition.Y + this.Velocity.Y > bottom)
             {
                 Vector2 position = this.CurrentPosition;
@@ -63,7 +63,7 @@
 
         public bool IsTouchingTopOfScreen()
         {
-            int top = this.Parent.Texture.Height / 2;
+            int top = this.Parent.TextureHeight / 2;
             if (this.CurrentPosition.Y + this.Velocity.Y < top)
             {
                 Vector2 position = this.CurrentPosition;
@@ -79,7 +79,7 @@
 
         public bool IsTouchingRightOfScreen()
         {
-            int right = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth - (this.Parent.Texture.Width / 2);
+            int right = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth - (this.Parent.TextureWidth / 2);
             if (this.CurrentPosition.X + this.Velocity.X > right)
             {
                 Vector2 position = this.CurrentPosition;
@@ -95,7 +95,7 @@
 
         public bool IsTouchingLeftOfScreen()
         {
-            int left = this.Parent.Texture.Width / 2;
+            int left = this.Parent.TextureWidth / 2;
             if (this.CurrentPosition.X + this.Velocity.X < left)
             {
                 Vector2 position = this.CurrentPosition;
@@ -117,7 +117,7 @@
 
         public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
 
-        public Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, float speed)
+        public static Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, float speed)
         {
             Vector2 velocity;
             velocity.X = endPosition.X - startPosition.X;

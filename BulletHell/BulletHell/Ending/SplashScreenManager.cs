@@ -17,7 +17,6 @@
         private Texture2D imageTexture3;
         private Texture2D imageTexture4;
 
-
         public SplashScreenManager()
             : this(new List<SplashScreen>(), Keys.None)
         {
@@ -51,7 +50,6 @@
 
             this.skipButton = skipButton;
         }
-
 
         public bool Running
         {

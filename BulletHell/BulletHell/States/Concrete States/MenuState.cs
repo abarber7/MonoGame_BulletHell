@@ -71,8 +71,6 @@
             spriteBatch.Draw(this.mainMenuTexture3, new Vector2(85, 220), Color.White);
             spriteBatch.Draw(this.mainMenuTexture4, new Vector2(15, 320), Color.White);
 
-
-
             foreach (var component in this.components)
             {
                 component.Draw(gameTime, spriteBatch);

@@ -33,7 +33,7 @@
             this.CurrentSpeed = this.Speed;
             this.previousPosition = this.startPosition;
             this.nextPosition = this.GetNextPosition();
-            this.Velocity = this.CalculateVelocity(this.startPosition, this.nextPosition, this.CurrentSpeed);
+            this.Velocity = CalculateVelocity(this.startPosition, this.nextPosition, this.CurrentSpeed);
             this.timer.Start();
         }
 
@@ -43,7 +43,7 @@
             {
                 this.previousPosition = this.nextPosition;
                 this.nextPosition = this.GetNextPosition();
-                this.Velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.CurrentSpeed);
+                this.Velocity = CalculateVelocity(this.previousPosition, this.nextPosition, this.CurrentSpeed);
             }
 
             base.Move();
@@ -62,8 +62,9 @@
                 float xPosition = this.random.Next(this.lowerXBound, this.upperXBound);
                 float yPosition = this.random.Next(this.lowerYBound, this.upperYBound);
                 newPosition = new Vector2(xPosition, yPosition);
-            } while (Vector2.Distance(this.CurrentPosition, newPosition) < 100);
-            
+            }
+            while (Vector2.Distance(this.CurrentPosition, newPosition) < 100);
+
             return newPosition;
         }
     }

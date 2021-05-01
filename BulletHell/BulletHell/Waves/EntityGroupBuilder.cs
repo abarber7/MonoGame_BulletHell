@@ -42,7 +42,6 @@
             return new EntityGroup(entityType, entityAmount, delaysTillSpawn, movementPatterns, spawnPositions, despawnPositions);
         }
 
-
         public static Timer CreateTimer(float timeInSeconds)
         {
             Timer timer;

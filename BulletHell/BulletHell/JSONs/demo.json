@@ -1,8 +1,8 @@
 {
   "player": {
     "entityType": "player",
-    "textureName": "block",
-    "color": "Blue",
+    "textureName": "player",
+    "color": "White",
     "hp": 3,
     "movementPattern": {
       "movementPatternType": "playerInput",
@@ -18,8 +18,8 @@
       "cooldownToCreateProjectile": 0,
       "projectile": {
         "projectileType": "bullet",
-        "textureName": "Bullet",
-        "color": "Blue",
+        "textureName": "playerFireball",
+        "color": "Red",
         "damage": 5,
         "movementPattern": {
           "movementPatternType": "linear",
@@ -40,8 +40,8 @@
   "enemies": [
     {
       "entityType": "simpleGrunt",
-      "textureName": "hitboxTestEnemy",
-      "color": "Green",
+      "textureName": "simpleGrunt",
+      "color": "White",
       "hp": 10,
       "lifeSpan": 30,
       "powerUp": {
@@ -65,7 +65,7 @@
         "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
-          "textureName": "Bullet",
+          "textureName": "enemyProjectile",
           "color": "Blue",
           "damage": 5,
           "movementPattern": {
@@ -91,7 +91,7 @@
     },
     {
       "entityType": "complexGrunt",
-      "textureName": "hitboxTestEnemy",
+      "textureName": "complexGrunt",
       "color": "White",
       "hp": 10,
       "lifeSpan": 30,
@@ -116,7 +116,7 @@
         "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
-          "textureName": "Bullet",
+          "textureName": "enemyProjectile",
           "color": "Blue",
           "damage": 5,
           "movementPattern": {
@@ -138,8 +138,8 @@
     },
     {
       "entityType": "midBoss",
-      "textureName": "hitboxTestEnemy",
-      "color": "Yellow",
+      "textureName": "midBoss",
+      "color": "White",
       "hp": 10,
       "lifeSpan": 30,
       "powerUp": {
@@ -163,7 +163,7 @@
         "cooldownToCreateProjectile": 0.25,
         "projectile": {
           "projectileType": "pushBullet",
-          "textureName": "Bullet",
+          "textureName": "enemyProjectile",
           "color": "Yellow",
           "damage": 5,
           "movementPattern": {
@@ -187,10 +187,9 @@
     },
     {
       "entityType": "finalBoss",
-      "textureName": "hitboxTestEnemy",
-      "color": "Black",
+      "textureName": "finalBoss",
+      "color": "White",
       "hp": 10,
-      "lifeSpan": 10,
       "powerUp": {
         "powerUpType": "damageUp",
         "textureName": "damageUp",
@@ -205,8 +204,36 @@
           "speed": 2
         }
       },
-
       "attacks": {
+        "attackName": "circularHoming",
+        "cooldownToAttack": 3,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": 1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 5,
+          "startingDegrees": 90
+        }
+      },
+      "phase2Attacks": {
         "attackName": "circularTriHoming",
         "cooldownToAttack": 1,
         "cooldownToCreateProjectile": 0.025,
@@ -324,7 +351,7 @@
             "upperYBound": 200,
             "lowerYBound": 50,
             "speed": 3,
-            "timeBeforeExit": 10
+            "timeBeforeExit": 30
           }
         }
       ]
