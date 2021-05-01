@@ -15,7 +15,7 @@
         public Vector2 DespawnPosition;
         public bool ReachedStart = false; // bool for if entity reached start position
         public bool Exiting = false; // bool for if it is time to exit
-        public float DamageModifier = 0;
+        public float DamageModifier = 1.0F;
         protected float damageLevel;
         private bool initializedSpawningPosition = false;
         private bool initializedDespawningPosition = false;
@@ -86,7 +86,7 @@
                     this.initializedSpawningPosition = true;
                     this.Movement.CurrentPosition = this.SpawnPosition;
                     this.Movement.CurrentSpeed = this.Movement.Speed * 2;
-                    this.Movement.Velocity = this.Movement.CalculateVelocity(this.SpawnPosition, this.Movement.StartPosition, this.Movement.CurrentSpeed);
+                    this.Movement.Velocity = MovementPattern.CalculateVelocity(this.SpawnPosition, this.Movement.StartPosition, this.Movement.CurrentSpeed);
                 }
 
                 if (this.Movement.ExceededPosition(this.SpawnPosition, this.Movement.StartPosition, this.Movement.Velocity))
@@ -141,7 +141,7 @@
                     this.Movement.CurrentSpeed = this.Movement.Speed * 2;
                     this.positionWhenDespawningBegins = this.Movement.CurrentPosition;
 
-                    this.Movement.Velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
+                    this.Movement.Velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
 
                     this.Attacks.ForEach(item => item.CooldownToAttack.Stop());
                 }

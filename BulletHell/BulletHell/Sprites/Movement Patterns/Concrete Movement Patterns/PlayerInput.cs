@@ -21,7 +21,7 @@
             this.respawning = true;
             this.CurrentPosition = this.spawnPosition;
             this.CurrentSpeed = this.Speed * 2;
-            this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
+            this.velocity = CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
         }
 
         public override void Move()

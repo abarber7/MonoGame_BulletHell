@@ -24,7 +24,7 @@
         public override void InitializeMovement()
         {
             this.CurrentPosition = this.startPosition;
-            this.velocity = this.CalculateVelocity(this.startPosition, this.points[this.nextTargetPointIndex], this.Speed);
+            this.velocity = CalculateVelocity(this.startPosition, this.points[this.nextTargetPointIndex], this.Speed);
         }
 
         public override void Move()
@@ -38,7 +38,7 @@
                     this.currentCycle++;
                 }
 
-                this.velocity = this.CalculateVelocity(this.points[this.previousTargetPoinIndex], this.points[this.nextTargetPointIndex], this.Speed);
+                this.velocity = CalculateVelocity(this.points[this.previousTargetPoinIndex], this.points[this.nextTargetPointIndex], this.Speed);
             }
 
             if (this.currentCycle == this.numberOfCycles)

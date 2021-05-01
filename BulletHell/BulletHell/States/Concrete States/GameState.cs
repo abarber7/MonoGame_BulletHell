@@ -211,32 +211,6 @@
             }
         }
 
-        /*private void OnSpriteRemoval(object sender, GameComponentCollectionEventArgs e)
-        {
-            if (sender == this.player)
-            {
-                this.lives--;
-                this.projectiles.Clear(); // Remove all projectiles
-                this.player.Respawn(gameTime); // TODO: set up sender so that gameTime comes in args ?
-            }
-            else if (sender is Enemy enemy)
-            {
-                if (this.enemies[i] is FinalBoss)
-                {
-                    this.finalBossDefeated = true;
-                    this.enemies.RemoveAt(i);
-                }
-                else
-                {
-                    this.enemies.RemoveAt(i);
-                }
-            }
-            else if (sender is Projectile projectile)
-            {
-                this.projectiles.RemoveAt(i);
-            }
-        }*/
-
         private void LoadWaves()
         {
             this.waves = GameLoader.LoadWaves();
