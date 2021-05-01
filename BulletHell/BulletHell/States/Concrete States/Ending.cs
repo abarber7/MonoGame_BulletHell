@@ -35,7 +35,7 @@
         public override void LoadContent()
         {
             // SPLASH SCREEN
-            this.Ssm = new SplashScreenManager(3, 5 , 3, Keys.Space);
+            this.Ssm = new SplashScreenManager(3, 5, 3, Keys.Space);
         }
 
         public override void PostUpdate(GameTime gameTime)

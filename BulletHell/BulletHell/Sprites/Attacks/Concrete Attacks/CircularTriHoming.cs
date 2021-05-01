@@ -41,7 +41,7 @@
             newProjectile.Movement.Parent = newProjectile;
 
             Vector2 targetPosition = GameState.GetPlayerPosition();
-            Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+            Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
             newProjectile.Movement.Velocity = velocity;
             newProjectile.Movement.CurrentPosition = this.movement.GetActualPosition();

@@ -84,7 +84,6 @@
             spriteBatch.Draw(this.selectDifficultyTexture, new Vector2(50, 50), Color.Black);
             spriteBatch.Draw(this.selectDifficultyTexture2, new Vector2(30, 120), Color.Black);
 
-
             foreach (var component in this.components)
             {
                 component.Draw(gameTime, spriteBatch);

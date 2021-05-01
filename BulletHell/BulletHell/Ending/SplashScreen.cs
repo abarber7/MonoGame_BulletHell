@@ -34,13 +34,25 @@
             NotReady,
         }
 
-        public Status CurrentStatus { get { return this.currentStatus; } }
+        public Status CurrentStatus
+        {
+            get { return this.currentStatus; }
+        }
 
-        private float StartToWaitTime { get { return this.fadeInTime; } }
+        private float StartToWaitTime
+        {
+            get { return this.fadeInTime; }
+        }
 
-        private float StartToFadeOutTime { get { return this.fadeInTime + this.waitTime; } }
+        private float StartToFadeOutTime
+        {
+            get { return this.fadeInTime + this.waitTime; }
+        }
 
-        private float StartToEndTime { get { return this.fadeInTime + this.waitTime + this.fadeOutTime; } }
+        private float StartToEndTime
+        {
+            get { return this.fadeInTime + this.waitTime + this.fadeOutTime; }
+        }
 
         public void Prepare()
         {
@@ -52,7 +64,7 @@
 
         public void Update(GameTime gt)
         {
-            // CALCULATE ALPHA & status 
+            // CALCULATE ALPHA & status
             if (this.timer < this.StartToWaitTime)
             {
                 this.fade = (byte)((byte.MaxValue * this.timer) / this.StartToWaitTime);
@@ -75,7 +87,7 @@
             }
             else if (this.timer < this.StartToEndTime)
             {
-                this.fade = (byte)(byte.MaxValue - ((byte.MaxValue * (this.timer - this.StartToFadeOutTime)) / fadeOutTime));
+                this.fade = (byte)(byte.MaxValue - ((byte.MaxValue * (this.timer - this.StartToFadeOutTime)) / this.fadeOutTime));
                 if (this.currentStatus != Status.FadingOut)
                 {
                     this.currentStatus = Status.FadingOut;
@@ -104,6 +116,5 @@
         {
             this.currentStatus = Status.NotReady;
         }
-
     }
 }
