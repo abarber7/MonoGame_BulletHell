@@ -53,7 +53,6 @@
                     entity.SpawnPosition = new Vector2((float)movementPatternProperties["spawnXPosition"], (float)movementPatternProperties["spawnYPosition"]);
                     break;
                 case "enemy":
-                    int lifeSpan = Convert.ToInt32((float)entityProperties["lifeSpan"]);
                     PowerUp powerUp = PowerUpFactory.CreatePowerUp((Dictionary<string, object>)entityProperties["powerUp"]);
 
                     switch (enemyType)
@@ -68,7 +67,17 @@
                             entity = new MidBoss(texture, color, movement, powerUp, hp, attacks);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, powerUp, hp, attacks);
+                            List<Attack> phase2Attacks = null;
+                            if (entityProperties["phase2Attacks"] is List<Dictionary<string, object>>)
+                            {
+                                phase2Attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["phase2Attacks"]);
+                            }
+                            else if (entityProperties["phase2Attacks"] is Dictionary<string, object>)
+                            {
+                                phase2Attacks = AttackFactory.CreateAttacks((Dictionary<string, object>)entityProperties["phase2Attacks"]);
+                            }
+
+                            entity = new FinalBoss(texture, color, movement, powerUp, hp, attacks, phase2Attacks);
                             break;
                     }
 

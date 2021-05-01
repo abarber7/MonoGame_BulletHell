@@ -28,6 +28,7 @@
         public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement, hp, attacks)
         {
+            this.textureScale = 0.5F;
             this.spawning = true;
             this.Invincible = true;
             this.damageLevel = 0;
@@ -43,15 +44,15 @@
         public int Lives { get; set; }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
-        /*public override Rectangle Rectangle
+        public override Rectangle Rectangle
         {
             get
             {
-                //int xPos = (int)(this.Movement.CurrentPosition.X + (this.Texture.Width / 4));
-                //int yPos = (int)(this.Movement.CurrentPosition.Y + (this.Texture.Height / 4));
-                return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(this.Texture.Width, this.Texture.Height));
+                int x = Convert.ToInt32(this.Texture.Width * this.textureScale);
+                int y = Convert.ToInt32(this.Texture.Height * this.textureScale);
+                return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(x, y));
             }
-        }*/
+        }
 
         public override void Update(GameTime gameTime, List<Sprite> enemies)
         {
@@ -116,8 +117,11 @@
                 this.Movement.CurrentSpeed = this.Movement.Speed / 2;
                 return true;
             }
-
-            return false;
+            else
+            {
+                this.Movement.CurrentSpeed = this.Movement.Speed;
+                return false;
+            }
         }
 
         public void Respawn(GameTime gameTime)
@@ -158,20 +162,19 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.DamageModifier += 1;
+                    this.DamageModifier += 0.2F;
                     break;
                 case 2:
-                    this.DamageModifier += 1;
+                    this.DamageModifier += 0.2F;
                     break;
                 case 3:
-                    this.DamageModifier += 1;
+                    this.DamageModifier += 0.2F;
                     break;
                 default:
-                    Debug.WriteLine("At max damage level");
                     break;
             }
 
-            this.Attacks.ForEach(item => item.ProjectileToLaunch.SetTextureBasedOnDamageLevel());
+            this.Attacks.ForEach(item => item.ProjectileToLaunch.SetTextureScaleBasedOnDamageLevel());
         }
     }
 }

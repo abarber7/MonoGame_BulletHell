@@ -38,7 +38,7 @@
                 // Ignore projectiles from fellow enemies/self
                 if (projectile.Parent is Player)
                 {
-                    this.HP -= projectile.Damage;
+                    this.HP -= Convert.ToInt32(projectile.Damage);
                     if (this.HP <= 0)
                     {
                         this.IsRemoved = true;

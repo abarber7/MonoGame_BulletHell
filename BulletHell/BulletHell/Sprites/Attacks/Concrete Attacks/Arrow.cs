@@ -45,7 +45,7 @@
 
                     if (row < col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         velocity.X = (float)((velocity.X * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))) - (velocity.Y * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))));
                         velocity.Y = (float)((velocity.X * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))) + (velocity.Y * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))));
@@ -54,13 +54,13 @@
                     }
                     else if (row == col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         newProjectile.Movement.Velocity = velocity;
                     }
                     else if (row > col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         velocity.X = (float)((velocity.X * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))) - (velocity.Y * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))));
                         velocity.Y = (float)((velocity.X * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))) + (velocity.Y * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))));

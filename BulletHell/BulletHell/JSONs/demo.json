@@ -19,7 +19,7 @@
       "projectile": {
         "projectileType": "bullet",
         "textureName": "playerFireball",
-        "color": "Orange",
+        "color": "Red",
         "damage": 5,
         "movementPattern": {
           "movementPatternType": "linear",
@@ -193,7 +193,7 @@
       "lifeSpan": 10,
       "powerUp": {
         "powerUpType": "damageUp",
-        "textureName": "enemyProjectile",
+        "textureName": "damageUp",
         "color": "Red",
         "dropPercent": 100,
         "movementPattern": {
@@ -213,6 +213,35 @@
         "projectile": {
           "projectileType": "bullet",
           "textureName": "Bullet",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 15,
+          "startingDegrees": 0
+        }
+      },
+      "phase2Attacks": {
+        "attackName": "circularTriHoming",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
           "color": "Blue",
           "damage": 5,
           "movementPattern": {

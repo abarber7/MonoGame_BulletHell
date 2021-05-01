@@ -33,7 +33,7 @@
             this.CurrentSpeed = this.Speed;
             this.previousPosition = this.startPosition;
             this.nextPosition = this.GetNextPosition();
-            this.Velocity = this.CalculateVelocity(this.startPosition, this.nextPosition, this.CurrentSpeed);
+            this.Velocity = CalculateVelocity(this.startPosition, this.nextPosition, this.CurrentSpeed);
             this.timer.Start();
         }
 
@@ -43,7 +43,7 @@
             {
                 this.previousPosition = this.nextPosition;
                 this.nextPosition = this.GetNextPosition();
-                this.Velocity = this.CalculateVelocity(this.previousPosition, this.nextPosition, this.CurrentSpeed);
+                this.Velocity = CalculateVelocity(this.previousPosition, this.nextPosition, this.CurrentSpeed);
             }
 
             base.Move();
