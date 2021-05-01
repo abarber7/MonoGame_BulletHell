@@ -17,10 +17,10 @@
 
     public class GameState : State
     {
-        private static Player player;
-        private List<Sprite> enemies;
-        private List<Sprite> projectiles;
-        private List<Sprite> attacks;
+        public static List<Sprite> Attacks;
+        public static Player Player;
+        public static List<Sprite> Enemies;
+        public static List<Sprite> Projectiles;
         private List<Wave> waves;
         private List<SpawnableSprite> enemiesToSpawn;
         private double timeUntilNextWave = 0;
@@ -35,41 +35,41 @@
 
         public static Vector2 GetPlayerPosition()
         {
-            return player.GetCenterOfSprite();
+            return Player.GetCenterOfSprite();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             this.spriteBatch.Begin();
 
-            player.Draw(this.spriteBatch);
+            Player.Draw(this.spriteBatch);
 
-            if (player.Invincible)
+            if (Player.Invincible)
             {
-                this.DrawBoxAroundSprite(player, Color.Crimson);
+                this.DrawBoxAroundSprite(Player, Color.Crimson);
             }
 
-            if (player.SlowMode)
+            if (Player.SlowMode)
             {
-                this.DrawBoxAroundSprite(player, Color.White);
-                player.SlowMode = false;
+                this.DrawBoxAroundSprite(Player, Color.White);
+                Player.SlowMode = false;
             }
 
-            foreach (var projectile in this.projectiles)
+            foreach (var projectile in Projectiles.FindAll(item => item != null))
             {
                 projectile.Draw(this.spriteBatch);
 
                 this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            foreach (var enemy in this.enemies.ToArray())
+            foreach (var enemy in Enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
-                //this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", player.HP), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);
 
             this.spriteBatch.End();
         }
@@ -82,21 +82,6 @@
             this.CreateStats();
         }
 
-        private void InitializeLists()
-        {
-            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
-
-            this.enemies = new List<Sprite>();
-
-            this.projectiles = new List<Sprite>();
-
-            this.attacks = new List<Sprite>();
-
-            this.enemiesToSpawn = new List<SpawnableSprite>();
-
-            this.commandQueue = new List<ICommand>();
-        }
-
         public override void Update(GameTime gameTime)
         {
             this.CheckAndDeployWave(gameTime);
@@ -104,7 +89,7 @@
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
-            if (player.HP == 0 || this.finalBossDefeated)
+            if (Player.HP == 0 || this.finalBossDefeated)
             {
                 this.EndGamePrompt();
             }
@@ -119,33 +104,52 @@
             this.RemoveSprites(gameTime);
         }
 
+        private void InitializeLists()
+        {
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
+
+            Enemies = new List<Sprite>();
+
+            Projectiles = new List<Sprite>();
+
+            Attacks = new List<Sprite>();
+
+            this.enemiesToSpawn = new List<SpawnableSprite>();
+
+            this.commandQueue = new List<ICommand>();
+        }
+
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
-            this.commandQueue.Add(new UpdateCommand(player, gameTime, this.attacks));
+            this.commandQueue.Add(new UpdateCommand(Player, gameTime, GameState.Attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((enemy) => { this.commandQueue.Add(new UpdateCommand(enemy, gameTime, this.attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
+            Enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, Attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
-            this.attacks.ForEach((attack) => { this.commandQueue.Add(new UpdateCommand(attack, gameTime, this.projectiles)); }); // attacks add projectiles
+            Attacks.ToArray().ToList().ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, Projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
-            this.projectiles.ForEach((projectile) => { this.commandQueue.Add(new UpdateCommand(projectile, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+            Projectiles.ToArray().ToList().ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, Projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+
+            List<Sprite> enemiesAndProjectileList = Enemies.Concat(Projectiles).ToList();
 
             // Create player collision check command, using both enemies and projectiles to check against
-            this.commandQueue.Add(new CollisionCheckCommand(player, this.enemies.Concat(this.projectiles).ToList())); // Did player hit any enemies or projectiles
+            this.commandQueue.Add(new CollisionCheckCommand(Player, enemiesAndProjectileList)); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
-            this.enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, this.projectiles)); }); // Did player projectiles hit any enemies
+            Enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, Projectiles)); }); // Did player projectiles hit any enemies
 
             // Create projectile collision checks (purpose for the moment is check projectile on projectile collision for PushBullet
-            this.projectiles.ForEach((projectile) =>
+            List<Sprite> projectiles = Projectiles.ToArray().ToList();
+
+            projectiles.ForEach((projectile) =>
             {
                 // Optimize by only setting up checks when PushBullet is involved
                 if (projectile is PushBullet)
                 {
-                    this.commandQueue.Add(new CollisionCheckCommand(projectile, this.projectiles));
+                    this.commandQueue.Add(new CollisionCheckCommand(projectile, projectiles));
                 }
             });
         }
@@ -161,48 +165,48 @@
 
         private void RemoveSprites(GameTime gameTime)
         {
-            if (player.IsRemoved)
+            if (Player.IsRemoved)
             {
-                player.HP--;
-                this.projectiles.Clear(); // Remove all projectiles
-                player.Respawn(gameTime);
+                Player.HP--;
+                Projectiles.Clear(); // Remove all projectiles
+                Player.Respawn(gameTime);
             }
 
-            for (int i = this.enemies.Count - 1; i >= 0; i--)
+            for (int i = Enemies.Count - 1; i >= 0; i--)
             {
-                if (this.enemies[i].IsRemoved)
+                if (Enemies[i].IsRemoved)
                 {
-                    if (this.enemies[i] is FinalBoss)
+                    if (Enemies[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
-                        this.enemies.RemoveAt(i);
+                        Enemies.RemoveAt(i);
                     }
                     else
                     {
-                        Enemy enemy = (Enemy)this.enemies[i];
+                        Enemy enemy = (Enemy)Enemies[i];
                         if (enemy.DropLoot)
                         {
-                            this.projectiles.Add(enemy.GetLoot()); // powerUp has a movement pattern, its update will just move it down
+                            Projectiles.Add(enemy.GetLoot()); // powerUp has a movement pattern, its update will just move it down
                         }
 
-                        this.enemies.RemoveAt(i);
+                        Enemies.RemoveAt(i);
                     }
                 }
             }
 
-            for (int i = this.projectiles.Count - 1; i >= 0; i--)
+            for (int i = Projectiles.Count - 1; i >= 0; i--)
             {
-                if (this.projectiles[i].IsRemoved)
+                if (Projectiles[i].IsRemoved)
                 {
-                    this.projectiles.RemoveAt(i);
+                    Projectiles.RemoveAt(i);
                 }
             }
 
-            for (int i = this.attacks.Count - 1; i >= 0; i--)
+            for (int i = Attacks.Count - 1; i >= 0; i--)
             {
-                if (this.attacks[i].IsRemoved)
+                if (Attacks[i].IsRemoved)
                 {
-                    this.attacks.RemoveAt(i);
+                    Attacks.RemoveAt(i);
                 }
             }
         }
@@ -240,7 +244,7 @@
 
         private void LoadPlayer()
         {
-            player = GameLoader.LoadPlayer();
+            Player = GameLoader.LoadPlayer();
         }
 
         private void CheckAndDeployWave(GameTime gameTime)
@@ -267,7 +271,7 @@
         {
             SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
             this.enemiesToSpawn.Remove(enemyToSpawn);
-            this.enemies.Add(enemyToSpawn.GetSprite());
+            Enemies.Add(enemyToSpawn.GetSprite());
         }
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)
@@ -308,7 +312,7 @@
 
         private void EndGamePrompt()
         {
-            if (player.HP == 0)
+            if (Player.HP == 0)
             {
                 StateManager.ChangeState(new GameOverLose());
             }

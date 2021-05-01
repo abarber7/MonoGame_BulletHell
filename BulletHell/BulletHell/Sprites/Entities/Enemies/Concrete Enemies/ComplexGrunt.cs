@@ -9,22 +9,14 @@
 
     internal class ComplexGrunt : Enemy
     {
-        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
-            : base(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown)
+        public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attack)
+            : base(texture, color, movement, powerUp, hp, attack)
         {
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
             base.Update(gameTime, sprites);
-
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer > this.attackCooldown)
-            {
-                this.timer = 0;
-                this.ExecuteAttack(sprites);
-            }
         }
     }
 }

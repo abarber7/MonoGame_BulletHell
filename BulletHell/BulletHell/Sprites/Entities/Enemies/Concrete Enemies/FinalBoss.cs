@@ -9,22 +9,31 @@
 
     internal class FinalBoss : Enemy
     {
-        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int lifeSpan, int hp, Attack attack, float attackCooldown)
-            : base(texture, color, movement, powerUp, lifeSpan, hp, attack, attackCooldown)
+        private List<Attack> phase2Attacks;
+        private int initialHP;
+
+        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks)
+            : base(texture, color, movement, powerUp, hp, attacks)
         {
+            this.initialHP = hp;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            base.Update(gameTime, sprites);
-
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.timer > this.attackCooldown)
+            if (this.HP <= this.initialHP)
             {
-                this.timer = 0;
-                this.ExecuteAttack(sprites);
+                this.phase2Attacks.ForEach(item =>
+                {
+                    // TODO: Intitialize attacks and their events
+                });
             }
+
+            base.Update(gameTime, sprites);
+        }
+
+        private void BeginPhase2Attacks()
+        {
+
         }
     }
 }

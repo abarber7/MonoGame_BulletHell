@@ -42,18 +42,8 @@
             return new EntityGroup(entityType, entityAmount, delaysTillSpawn, movementPatterns, spawnPositions, despawnPositions);
         }
 
-        private static List<Timer> CreateListOfTimers(List<object> listOfTimes)
-        {
-            List<Timer> timers = new List<Timer>();
-            listOfTimes.ForEach(item =>
-            {
-                Timer timer = CreateTimer((float)item);
-                timers.Add(timer);
-            });
-            return timers;
-        }
 
-        private static Timer CreateTimer(float timeInSeconds)
+        public static Timer CreateTimer(float timeInSeconds)
         {
             Timer timer;
             if (timeInSeconds > 0)
@@ -67,6 +57,17 @@
             }
 
             return timer;
+        }
+
+        private static List<Timer> CreateListOfTimers(List<object> listOfTimes)
+        {
+            List<Timer> timers = new List<Timer>();
+            listOfTimes.ForEach(item =>
+            {
+                Timer timer = CreateTimer((float)item);
+                timers.Add(timer);
+            });
+            return timers;
         }
     }
 }
