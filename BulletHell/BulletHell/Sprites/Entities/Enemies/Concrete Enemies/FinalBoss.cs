@@ -20,7 +20,7 @@
         {
             this.phase2Attacks = phase2Attacks;
             this.initialHP = hp;
-            this.swapToPhase2 = new Timer(15 * 1000);
+            this.swapToPhase2 = new Timer(5 * 1000);
             this.swapToPhase2.Stop();
             this.swapToPhase2.AutoReset = false;
             this.swapToPhase2.Elapsed += this.SwitchToPhase2DueToTime;
@@ -44,7 +44,11 @@
 
         private void SwitchToPhase2DueToTime(object source, ElapsedEventArgs args)
         {
-            this.BeginPhase2Attacks();
+            this.swapToPhase2.Stop();
+            if (!this.isRemoved)
+            {
+                this.BeginPhase2Attacks();
+            }
         }
 
         private void BeginPhase2Attacks()
@@ -57,9 +61,36 @@
             {
                 item.Attacker = this;
                 item.CooldownToAttack.Elapsed += item.ExecuteAttack;
+                item.CooldownToCreateProjectile.Elapsed += item.CreateProjectile;
                 item.ExecuteAttackEventHandler += this.LaunchAttack;
                 item.CooldownToAttack.Start();
             });
+        }
+
+        public override object Clone()
+        {
+            FinalBoss newFinalBoss = base.Clone() as FinalBoss;
+            newFinalBoss.initialHP = this.initialHP;
+            newFinalBoss.swappedToPhase2 = this.swappedToPhase2;
+            newFinalBoss.swapToPhase2 = new Timer(this.swapToPhase2.Interval);
+            newFinalBoss.swapToPhase2.AutoReset = this.swapToPhase2.AutoReset;
+            newFinalBoss.swapToPhase2.Enabled = this.swapToPhase2.Enabled;
+            newFinalBoss.swapToPhase2.Elapsed += newFinalBoss.SwitchToPhase2DueToTime;
+
+            List <Attack> newPhase2Attacks = new List<Attack>();
+            foreach (Attack attack in this.phase2Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newFinalBoss;
+
+                newAttack.ExecuteAttackEventHandler += newFinalBoss.LaunchAttack;
+
+                newPhase2Attacks.Add(newAttack);
+            }
+
+            newFinalBoss.phase2Attacks = newPhase2Attacks;
+
+            return newFinalBoss;
         }
     }
 }
