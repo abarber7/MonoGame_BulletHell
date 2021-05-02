@@ -7,9 +7,9 @@
     "movementPattern": {
       "movementPatternType": "playerInput",
       "spawnXPosition": 240,
-      "spawnYPosition": 370,
+      "spawnYPosition": 800,
       "startXPosition": 240,
-      "startYPosition": 360,
+      "startYPosition": 600,
       "speed": 2
     },
     "attacks": {

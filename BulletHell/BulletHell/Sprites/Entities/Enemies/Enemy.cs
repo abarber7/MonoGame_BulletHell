@@ -17,6 +17,7 @@
         {
             this.DropLoot = false;
             this.PowerUp = powerUp;
+            this.PowerUp.Parent = this;
         }
 
         public bool DropLoot { get; set; }
@@ -33,26 +34,24 @@
 
         public override void OnCollision(Sprite sprite)
         {
-            if (sprite is Projectile projectile)
+            // Ignore projectiles from fellow enemies/self
+            if (sprite is Projectile projectile && projectile.Parent is Player)
             {
-                // Ignore projectiles from fellow enemies/self
-                if (projectile.Parent is Player)
-                {
-                    this.HP -= Convert.ToInt32(projectile.Damage);
-                    if (this.HP <= 0)
-                    {
-                        this.IsRemoved = true;
-                        Random rnd = new Random();
-                        if (rnd.Next(1, 101) <= this.PowerUp.DropPercent)
-                        {
-                            this.DropLoot = true; // random <= to powerUp field's  dropPercent here, if so dropLoot is set to True, GameState checks and drops if so. i.e. adds this enemies PowerUp powerUp to the enemies sprite list in GameState.. Alex
-                        }
-                    }
-                }
+                this.HP -= Convert.ToInt32(projectile.Damage);
             }
             else if (sprite is Player)
             {
+                this.HP = 0;
+            }
+
+            if (this.HP <= 0)
+            {
                 this.IsRemoved = true;
+                Random rnd = new Random();
+                if (rnd.Next(1, 101) <= this.PowerUp.DropPercent)
+                {
+                    this.DropLoot = true; // random <= to powerUp field's dropPercent here, if so dropLoot is set to True, GameState checks and drops if so. i.e. adds this enemies PowerUp powerUp to the enemies sprite list in GameState.. Alex
+                }
             }
         }
 
@@ -65,6 +64,8 @@
             velocity.X *= Convert.ToSingle(powerUp.Movement.Speed);
             velocity.Y *= Convert.ToSingle(powerUp.Movement.Speed);
             powerUp.Movement.Velocity = velocity;
+            powerUp.Parent = this;
+            powerUp.Movement.Parent = powerUp;
 
             Random random = new Random();
             int screenMiddle = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth / 2;
