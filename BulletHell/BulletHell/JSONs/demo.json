@@ -156,7 +156,6 @@
           "speed": 2
         }
       },
-
       "attacks": {
         "attackName": "circle",
         "cooldownToAttack": 1,
@@ -172,7 +171,7 @@
             "yPosition": 0,
             "xVelocity": 0,
             "yVelocity": 1,
-            "speed": 3
+            "speed": 4
           }
         },
         "movementPattern": {
@@ -339,7 +338,7 @@
         {
           "entityAmount": 1,
           "entityType": "finalBoss",
-          "delayTillSpawn" : 0,
+          "delayTillSpawn": 0,
           "movementPattern": {
             "movementPatternType": "randomWithBounds",
             "spawnXPosition": 240,
