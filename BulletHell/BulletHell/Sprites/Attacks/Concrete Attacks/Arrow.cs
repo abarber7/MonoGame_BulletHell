@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.States;
@@ -11,20 +12,25 @@
     {
         private readonly int widthOfArrow;
 
-        public Arrow(Projectile projectile, MovementPattern movement, float cooldownToCreateProjectile, int widthOfArrow)
-            : base(projectile, movement, cooldownToCreateProjectile)
+        public Arrow(Projectile projectile, MovementPattern movement, Timer cooldownToAttack, Timer cooldownToCreateProjectile, int widthOfArrow)
+            : base(projectile, movement, cooldownToAttack, cooldownToCreateProjectile)
         {
             this.widthOfArrow = widthOfArrow;
         }
 
         public override void Update(GameTime gametime, List<Sprite> sprites)
         {
-            this.CreateProjectile(sprites);
-            this.IsRemoved = true;
+            if (this.NumberOfTimesToLaunchProjectiles <= this.NumberOfTimesProjectilesHaveLaunched || this.Attacker.IsRemoved)
+            {
+                this.IsRemoved = true;
+                this.CooldownToCreateProjectile.Stop();
+            }
         }
 
-        protected override void CreateProjectile(List<Sprite> sprites)
+        public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
+            // this.PauseTimersWhileDebugging(source as Timer);
+
             float spacing = 2;
             int verticalOffset = 20;
 
@@ -39,7 +45,7 @@
 
                     if (row < col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         velocity.X = (float)((velocity.X * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))) - (velocity.Y * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))));
                         velocity.Y = (float)((velocity.X * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))) + (velocity.Y * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))));
@@ -48,13 +54,13 @@
                     }
                     else if (row == col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         newProjectile.Movement.Velocity = velocity;
                     }
                     else if (row > col / 2.0)
                     {
-                        Vector2 velocity = this.Movement.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
+                        Vector2 velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, targetPosition, newProjectile.Movement.Speed);
 
                         velocity.X = (float)((velocity.X * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))) - (velocity.Y * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))));
                         velocity.Y = (float)((velocity.X * Math.Sin((col - (row / 2.0)) * spacing * (Math.PI / 180))) + (velocity.Y * Math.Cos((col - (row / 2.0)) * spacing * (Math.PI / 180))));
@@ -69,9 +75,11 @@
                     newProjectile.Movement.CurrentPosition = position;
 
                     newProjectile.Parent = this.Attacker;
-                    sprites.Add(newProjectile);
+                    GameState.Projectiles.Add(newProjectile);
                 }
             }
+
+            this.NumberOfTimesProjectilesHaveLaunched++;
         }
     }
 }

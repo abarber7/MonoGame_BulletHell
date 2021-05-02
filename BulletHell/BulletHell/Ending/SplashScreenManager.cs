@@ -42,7 +42,6 @@
             this.skipButton = skipButton;
         }
 
-
         public bool Running
         {
             get

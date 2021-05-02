@@ -2,15 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+    using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.The_Player;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Projectile : Sprite
+    public abstract class Projectile : Sprite
     {
-        public Projectile(Texture2D texture, Color color, MovementPattern movement, int damage)
+        private float damage;
+
+        public Projectile(Texture2D texture, Color color, MovementPattern movement, float damage)
             : base(texture, color, movement)
         {
             this.Damage = damage;
@@ -18,7 +22,7 @@
 
         public Sprite Parent { get; set; }
 
-        public int Damage { get; set; }
+        public float Damage { get => this.damage * (this.Parent as Entity).DamageModifier; set => this.damage = value; }
 
         // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
         public override Rectangle Rectangle
@@ -26,12 +30,12 @@
             get
             {
                 Vector2 boxUpperLeftCorner = this.Movement.CurrentPosition;
-                boxUpperLeftCorner.X -= this.Texture.Width + (this.Texture.Width / 4);
-                boxUpperLeftCorner.Y -= (float)(this.Texture.Height + (this.Texture.Height * (3.5 / 2)));
+                boxUpperLeftCorner.X -= this.TextureWidth + (this.TextureWidth / 4);
+                boxUpperLeftCorner.Y -= (float)(this.TextureHeight + (this.TextureHeight * (3.5 / 2)));
 
                 return new Rectangle(
                     boxUpperLeftCorner.ToPoint(),
-                    new Point(this.Texture.Width * 2, (int)Math.Round(this.Texture.Height * 3.5)));
+                    new Point(this.TextureWidth * 2, (int)Math.Round(this.TextureHeight * 3.5)));
             }
         }
 
@@ -85,11 +89,34 @@
             Projectile newProjectile = this.MemberwiseClone() as Projectile;
             if (this.Movement != null)
             {
-                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                MovementPattern newMovement = this.Movement.Clone() as MovementPattern;
                 newProjectile.Movement = newMovement;
             }
 
             return newProjectile;
+        }
+
+        public void SetTextureScaleBasedOnDamageLevel()
+        {
+            float damageModifier = (this.Parent as Attack).Attacker.DamageModifier;
+
+            switch (damageModifier)
+            {
+                case 1:
+                    this.textureScale *= 0.2F;
+                    this.Color = Color.Orange;
+                    break;
+                case 2:
+                    this.textureScale *= 0.2F;
+                    this.Color = Color.Yellow;
+                    break;
+                case 3:
+                    this.textureScale *= 0.2F;
+                    this.Color = Color.White;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using BulletHell.Sprites.Entities;
@@ -9,29 +10,35 @@
     using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.The_Player;
-    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
-    internal class Player : Entity
+    public class Player : Entity
     {
         public bool SlowMode;
         public bool Invincible;
         private double initialSpawnTime;
         private bool spawning;
         private bool resetGameTime = true;
-        private int damageLevel;
 
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, Attack attack, float cooldownToAttack)
-            : base(texture, color, movement, hp, attack, cooldownToAttack)
+        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
+            : base(texture, color, movement, hp, attacks)
         {
+            this.textureScale = 0.5F;
             this.spawning = true;
             this.Invincible = true;
             this.damageLevel = 0;
+
+            foreach (Attack attack in attacks)
+            {
+                attack.ExecuteAttackEventHandler += this.LaunchAttack;
+                attack.Attacker = this;
+                attack.ProjectileToLaunch.Parent = attack;
+            }
         }
 
         public int Lives { get; set; }
@@ -41,12 +48,9 @@
         {
             get
             {
-                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
-                upperLeftCorner.X -= this.Texture.Width / 2;
-                upperLeftCorner.Y -= this.Texture.Height / 2;
-                return new Rectangle(
-                    upperLeftCorner.ToPoint(),
-                    new Point(this.Texture.Width / 4, this.Texture.Height / 4));
+                int x = Convert.ToInt32(this.Texture.Width * this.textureScale);
+                int y = Convert.ToInt32(this.Texture.Height * this.textureScale);
+                return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(x, y));
             }
         }
 
@@ -60,16 +64,21 @@
 
             this.previousKey = this.currentKey;
             this.currentKey = Keyboard.GetState();
-            this.timer += gameTime.ElapsedGameTime.TotalSeconds;
 
             this.SetInvincibility(gameTime);
-
-            this.ExecuteAttack(enemies);
 
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
 
             this.Move();
+        }
+
+        public override void LaunchAttack(object source, EventArgs args)
+        {
+            if (this.currentKey.IsKeyDown(Input.Attack))
+            {
+                base.LaunchAttack(source, args);
+            }
         }
 
         public override void OnCollision(Sprite sprite)
@@ -108,8 +117,11 @@
                 this.Movement.CurrentSpeed = this.Movement.Speed / 2;
                 return true;
             }
-
-            return false;
+            else
+            {
+                this.Movement.CurrentSpeed = this.Movement.Speed;
+                return false;
+            }
         }
 
         public void Respawn(GameTime gameTime)
@@ -119,6 +131,10 @@
             this.spawning = true;
             this.Invincible = true;
             this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
+            this.Attacks.ForEach(item =>
+            {
+                item.CooldownToAttack.Stop();
+            });
         }
 
         private void SetInvincibility(GameTime gameTime)
@@ -133,7 +149,7 @@
             }
             else
             {
-                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                if (this.currentKey.IsKeyDown(Input.CheatingMode) && !this.previousKey.IsKeyDown(Input.CheatingMode))
                 {
                     this.Invincible = !this.Invincible;
                 }
@@ -146,30 +162,19 @@
             switch (this.damageLevel)
             {
                 case 1:
-                    this.Attack.ProjectileToLaunch.Damage += 1;
-                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet2");
+                    this.DamageModifier += 0.2F;
                     break;
                 case 2:
-                    this.Attack.ProjectileToLaunch.Damage += 1;
-                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet3");
+                    this.DamageModifier += 0.2F;
                     break;
                 case 3:
-                    this.Attack.ProjectileToLaunch.Damage += 1;
-                    this.Attack.ProjectileToLaunch.Texture = TextureFactory.GetTexture("Bullet4");
+                    this.DamageModifier += 0.2F;
                     break;
                 default:
-                    Debug.WriteLine("At max damage level");
                     break;
             }
-        }
 
-        private new void ExecuteAttack(List<Sprite> sprites)
-        {
-            if (this.timer > this.attackCooldown && this.currentKey.IsKeyDown(Input.Attack) && this.previousKey.IsKeyUp(Input.Attack))
-            {
-                this.timer = 0;
-                base.ExecuteAttack(sprites);
-            }
+            this.Attacks.ForEach(item => item.ProjectileToLaunch.SetTextureScaleBasedOnDamageLevel());
         }
     }
 }

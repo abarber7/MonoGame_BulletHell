@@ -35,7 +35,6 @@
             this.configureControlsTexture = TextureFactory.Content.Load<Texture2D>("Titles/CONFIGURE");
             this.configureControlsTexture2 = TextureFactory.Content.Load<Texture2D>("Titles/CONTROLS");
 
-
             this.upButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(82, 357),
@@ -104,7 +103,6 @@
             spriteBatch.Begin();
             spriteBatch.Draw(this.configureControlsTexture, new Vector2(20, 50), Color.Black);
             spriteBatch.Draw(this.configureControlsTexture2, new Vector2(40, 120), Color.Black);
-
 
             foreach (var component in this.components)
             {

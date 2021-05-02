@@ -16,7 +16,6 @@
         private Texture2D selectDifficultyTexture;
         private Texture2D selectDifficultyTexture2;
 
-
         public DifficultyState()
           : base()
         {
@@ -24,7 +23,6 @@
             var buttonFont = TextureFactory.GetSpriteFont("Fonts/Font");
             this.selectDifficultyTexture = TextureFactory.GetTexture("Titles/SELECT");
             this.selectDifficultyTexture2 = TextureFactory.GetTexture("Titles/DIFFICULTY");
-
 
             var bossButton = new Button(buttonTexture, buttonFont)
             {
@@ -86,7 +84,6 @@
             spriteBatch.Draw(this.selectDifficultyTexture, new Vector2(50, 50), Color.Black);
             spriteBatch.Draw(this.selectDifficultyTexture2, new Vector2(30, 120), Color.Black);
 
-
             foreach (var component in this.components)
             {
                 component.Draw(gameTime, spriteBatch);
@@ -139,14 +136,14 @@
 
         private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("demo");
+            GameLoader.LoadGame("single");
 
             StateManager.ChangeState(new GameState());
         }
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("demo");
+            GameLoader.LoadGame("noEnemies");
 
             StateManager.ChangeState(new GameState());
         }

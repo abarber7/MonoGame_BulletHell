@@ -21,8 +21,8 @@
         public override Rectangle Rectangle
         {
             get => new Rectangle(
-                    new Point((int)Math.Round(this.Movement.CurrentPosition.X - (1.5 * this.Texture.Width)), (int)Math.Round(this.Movement.CurrentPosition.Y - (1.5 * this.Texture.Height))),
-                    new Point(this.Texture.Width * 2, this.Texture.Height * 2));
+                    new Point(Convert.ToInt32(this.Movement.CurrentPosition.X - (1.5 * this.TextureWidth)), Convert.ToInt32(this.Movement.CurrentPosition.Y - (1.5 * this.TextureHeight))),
+                    new Point(this.TextureWidth * 2, this.TextureHeight * 2));
         }
 
         public override void OnCollision(Sprite sprite)
@@ -32,6 +32,11 @@
             {
                 this.IsRemoved = true;
             }
+        }
+
+        public override object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

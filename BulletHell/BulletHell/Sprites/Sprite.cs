@@ -6,14 +6,12 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Sprite : ICloneable
+    public abstract class Sprite : ICloneable
     {
-
         protected bool isRemoved = false;
+        protected float textureScale = 1;
         private Color color = Color.White;
         private MovementPattern movement;
-
-        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Sprite(Texture2D texture, Color color, MovementPattern movement)
         {
@@ -21,6 +19,8 @@
             this.Color = color;
             this.Movement = movement;
         }
+
+        public virtual MovementPattern Movement { get => this.movement; set => this.movement = value; }
 
         public Texture2D Texture { get; set; }
 
@@ -42,13 +42,17 @@
             get
             {
                 Vector2 upperLeftCorner = this.Movement.CurrentPosition;
-                upperLeftCorner.X -= this.Texture.Width / 2;
-                upperLeftCorner.Y -= this.Texture.Height / 2;
+                upperLeftCorner.X -= this.TextureWidth / 2;
+                upperLeftCorner.Y -= this.TextureHeight / 2;
                 return new Rectangle(
                     upperLeftCorner.ToPoint(),
-                    new Point(this.Texture.Width, this.Texture.Height));
+                    new Point(this.TextureWidth, this.TextureHeight));
             }
         }
+
+        public int TextureWidth { get => Convert.ToInt32(this.Texture.Width * this.textureScale); }
+
+        public int TextureHeight { get => Convert.ToInt32(this.Texture.Width * this.textureScale); }
 
         public virtual object Clone()
         {
@@ -73,13 +77,7 @@
                 Vector2 upperLeftCorner = this.Movement.CurrentPosition;
                 upperLeftCorner.X -= this.Texture.Width / 2;
                 upperLeftCorner.Y -= this.Texture.Height / 2;
-                spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
-            }
-
-            // Drawing option for texture-less sprites (Attacks)
-            else
-            {
-                spriteBatch.Draw(this.Texture, this.Movement.CurrentPosition, null, this.Color, this.Movement.Rotation, this.Movement.Origin, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(this.Texture, upperLeftCorner, null, this.Color, this.Movement.Rotation, this.Movement.Origin, this.textureScale, SpriteEffects.None, 0);
             }
         }
 

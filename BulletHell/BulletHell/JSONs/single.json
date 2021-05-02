@@ -1,8 +1,8 @@
 {
   "player": {
     "entityType": "player",
-    "textureName": "player",
-    "color": "White",
+    "textureName": "block",
+    "color": "Blue",
     "hp": 3,
     "movementPattern": {
       "movementPatternType": "playerInput",
@@ -18,8 +18,8 @@
       "cooldownToCreateProjectile": 0,
       "projectile": {
         "projectileType": "bullet",
-        "textureName": "playerFireball",
-        "color": "Red",
+        "textureName": "Bullet",
+        "color": "Blue",
         "damage": 5,
         "movementPattern": {
           "movementPatternType": "linear",
@@ -40,8 +40,8 @@
   "enemies": [
     {
       "entityType": "simpleGrunt",
-      "textureName": "simpleGrunt",
-      "color": "White",
+      "textureName": "hitboxTestEnemy",
+      "color": "Green",
       "hp": 10,
       "lifeSpan": 30,
       "powerUp": {
@@ -61,11 +61,11 @@
 
       "attacks": {
         "attackName": "circularHoming",
-        "cooldownToAttack": 3,
+        "cooldownToAttack": 1,
         "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
-          "textureName": "enemyProjectile",
+          "textureName": "Bullet",
           "color": "Blue",
           "damage": 5,
           "movementPattern": {
@@ -91,7 +91,7 @@
     },
     {
       "entityType": "complexGrunt",
-      "textureName": "complexGrunt",
+      "textureName": "hitboxTestEnemy",
       "color": "White",
       "hp": 10,
       "lifeSpan": 30,
@@ -116,7 +116,7 @@
         "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
-          "textureName": "enemyProjectile",
+          "textureName": "Bullet",
           "color": "Blue",
           "damage": 5,
           "movementPattern": {
@@ -138,8 +138,8 @@
     },
     {
       "entityType": "midBoss",
-      "textureName": "midBoss",
-      "color": "White",
+      "textureName": "hitboxTestEnemy",
+      "color": "Yellow",
       "hp": 10,
       "lifeSpan": 30,
       "powerUp": {
@@ -162,9 +162,9 @@
         "cooldownToAttack": 1,
         "cooldownToCreateProjectile": 0.25,
         "projectile": {
-          "projectileType": "pushBullet",
-          "textureName": "enemyProjectile",
-          "color": "Yellow",
+          "projectileType": "bullet",
+          "textureName": "Bullet",
+          "color": "Blue",
           "damage": 5,
           "movementPattern": {
             "movementPatternType": "linear",
@@ -187,9 +187,10 @@
     },
     {
       "entityType": "finalBoss",
-      "textureName": "finalBoss",
-      "color": "White",
+      "textureName": "hitboxTestEnemy",
+      "color": "Black",
       "hp": 10,
+      "lifeSpan": 10,
       "powerUp": {
         "powerUpType": "damageUp",
         "textureName": "damageUp",
@@ -204,36 +205,8 @@
           "speed": 2
         }
       },
+
       "attacks": {
-        "attackName": "circularHoming",
-        "cooldownToAttack": 3,
-        "cooldownToCreateProjectile": 0.025,
-        "projectile": {
-          "projectileType": "bullet",
-          "textureName": "enemyProjectile",
-          "color": "Blue",
-          "damage": 5,
-          "movementPattern": {
-            "movementPatternType": "linear",
-            "xPosition": 0,
-            "yPosition": 0,
-            "xVelocity": 0,
-            "yVelocity": 1,
-            "speed": 3
-          }
-        },
-        "movementPattern": {
-          "movementPatternType": "circular",
-          "timesToCycles": 2,
-          "originXPosition": 0,
-          "originYPosition": 0,
-          "radius": 0,
-          "amountToIncreaseRadiusBy": 0.375,
-          "degreesToRotate": 5,
-          "startingDegrees": 90
-        }
-      },
-      "phase2Attacks": {
         "attackName": "circularTriHoming",
         "cooldownToAttack": 1,
         "cooldownToCreateProjectile": 0.025,
@@ -270,51 +243,6 @@
       "waveDuration": 10,
       "entityGroups": [
         {
-          "entityAmount": 2,
-          "entityType": "simpleGrunt",
-          "delayTillSpawn": [ 1, 2 ],
-          "movementPattern": {
-            "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
-            "endXPosition": [ 150, 330 ],
-            "endYPosition": 50,
-            "speed": 2,
-            "timeBeforeExit": 5
-          }
-        }
-      ]
-    },
-    {
-      "waveNumber": 2,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
-          "entityAmount": 1,
-          "entityType": "midBoss",
-          "delayTillSpawn": 0,
-          "movementPattern": {
-            "movementPatternType": "pattern",
-            "spawnXPosition": [ 240 ],
-            "spawnYPosition": [ -100 ],
-            "points": [
-              [
-                [ 100, 100 ],
-                [ 380, 100 ],
-                [ 240, 200 ]
-              ]
-            ],
-            "speed": 2.5,
-            "numberOfCycles": 3
-          }
-        }
-      ]
-    },
-    {
-      "waveNumber": 3,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
           "entityAmount": 1,
           "entityType": "complexGrunt",
           "delayTillSpawn": 0,
@@ -328,30 +256,6 @@
             "endYPosition": [ 50 ],
             "speed": 2,
             "numberOfCycles": 3
-          }
-        }
-      ]
-    },
-    {
-      "waveNumber": 4,
-      "waveDuration": 10,
-      "entityGroups": [
-        {
-          "entityAmount": 1,
-          "entityType": "finalBoss",
-          "delayTillSpawn" : 0,
-          "movementPattern": {
-            "movementPatternType": "randomWithBounds",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
-            "startXPosition": 0,
-            "startYPosition": 50,
-            "upperXBound": 380,
-            "lowerXBound": 100,
-            "upperYBound": 200,
-            "lowerYBound": 50,
-            "speed": 3,
-            "timeBeforeExit": 30
           }
         }
       ]

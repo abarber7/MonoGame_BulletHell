@@ -1,6 +1,5 @@
 ﻿namespace BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns
 {
-    using System.Collections.Generic;
     using BulletHell.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
@@ -22,7 +21,7 @@
             this.respawning = true;
             this.CurrentPosition = this.spawnPosition;
             this.CurrentSpeed = this.Speed * 2;
-            this.velocity = this.CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
+            this.velocity = CalculateVelocity(this.spawnPosition, this.startPosition, this.CurrentSpeed);
         }
 
         public override void Move()
