@@ -29,6 +29,7 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            this.Color = this.originalColor;
             this.Move();
         }
 
@@ -38,6 +39,7 @@
             if (sprite is Projectile projectile && projectile.Parent is Player)
             {
                 this.HP -= Convert.ToInt32(projectile.Damage);
+                this.Color = Color.Red;
             }
             else if (sprite is Player)
             {

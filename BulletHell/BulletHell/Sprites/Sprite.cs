@@ -10,6 +10,7 @@
     {
         protected bool isRemoved = false;
         protected float textureScale = 1;
+        protected Color originalColor;
         private Color color = Color.White;
         private MovementPattern movement;
 
@@ -17,6 +18,7 @@
         {
             this.Texture = texture;
             this.Color = color;
+            this.originalColor = color;
             this.Movement = movement;
         }
 
