@@ -1,12 +1,10 @@
 ﻿namespace BulletHell.Sprites.Projectiles
 {
-    using System;
     using System.Collections.Generic;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.The_Player;
-    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -23,21 +21,6 @@
         public Sprite Parent { get; set; }
 
         public float Damage { get => this.damage * (this.Parent as Entity).DamageModifier; set => this.damage = value; }
-
-        // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
-        public override Rectangle Rectangle
-        {
-            get
-            {
-                Vector2 boxUpperLeftCorner = this.Movement.CurrentPosition;
-                boxUpperLeftCorner.X -= this.TextureWidth + (this.TextureWidth / 4);
-                boxUpperLeftCorner.Y -= (float)(this.TextureHeight + (this.TextureHeight * (3.5 / 2)));
-
-                return new Rectangle(
-                    boxUpperLeftCorner.ToPoint(),
-                    new Point(this.TextureWidth * 2, (int)Math.Round(this.TextureHeight * 3.5)));
-            }
-        }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -98,20 +81,20 @@
 
         public void SetTextureScaleBasedOnDamageLevel()
         {
-            float damageModifier = (this.Parent as Attack).Attacker.DamageModifier;
+            float damageLevel = (this.Parent as Attack).Attacker.DamageLevel;
 
-            switch (damageModifier)
+            switch (damageLevel)
             {
                 case 1:
-                    this.textureScale *= 0.2F;
+                    this.textureScale *= 1.2F;
                     this.Color = Color.Orange;
                     break;
                 case 2:
-                    this.textureScale *= 0.2F;
+                    this.textureScale *= 1.2F;
                     this.Color = Color.Yellow;
                     break;
                 case 3:
-                    this.textureScale *= 0.2F;
+                    this.textureScale *= 1.2F;
                     this.Color = Color.White;
                     break;
                 default:

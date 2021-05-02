@@ -34,6 +34,18 @@
         // For rotating sprites when drawing; should be done in radians
         public int Rotation { get; set; }
 
+        public static Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, float speed)
+        {
+            Vector2 velocity;
+            velocity.X = endPosition.X - startPosition.X;
+            velocity.Y = endPosition.Y - startPosition.Y;
+            velocity.Normalize();
+            velocity.X *= speed;
+            velocity.Y *= speed;
+
+            return velocity;
+        }
+
         public virtual void InitializeMovement()
         {
         }
@@ -47,12 +59,9 @@
 
         public bool IsTouchingBottomOfScreen()
         {
-            int bottom = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight - (this.Parent.TextureHeight / 2);
-            if (this.CurrentPosition.Y + this.Velocity.Y > bottom)
+            float bottom = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferHeight - (this.Parent.Rectangle.Height / 2F);
+            if (this.Parent.Rectangle.Bottom + this.Velocity.Y > bottom)
             {
-                Vector2 position = this.CurrentPosition;
-                position.Y = bottom;
-                this.CurrentPosition = position;
                 return true;
             }
             else
@@ -63,12 +72,9 @@
 
         public bool IsTouchingTopOfScreen()
         {
-            int top = this.Parent.TextureHeight / 2;
-            if (this.CurrentPosition.Y + this.Velocity.Y < top)
+            float top = this.Parent.Rectangle.Height / 2F;
+            if (this.Parent.Rectangle.Top + this.Velocity.Y < top)
             {
-                Vector2 position = this.CurrentPosition;
-                position.Y = top;
-                this.CurrentPosition = position;
                 return true;
             }
             else
@@ -116,18 +122,6 @@
         public void InvertXVelocity() => this.velocity.X = -this.velocity.X;
 
         public void InvertYVelocity() => this.velocity.Y = -this.velocity.Y;
-
-        public static Vector2 CalculateVelocity(Vector2 startPosition, Vector2 endPosition, float speed)
-        {
-            Vector2 velocity;
-            velocity.X = endPosition.X - startPosition.X;
-            velocity.Y = endPosition.Y - startPosition.Y;
-            velocity.Normalize();
-            velocity.X *= speed;
-            velocity.Y *= speed;
-
-            return velocity;
-        }
 
         public bool ExceededPosition(Vector2 startPosition, Vector2 endPosition, Vector2 velocity)
         {

@@ -18,6 +18,6 @@
             this.sprites = sprites;
         }
 
-        public void Execute() => this.focusSprite.Update(this.gameTime, this.sprites);
+        public void Execute() => this.focusSprite?.Update(this.gameTime, this.sprites);
     }
 }

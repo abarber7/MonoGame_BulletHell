@@ -28,10 +28,10 @@
         public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement, hp, attacks)
         {
-            this.textureScale = 0.5F;
+            this.textureScale = 1.5F;
             this.spawning = true;
             this.Invincible = true;
-            this.damageLevel = 0;
+            this.DamageLevel = 0;
 
             foreach (Attack attack in attacks)
             {
@@ -48,9 +48,13 @@
         {
             get
             {
-                int x = Convert.ToInt32(this.Texture.Width * this.textureScale);
-                int y = Convert.ToInt32(this.Texture.Height * this.textureScale);
-                return new Rectangle(this.Movement.CurrentPosition.ToPoint(), new Point(x, y));
+                float size = 11 * this.textureScale;
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= size / 2F; // from middle of sprite, offset for box width
+                upperLeftCorner.Y -= this.TextureHeight / 2; // get Y to top of sprite
+                upperLeftCorner.Y += (56 * this.textureScale) - (size / 2F); // offset for Bo center and size of box
+
+                return new Rectangle(upperLeftCorner.ToPoint(), new Point((int)size, (int)size));
             }
         }
 
@@ -158,8 +162,8 @@
 
         private void IncreaseDamage()
         {
-            this.damageLevel += 1;
-            switch (this.damageLevel)
+            this.DamageLevel += 1;
+            switch (this.DamageLevel)
             {
                 case 1:
                     this.DamageModifier += 0.2F;

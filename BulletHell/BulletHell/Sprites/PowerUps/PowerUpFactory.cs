@@ -19,7 +19,6 @@
             Color color = System.Drawing.Color.FromName(colorName).ToXNA();
 
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)powerUpProperties["movementPattern"]);
-            movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
 
             float dropPercent = (float)powerUpProperties["dropPercent"];
 

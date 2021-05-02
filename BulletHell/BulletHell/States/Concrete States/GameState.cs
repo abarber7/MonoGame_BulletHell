@@ -59,14 +59,14 @@
             {
                 projectile.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                // this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var enemy in Enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                // this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);

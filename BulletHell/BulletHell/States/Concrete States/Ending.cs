@@ -1,8 +1,5 @@
 ﻿namespace BulletHell.States
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using BulletHell.Ending;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
@@ -44,11 +41,11 @@
 
         public override void Update(GameTime gameTime)
         {
-                this.Ssm.Update(gameTime);
-                if (!this.Ssm.Running)
-                {
-                    StateManager.ChangeState(new GameOverWin());
-                }
+            this.Ssm.Update(gameTime);
+            if (!this.Ssm.Running)
+            {
+                StateManager.ChangeState(new GameOverWin());
+            }
         }
     }
 }

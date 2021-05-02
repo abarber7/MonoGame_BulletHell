@@ -16,7 +16,7 @@
         public bool ReachedStart = false; // bool for if entity reached start position
         public bool Exiting = false; // bool for if it is time to exit
         public float DamageModifier = 1.0F;
-        protected float damageLevel;
+        public float DamageLevel;
         private bool initializedSpawningPosition = false;
         private bool initializedDespawningPosition = false;
         private bool initializedMovementPosition = false;
@@ -95,7 +95,7 @@
                 }
                 else
                 {
-                    this.Movement.CurrentPosition += this.Movement.Velocity;
+                    this.Movement.Move();
                 }
             }
 
@@ -152,7 +152,7 @@
                 }
                 else
                 {
-                    this.Movement.CurrentPosition += this.Movement.Velocity;
+                    this.Movement.Move();
                 }
             }
         }
