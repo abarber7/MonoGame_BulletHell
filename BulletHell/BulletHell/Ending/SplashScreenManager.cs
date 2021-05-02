@@ -13,9 +13,6 @@
         private List<SplashScreen> screens;
         private Keys skipButton;
         private Texture2D imageTexture;
-        private Texture2D imageTexture2;
-        private Texture2D imageTexture3;
-        private Texture2D imageTexture4;
 
         public SplashScreenManager()
             : this(new List<SplashScreen>(), Keys.None)
@@ -32,15 +29,9 @@
         public SplashScreenManager(float fadeIn, float wait, float fadeOut, Keys skipButton)
         {
             List<Texture2D> images = new List<Texture2D>();
-            this.imageTexture = TextureFactory.GetTexture("EndingScreen/EndingScreen1");
-            this.imageTexture2 = TextureFactory.GetTexture("EndingScreen/EndingScreen2");
-            this.imageTexture3 = TextureFactory.GetTexture("EndingScreen//EndingScreen3");
-            this.imageTexture4 = TextureFactory.GetTexture("EndingScreen//EndingScreen4");
+            this.imageTexture = TextureFactory.GetTexture("EndingScreen/FinalEndScreen");
 
             images.Add(this.imageTexture);
-            images.Add(this.imageTexture2);
-            images.Add(this.imageTexture3);
-            images.Add(this.imageTexture4);
 
             this.screens = new List<SplashScreen>();
             foreach (Texture2D t in images)
@@ -74,11 +65,11 @@
                 if (this.screens[i].CurrentStatus != SplashScreen.Status.NotReady)
                 {
                     this.screens[i].Update(gt);
-                   /* if (KState.Clicked(this.skipButton))
+                    if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
                         this.screens[i].End();
                     }
-                   */
+
                     break;
                 }
             }
