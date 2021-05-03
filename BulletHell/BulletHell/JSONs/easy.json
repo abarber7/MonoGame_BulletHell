@@ -172,7 +172,7 @@
             "yPosition": 0,
             "xVelocity": 0,
             "yVelocity": 1,
-            "speed": 3
+            "speed": 5
           }
         },
         "movementPattern": {
@@ -346,9 +346,9 @@
       "waveDuration": 30,
       "entityGroups": [
         {
-          "entityAmount": 1,
+          "entityAmount": 1 ,
           "entityType": "midBoss",
-          "delayTillSpawn": 0,
+          "delayTillSpawn": [ 0 ],
           "movementPattern": {
             "movementPatternType": "pattern",
             "spawnXPosition": [ 240 ],
@@ -361,6 +361,22 @@
               ]
             ],
             "speed": 3,
+            "numberOfCycles": 3
+          }
+        },
+        {
+          "entityAmount": 1,
+          "entityType": "complexGrunt",
+          "delayTillSpawn": [ 0 ],
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "startXPosition": [ 100 ],
+            "startYPosition": [ 150 ],
+            "endXPosition": [ 380 ],
+            "endYPosition": [ 150 ],
+            "speed": 2,
             "numberOfCycles": 3
           }
         }
@@ -467,17 +483,17 @@
         {
           "entityAmount": 1,
           "entityType": "finalBoss",
-          "delayTillSpawn": 0,
+          "delayTillSpawn": [ 0 ],
           "movementPattern": {
             "movementPatternType": "randomWithBounds",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
-            "startXPosition": 0,
-            "startYPosition": 50,
-            "upperXBound": 380,
-            "lowerXBound": 100,
-            "upperYBound": 200,
-            "lowerYBound": 50,
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "startXPosition": [ 0 ],
+            "startYPosition": [ 50 ],
+            "upperXBound": [ 380 ],
+            "lowerXBound": [ 100 ],
+            "upperYBound": [ 200 ],
+            "lowerYBound": [ 50 ],
             "speed": 3,
             "timeBeforeExit": 30
           }
