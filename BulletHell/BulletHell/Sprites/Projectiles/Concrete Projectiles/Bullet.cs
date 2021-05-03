@@ -9,6 +9,7 @@
         public Bullet(Texture2D texture, Color color, MovementPattern movement, int damage)
             : base(texture, color, movement, damage)
         {
+            this.textureScale = 0.5F;
         }
     }
 }

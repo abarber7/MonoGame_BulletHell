@@ -1,0 +1,264 @@
+{
+  "player": {
+    "entityType": "player",
+    "textureName": "block",
+    "color": "Blue",
+    "hp": 3,
+    "movementPattern": {
+      "movementPatternType": "playerInput",
+      "spawnXPosition": 240,
+      "spawnYPosition": 800,
+      "startXPosition": 240,
+      "startYPosition": 600,
+      "speed": 2
+    },
+    "attacks": {
+      "attackName": "basicLinear",
+      "cooldownToAttack": 0.25,
+      "cooldownToCreateProjectile": 0,
+      "projectile": {
+        "projectileType": "bullet",
+        "textureName": "Bullet",
+        "color": "Blue",
+        "damage": 5,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": -1,
+          "speed": 5
+        }
+      },
+      "movementPattern": {
+        "movementPatternType": "static",
+        "xPosition": 0,
+        "yPosition": 0
+      }
+    }
+  },
+  "enemies": [
+    {
+      "entityType": "simpleGrunt",
+      "textureName": "hitboxTestEnemy",
+      "color": "Green",
+      "hp": 10,
+      "lifeSpan": 30,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "circularHoming",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "Bullet",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": 1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 5,
+          "startingDegrees": 90
+        }
+      }
+    },
+    {
+      "entityType": "complexGrunt",
+      "textureName": "hitboxTestEnemy",
+      "color": "White",
+      "hp": 10,
+      "lifeSpan": 30,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "arrow",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "Bullet",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "widthOfArrow": 3,
+        "movementPattern": {
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
+        }
+      }
+    },
+    {
+      "entityType": "midBoss",
+      "textureName": "hitboxTestEnemy",
+      "color": "Yellow",
+      "hp": 10,
+      "lifeSpan": 30,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "circle",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.25,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "Bullet",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": 1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
+        },
+        "numberOfProjectiles": 5,
+        "degreesToStart": 45,
+        "degreesToEnd": 135
+      }
+    },
+    {
+      "entityType": "finalBoss",
+      "textureName": "hitboxTestEnemy",
+      "color": "Black",
+      "hp": 10,
+      "lifeSpan": 10,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "circularTriHoming",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "Bullet",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 15,
+          "startingDegrees": 0
+        }
+      }
+    }
+  ],
+  "waves": [
+    {
+      "waveNumber": 1,
+      "waveDuration": 10,
+      "entityGroups": [
+        {
+          "entityAmount": 1,
+          "entityType": "complexGrunt",
+          "delayTillSpawn": 0,
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "startXPosition": [ 100 ],
+            "startYPosition": [ 50 ],
+            "endXPosition": [ 380 ],
+            "endYPosition": [ 50 ],
+            "speed": 2,
+            "numberOfCycles": 3
+          }
+        }
+      ]
+    }
+  ]
+}

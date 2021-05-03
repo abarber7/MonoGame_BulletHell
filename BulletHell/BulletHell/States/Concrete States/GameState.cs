@@ -1,5 +1,6 @@
 ﻿namespace BulletHell.States
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using BulletHell.Game_Utilities;
@@ -7,7 +8,7 @@
     using BulletHell.Sprites.Commands;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
-    using BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.Projectiles.Concrete_Projectiles;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using BulletHell.Waves;
@@ -16,72 +17,69 @@
 
     public class GameState : State
     {
-        private Player player;
-        private List<Sprite> enemies;
-        private List<Sprite> projectiles;
-
+        public static List<Sprite> Attacks;
+        public static Player Player;
+        public static List<Sprite> Enemies;
+        public static List<Sprite> Projectiles;
         private List<Wave> waves;
+        private List<SpawnableSprite> enemiesToSpawn;
         private double timeUntilNextWave = 0;
         private SpriteFont font;
-        private int lives = 3;
         private bool finalBossDefeated = false;
         private List<ICommand> commandQueue = null;
-        private double score = 0;
 
         public GameState()
         : base()
         {
         }
 
+        public static Vector2 GetPlayerPosition()
+        {
+            return Player.GetCenterOfSprite();
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             this.spriteBatch.Begin();
 
-            this.player.Draw(this.spriteBatch);
+            Player.Draw(this.spriteBatch);
 
-            if (this.player.Invincible)
+            if (Player.Invincible)
             {
-                this.DrawBoxAroundSprite(this.player, Color.Crimson);
+                this.DrawBoxAroundSprite(Player, Color.Crimson);
             }
 
-            if (this.player.SlowMode)
+            if (Player.SlowMode)
             {
-                this.DrawBoxAroundSprite(this.player, Color.White);
-                this.player.SlowMode = false;
+                this.DrawBoxAroundSprite(Player, Color.White);
+                Player.SlowMode = false;
             }
 
-            foreach (var p in this.projectiles)
+            foreach (var projectile in Projectiles.FindAll(item => item != null))
             {
-                p.Draw(this.spriteBatch);
-                this.DrawBoxAroundSprite(p, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                projectile.Draw(this.spriteBatch);
+
+                // this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            foreach (var e in this.enemies)
+            foreach (var enemy in Enemies.ToArray())
             {
-                e.Draw(this.spriteBatch);
-                this.DrawBoxAroundSprite(e, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                enemy.Draw(this.spriteBatch);
+
+                // this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", this.lives), new Vector2(10, 10), Color.Black);
-            this.spriteBatch.DrawString(this.font, string.Format("{0:C}", this.score), new Vector2(10, 25), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("{0:C}", Player.GetPoints()), new Vector2(10, 25), Color.Black);
 
             this.spriteBatch.End();
         }
 
         public override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
-
-            this.enemies = new List<Sprite>();
-
-            this.projectiles = new List<Sprite>();
-
-            this.commandQueue = new List<ICommand>();
-
-            this.player = GameLoader.LoadPlayer();
-
-            this.CreateWaves();
-
+            this.InitializeLists();
+            this.LoadPlayer();
+            this.LoadWaves();
             this.CreateStats();
         }
 
@@ -92,7 +90,7 @@
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
-            if (this.lives == 0 || this.finalBossDefeated)
+            if (Player.HP == 0 || this.finalBossDefeated)
             {
                 this.EndGamePrompt();
             }
@@ -107,141 +105,197 @@
             this.RemoveSprites(gameTime);
         }
 
+        private void InitializeLists()
+        {
+            this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
+
+            Enemies = new List<Sprite>();
+
+            Projectiles = new List<Sprite>();
+
+            Attacks = new List<Sprite>();
+
+            this.enemiesToSpawn = new List<SpawnableSprite>();
+
+            this.commandQueue = new List<ICommand>();
+        }
+
         private void CreateCommands(GameTime gameTime)
         {
             // Create player update command
-            this.commandQueue.Add(new UpdateCommand(this.player, gameTime, this.projectiles));
+            this.commandQueue.Add(new UpdateCommand(Player, gameTime, GameState.Attacks));
 
             // Create enemy update commands
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, this.projectiles)); }); // projectiles used here as container where Attack() adds sprites
+            Enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, Attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
+
+            // Create attack update commands
+            Attacks.ToArray().ToList().ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, Projectiles)); }); // attacks add projectiles
 
             // Create projectile update commands
-            this.projectiles.ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, this.projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+            Projectiles.ToArray().ToList().ForEach((p) => { this.commandQueue.Add(new UpdateCommand(p, gameTime, Projectiles)); }); // Note: Projectile's Update does nothing with sprite list
+
+            List<Sprite> enemiesAndProjectileList = Enemies.Concat(Projectiles).ToList();
 
             // Create player collision check command, using both enemies and projectiles to check against
-            this.commandQueue.Add(new CollisionCheckCommand(this.player, this.enemies.Concat(this.projectiles).ToList())); // Did player hit any enemies or projectiles
+            this.commandQueue.Add(new CollisionCheckCommand(Player, enemiesAndProjectileList)); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
-            this.enemies.ForEach((e) => { this.commandQueue.Add(new CollisionCheckCommand(e, this.projectiles)); }); // Did player projectiles hit any enemies
+            Enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, Projectiles)); }); // Did player projectiles hit any enemies
+
+            // Create projectile collision checks (purpose for the moment is check projectile on projectile collision for PushBullet
+            List<Sprite> projectiles = Projectiles.ToArray().ToList();
+
+            projectiles.ForEach((projectile) =>
+            {
+                // Optimize by only setting up checks when PushBullet is involved
+                if (projectile is PushBullet)
+                {
+                    this.commandQueue.Add(new CollisionCheckCommand(projectile, projectiles));
+                }
+            });
         }
 
         private void ExecuteCommands()
         {
             if (this.commandQueue != null)
             {
-                this.commandQueue.ForEach((c) => { c.Execute(); });
+                this.commandQueue.ForEach((command) => { command.Execute(); });
                 this.commandQueue.Clear();
             }
         }
 
         private void RemoveSprites(GameTime gameTime)
         {
-            if (this.player.IsRemoved)
+            if (Player.IsRemoved)
             {
-                this.lives--;
-                this.projectiles.Clear(); // Remove all projectiles
-                this.player.Respawn(gameTime);
+                Player.HP--;
+                Projectiles.Clear(); // Remove all projectiles
+                Player.Respawn(gameTime);
             }
 
-            for (int i = this.enemies.Count - 1; i >= 0; i--)
+            for (int i = Enemies.Count - 1; i >= 0; i--)
             {
-                if (this.enemies[i].IsRemoved)
+                if (Enemies[i].IsRemoved)
                 {
-                    Enemy toRemove = (Enemy) this.enemies[i]; // Consider changing enemy list to be composed of Enemy objects rather than Sprites
-                    this.score += toRemove.GetPoints();
+                    Enemy enemy = (Enemy)Enemies[i];
+                    Player.IncreasePoints(enemy.GetPoints());
 
-                    if (this.enemies[i] is FinalBoss)
+                    if (Enemies[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
-                        this.enemies.RemoveAt(i);
+                        Enemies.RemoveAt(i);
                     }
                     else
                     {
-                        this.enemies.RemoveAt(i);
+                        if (enemy.DropLoot)
+                        {
+                            Projectiles.Add(enemy.GetLoot()); // powerUp has a movement pattern, its update will just move it down
+                        }
+
+                        Enemies.RemoveAt(i);
                     }
                 }
             }
 
-            for (int i = this.projectiles.Count - 1; i >= 0; i--)
+            for (int i = Projectiles.Count - 1; i >= 0; i--)
             {
-                if (this.projectiles[i].IsRemoved)
+                if (Projectiles[i].IsRemoved)
                 {
-                    this.projectiles.RemoveAt(i);
+                    Projectiles.RemoveAt(i);
+                }
+            }
+
+            for (int i = Attacks.Count - 1; i >= 0; i--)
+            {
+                if (Attacks[i].IsRemoved)
+                {
+                    Attacks.RemoveAt(i);
                 }
             }
         }
 
-        /*private void OnSpriteRemoval(object sender, GameComponentCollectionEventArgs e)
-        {
-            if (sender == this.player)
-            {
-                this.lives--;
-                this.projectiles.Clear(); // Remove all projectiles
-                this.player.Respawn(gameTime); // TODO: set up sender so that gameTime comes in args ?
-            }
-            else if (sender is Enemy enemy)
-            {
-                if (this.enemies[i] is FinalBoss)
-                {
-                    this.finalBossDefeated = true;
-                    this.enemies.RemoveAt(i);
-                }
-                else
-                {
-                    this.enemies.RemoveAt(i);
-                }
-            }
-            else if (sender is Projectile projectile)
-            {
-                this.projectiles.RemoveAt(i);
-            }
-        }*/
-
-        private void CreateWaves()
+        private void LoadWaves()
         {
             this.waves = GameLoader.LoadWaves();
+        }
+
+        private void LoadPlayer()
+        {
+            Player = GameLoader.LoadPlayer();
         }
 
         private void CheckAndDeployWave(GameTime gameTime)
         {
             this.timeUntilNextWave -= gameTime.ElapsedGameTime.TotalSeconds;
+            List<SpawnableSprite> spritesToSpawn = new List<SpawnableSprite>();
             if (this.timeUntilNextWave <= 0 && this.waves.Count > 0)
             {
                 this.timeUntilNextWave = this.waves[0].WaveDuration;
-                this.waves[0].CreateWave(this.enemies);
+                spritesToSpawn = this.waves[0].CreateWave();
                 this.waves.RemoveRange(0, 1);
             }
+
+            spritesToSpawn.ForEach(item => this.enemiesToSpawn.Add(item));
+
+            spritesToSpawn.ForEach(item =>
+            {
+                item.TimeToSpawn += this.SpawnEnemies;
+                item.GetTimer().Start();
+            });
+        }
+
+        private void SpawnEnemies(object source, EventArgs e)
+        {
+            SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
+            this.enemiesToSpawn.Remove(enemyToSpawn);
+            Enemies.Add(enemyToSpawn.GetSprite());
         }
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)
         {
-            Texture2D hitboxTexture = new Texture2D(GraphicManagers.GraphicsDevice, sprite.Rectangle.Width, sprite.Rectangle.Height);
-            Color[] data = new Color[sprite.Rectangle.Width * sprite.Rectangle.Height];
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (i < sprite.Rectangle.Width ||
-                    i % sprite.Rectangle.Width == 0 ||
-                    i % sprite.Rectangle.Width == sprite.Rectangle.Width - 1 ||
-                    i > (sprite.Rectangle.Width * sprite.Rectangle.Height) - sprite.Rectangle.Width)
-                {
-                    data[i] = color;
-                }
-            }
+            Texture2D lineTexture = new Texture2D(GraphicManagers.GraphicsDevice, 1, 1);
+            lineTexture.SetData(new Color[] { Color.White }); // fill the texture with white
 
-            hitboxTexture.SetData(data);
+            Vector2 topLeft = new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Top);
+            Vector2 bottomLeft = new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Bottom);
+            Vector2 topRight = new Vector2(sprite.Rectangle.Right, sprite.Rectangle.Top);
+            Vector2 bottomRight = new Vector2(sprite.Rectangle.Right, sprite.Rectangle.Bottom);
+            this.DrawLine(lineTexture, topLeft, topRight, color); // top edge
+            this.DrawLine(lineTexture, topLeft, bottomLeft, color); // left edge
+            this.DrawLine(lineTexture, bottomLeft, bottomRight, color); // bottom edge
+            this.DrawLine(lineTexture, topRight, bottomRight, color); // right edge
+        }
 
-            this.spriteBatch.Draw(hitboxTexture, new Vector2(sprite.Rectangle.Left, sprite.Rectangle.Top), color);
+        // Source: https://gamedev.stackexchange.com/a/44016
+        private void DrawLine(Texture2D lineTexture, Vector2 start, Vector2 end, Color color)
+        {
+            Vector2 edge = end - start;
+            float angle = (float)Math.Atan2(edge.Y, edge.X); // calculate angle to rotate line (for left/right sides)
+
+            this.spriteBatch.Draw(
+                lineTexture,
+                new Rectangle( // rectangle defines shape of line and position of start of line
+                    (int)start.X,
+                    (int)start.Y,
+                    (int)edge.Length(), // spriteBatch will strech the texture to fill this rectangle
+                    1), // width of line, change this to make thicker line
+                null, // source rectangle N/A
+                color, // color of line
+                angle, // angle of line (calulated above)
+                Vector2.Zero, // point in line about which to rotate
+                SpriteEffects.None,
+                0);
         }
 
         private void EndGamePrompt()
         {
-            if (this.lives == 0)
+            if (Player.HP == 0)
             {
                 StateManager.ChangeState(new GameOverLose());
             }
             else if (this.finalBossDefeated == true)
             {
-                StateManager.ChangeState(new GameOverWin());
+                StateManager.ChangeState(new EndingState());
             }
         }
 

@@ -1,16 +1,20 @@
 ﻿namespace BulletHell.Sprites.The_Player
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
-    using BulletHell.Sprites.Movement_Patterns.Concrete_Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
+    using BulletHell.Sprites.PowerUps.Concrete_PowerUps;
     using BulletHell.Sprites.Projectiles;
+    using BulletHell.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
-    internal class Player : Entity
+    public class Player : Entity
     {
         public bool SlowMode;
         public bool Invincible;
@@ -21,19 +25,38 @@
         private KeyboardState currentKey;
         private KeyboardState previousKey;
 
-        public Player(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
-            : base(texture, color, movement, projectile)
+        public Player(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
+            : base(texture, color, movement, hp, attacks)
         {
+            this.textureScale = 1.5F;
             this.spawning = true;
             this.Invincible = true;
+            this.DamageLevel = 0;
+            this.Points = 0;
+
+            foreach (Attack attack in attacks)
+            {
+                attack.ExecuteAttackEventHandler += this.LaunchAttack;
+                attack.Attacker = this;
+                attack.ProjectileToLaunch.Parent = attack;
+            }
         }
+
+        public int Lives { get; set; }
 
         // Serves as hitbox; Player hitbox is smaller than enemies'
         public override Rectangle Rectangle
         {
-            get => new Rectangle(
-                    new Point((int)this.Movement.Position.X, (int)this.Movement.Position.Y),
-                    new Point(this.Texture.Width / 4, this.Texture.Height / 4));
+            get
+            {
+                float size = 11 * this.textureScale;
+                Vector2 upperLeftCorner = this.Movement.CurrentPosition;
+                upperLeftCorner.X -= size / 2F; // from middle of sprite, offset for box width
+                upperLeftCorner.Y -= this.TextureHeight / 2; // get Y to top of sprite
+                upperLeftCorner.Y += (56 * this.textureScale) - (size / 2F); // offset for Bo center and size of box
+
+                return new Rectangle(upperLeftCorner.ToPoint(), new Point((int)size, (int)size));
+            }
         }
 
         public override void Update(GameTime gameTime, List<Sprite> enemies)
@@ -49,15 +72,18 @@
 
             this.SetInvincibility(gameTime);
 
-            this.Attack(enemies);
-
-            int previousSpeed = this.Movement.CurrentSpeed;
-
             // check if slow speed
             this.SlowMode = this.IsSlowPressed();
 
             this.Move();
-            this.Movement.CurrentSpeed = previousSpeed;
+        }
+
+        public override void LaunchAttack(object source, EventArgs args)
+        {
+            if (this.currentKey.IsKeyDown(Input.Attack))
+            {
+                base.LaunchAttack(source, args);
+            }
         }
 
         public override void OnCollision(Sprite sprite)
@@ -65,7 +91,18 @@
             this.Movement.ZeroXVelocity();
             this.Movement.ZeroYVelocity();
 
-            if (this.Invincible == false)
+            if (sprite is PowerUp)
+            {
+                if (sprite is DamageUp)
+                {
+                    this.IncreaseDamage();
+                }
+                else if (sprite is ExtraLife)
+                {
+                    this.HP += 1;
+                }
+            }
+            else if (this.Invincible == false)
             {
                 if (sprite is Projectile projectile && projectile.Parent != this)
                 {
@@ -80,22 +117,34 @@
 
         public bool IsSlowPressed()
         {
-            if (this.currentKey.IsKeyDown(Keys.LeftShift))
+            if (this.currentKey.IsKeyDown(Input.SlowMode))
             {
                 this.Movement.CurrentSpeed = this.Movement.Speed / 2;
                 return true;
             }
-
-            return false;
+            else
+            {
+                this.Movement.CurrentSpeed = this.Movement.Speed;
+                return false;
+            }
         }
 
         public void Respawn(GameTime gameTime)
         {
-            ((PlayerInput)this.Movement).Respawn();
+            this.Respawn();
             this.IsRemoved = false;
             this.spawning = true;
             this.Invincible = true;
             this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
+            this.Attacks.ForEach(item =>
+            {
+                item.CooldownToAttack.Stop();
+            });
+        }
+
+        public void IncreasePoints(double pointValue)
+        {
+            this.Points += pointValue;
         }
 
         private void SetInvincibility(GameTime gameTime)
@@ -110,24 +159,32 @@
             }
             else
             {
-                if (this.currentKey.IsKeyDown(Keys.OemTilde) && !this.previousKey.IsKeyDown(Keys.OemTilde))
+                if (this.currentKey.IsKeyDown(Input.CheatingMode) && !this.previousKey.IsKeyDown(Input.CheatingMode))
                 {
                     this.Invincible = !this.Invincible;
                 }
             }
         }
 
-        private new void Attack(List<Sprite> sprites)
+        private void IncreaseDamage()
         {
-            if (this.currentKey.IsKeyDown(Keys.Space) && this.previousKey.IsKeyUp(Keys.Space))
+            this.DamageLevel += 1;
+            switch (this.DamageLevel)
             {
-                base.Attack(sprites);
+                case 1:
+                    this.DamageModifier += 0.2F;
+                    break;
+                case 2:
+                    this.DamageModifier += 0.2F;
+                    break;
+                case 3:
+                    this.DamageModifier += 0.2F;
+                    break;
+                default:
+                    break;
             }
-        }
 
-        private void Move()
-        {
-            this.Movement.Move();
+            this.Attacks.ForEach(item => item.ProjectileToLaunch.SetTextureScaleBasedOnDamageLevel());
         }
     }
 }

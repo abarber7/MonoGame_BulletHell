@@ -21,9 +21,8 @@
             Color color = System.Drawing.Color.FromName(colorName).ToXNA();
 
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)projectileProperties["movementPattern"]);
-            movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
 
-            int damage = (int)projectileProperties["damage"];
+            int damage = Convert.ToInt32((float)projectileProperties["damage"]);
 
             switch (projectileProperties["projectileType"])
             {
@@ -35,7 +34,10 @@
                     break;
                 case "bounceBullet":
                     int numberOfTimesToBounce = (int)projectileProperties["bounceTimes"];
-                    projectile = new BounceBullet(texture, color, movement, numberOfTimesToBounce, damage);
+                    projectile = new BounceBullet(texture, color, movement, damage, numberOfTimesToBounce);
+                    break;
+                case "pushBullet":
+                    projectile = new PushBullet(texture, color, movement, damage);
                     break;
                 default:
                     throw new Exception("Invalid Projectile Type");

@@ -1,0 +1,269 @@
+{
+  "player": {
+    "entityType": "player",
+    "textureName": "player",
+    "color": "White",
+    "hp": 3,
+    "movementPattern": {
+      "movementPatternType": "playerInput",
+      "spawnXPosition": 240,
+      "spawnYPosition": 800,
+      "startXPosition": 240,
+      "startYPosition": 600,
+      "speed": 2
+    },
+    "attacks": {
+      "attackName": "basicLinear",
+      "cooldownToAttack": 0.09,
+      "cooldownToCreateProjectile": 0,
+      "projectile": {
+        "projectileType": "bullet",
+        "textureName": "playerFireball",
+        "color": "Red",
+        "damage": 5,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": -1,
+          "speed": 5
+        }
+      },
+      "movementPattern": {
+        "movementPatternType": "static",
+        "xPosition": 0,
+        "yPosition": 0
+      }
+    }
+  },
+  "enemies": [
+    {
+      "entityType": "simpleGrunt",
+      "textureName": "simpleGrunt",
+      "color": "Green",
+      "hp": 10,
+      "lifeSpan": 30,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "circularHoming",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 5,
+          "startingDegrees": 90
+        }
+      }
+    },
+    {
+      "entityType": "complexGrunt",
+      "textureName": "complexGrunt",
+      "color": "White",
+      "hp": 10,
+      "lifeSpan": 30,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "arrow",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "widthOfArrow": 3,
+        "movementPattern": {
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
+        }
+      }
+    },
+    {
+      "entityType": "midBoss",
+      "textureName": "midBoss",
+      "color": "Yellow",
+      "hp": 10,
+      "lifeSpan": 30,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+
+      "attacks": {
+        "attackName": "circle",
+        "cooldownToAttack": 5,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
+        },
+        "numberOfProjectiles": 5,
+        "degreesToStart": 45,
+        "degreesToEnd": 135
+      }
+    },
+    {
+      "entityType": "finalBoss",
+      "textureName": "finalBoss",
+      "color": "Black",
+      "hp": 10,
+      "lifeSpan": 10,
+      "powerUp": {
+        "powerUpType": "damageUp",
+        "textureName": "damageUp",
+        "color": "Red",
+        "dropPercent": 100,
+        "movementPattern": {
+          "movementPatternType": "linear",
+          "xPosition": 0,
+          "yPosition": 0,
+          "xVelocity": 0,
+          "yVelocity": 1,
+          "speed": 2
+        }
+      },
+      "attacks": {
+        "attackName": "circularTriHoming",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 15,
+          "startingDegrees": 0
+        }
+      },
+      "phase2Attacks": {
+        "attackName": "circularTriHoming",
+        "cooldownToAttack": 1,
+        "cooldownToCreateProjectile": 0.025,
+        "projectile": {
+          "projectileType": "bullet",
+          "textureName": "enemyProjectile",
+          "color": "Blue",
+          "damage": 5,
+          "movementPattern": {
+            "movementPatternType": "linear",
+            "xPosition": 0,
+            "yPosition": 0,
+            "xVelocity": 0,
+            "yVelocity": -1,
+            "speed": 3
+          }
+        },
+        "movementPattern": {
+          "movementPatternType": "circular",
+          "timesToCycles": 2,
+          "originXPosition": 0,
+          "originYPosition": 0,
+          "radius": 0,
+          "amountToIncreaseRadiusBy": 0.375,
+          "degreesToRotate": 15,
+          "startingDegrees": 0
+        }
+      }
+    }
+  ],
+  "waves": []
+}

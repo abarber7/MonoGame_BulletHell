@@ -12,13 +12,12 @@
     internal class GameLoader
     {
         private static Dictionary<string, object> gameDictionary = null; // singleton
+        private static Dictionary<string, Entity> entityDictionary = null;
 
-        public static void LoadGameDictionary(string jsonToLoad)
+        public static void LoadGame(string jsonToLoad)
         {
-            string jsonFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "JSONs\\" + jsonToLoad + ".json");
-            string json = File.ReadAllText(jsonFilePath);
-            JObject jsonObj = JObject.Parse(json);
-            gameDictionary = (Dictionary<string, object>)ToCollections(jsonObj);
+            LoadGameDictionary(jsonToLoad);
+            LoadEnemies();
         }
 
         public static List<Wave> LoadWaves()
@@ -40,6 +39,30 @@
             return (Player)EntityFactory.CreateEntity((Dictionary<string, object>)gameDictionary["player"]);
         }
 
+        public static Entity GetEnemy(string enemyType)
+        {
+            return entityDictionary[enemyType];
+        }
+
+        private static void LoadGameDictionary(string jsonToLoad)
+        {
+            string jsonFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "JSONs\\" + jsonToLoad + ".json");
+            string json = File.ReadAllText(jsonFilePath);
+            JObject jsonObj = JObject.Parse(json);
+            gameDictionary = (Dictionary<string, object>)ToCollections(jsonObj);
+        }
+
+        private static void LoadEnemies()
+        {
+            List<object> listOfEntityProperties = (List<object>)gameDictionary["enemies"];
+            entityDictionary = new Dictionary<string, Entity>();
+
+            foreach (object entity in listOfEntityProperties)
+            {
+                entityDictionary.Add((string)((Dictionary<string, object>)entity)["entityType"], EntityFactory.CreateEntity((Dictionary<string, object>)entity));
+            }
+        }
+
         // Source: https://stackoverflow.com/questions/14886800/convert-jobject-into-dictionarystring-object-is-it-possible
         private static object ToCollections(object o)
         {
@@ -55,7 +78,12 @@
 
             if (o is long)
             {
-                return Convert.ToInt32(o);
+                return Convert.ToSingle(o);
+            }
+
+            if (o is double)
+            {
+                return Convert.ToSingle(o);
             }
 
             return o;

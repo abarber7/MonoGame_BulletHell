@@ -1,16 +1,18 @@
 ﻿namespace BulletHell.Sprites.Projectiles
 {
-    using System;
     using System.Collections.Generic;
+    using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.The_Player;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Projectile : Sprite, ICloneable
+    public abstract class Projectile : Sprite
     {
-        public Projectile(Texture2D texture, Color color, MovementPattern movement, int damage)
+        private float damage;
+
+        public Projectile(Texture2D texture, Color color, MovementPattern movement, float damage)
             : base(texture, color, movement)
         {
             this.Damage = damage;
@@ -18,15 +20,7 @@
 
         public Sprite Parent { get; set; }
 
-        public int Damage { get; set; }
-
-        // Serves as hitbox (extended lengthwise to account for bullet speed vs framerate)
-        public override Rectangle Rectangle
-        {
-            get => new Rectangle(
-                    new Point((int)this.Movement.Position.X - this.Texture.Width, (int)this.Movement.Position.Y - (int)Math.Round(this.Texture.Height * 2.5)),
-                    new Point((int)Math.Round(this.Texture.Width * 2.5), (int)Math.Round(this.Texture.Height * 3.5)));
-        }
+        public float Damage { get => this.damage * (this.Parent as Entity).DamageModifier; set => this.damage = value; }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
@@ -58,8 +52,6 @@
             this.Movement.Move();
         }
 
-        public object Clone() => this.MemberwiseClone();
-
         public bool OutOfBounds()
         {
             if (this.Movement.IsTouchingLeftOfScreen() ||
@@ -72,6 +64,41 @@
             else
             {
                 return false;
+            }
+        }
+
+        public override object Clone()
+        {
+            Projectile newProjectile = this.MemberwiseClone() as Projectile;
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = this.Movement.Clone() as MovementPattern;
+                newProjectile.Movement = newMovement;
+            }
+
+            return newProjectile;
+        }
+
+        public void SetTextureScaleBasedOnDamageLevel()
+        {
+            float damageLevel = (this.Parent as Attack).Attacker.DamageLevel;
+
+            switch (damageLevel)
+            {
+                case 1:
+                    this.textureScale *= 1.2F;
+                    this.Color = Color.Orange;
+                    break;
+                case 2:
+                    this.textureScale *= 1.2F;
+                    this.Color = Color.Yellow;
+                    break;
+                case 3:
+                    this.textureScale *= 1.2F;
+                    this.Color = Color.White;
+                    break;
+                default:
+                    break;
             }
         }
     }

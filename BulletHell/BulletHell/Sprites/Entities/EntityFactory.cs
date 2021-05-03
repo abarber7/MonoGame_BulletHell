@@ -2,9 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using BulletHell.Sprites.Attacks;
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using BulletHell.Sprites.Movement_Patterns;
-    using BulletHell.Sprites.Projectiles;
+    using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.The_Player;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
@@ -21,47 +22,61 @@
             string colorName = (string)entityProperties["color"];
             Color color = System.Drawing.Color.FromName(colorName).ToXNA();
 
-            MovementPattern movement;
-
+            Dictionary<string, object> movementPatternProperties = null;
+            MovementPattern movement = null;
             if (entityProperties.ContainsKey("movementPattern"))
             {
-                movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)entityProperties["movementPattern"]);
-                movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
+                movementPatternProperties = (Dictionary<string, object>)entityProperties["movementPattern"];
+                movement = MovementPatternFactory.CreateMovementPattern(movementPatternProperties);
             }
-            else
-            {
-                movement = null;
-            }
-
-            Projectile projectile = ProjectileFactory.CreateProjectile((Dictionary<string, object>)entityProperties["projectile"]);
 
             string enemyType = (string)entityProperties["entityType"];
             string entityClassification = (string)entityProperties["entityType"] != "player" ? "enemy" : "player";
 
+            int hp = Convert.ToInt32((float)entityProperties["hp"]);
+
+            List<Attack> attacks = null;
+            if (entityProperties["attacks"] is List<Dictionary<string, object>>)
+            {
+                 attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["attacks"]);
+            }
+            else if (entityProperties["attacks"] is Dictionary<string, object>)
+            {
+                attacks = AttackFactory.CreateAttacks((Dictionary<string, object>)entityProperties["attacks"]);
+            }
+
             switch (entityClassification)
             {
                 case "player":
-                    entity = new Player(texture, color, movement, projectile);
+                    entity = new Player(texture, color, movement, hp, attacks);
+                    entity.SpawnPosition = new Vector2((float)movementPatternProperties["spawnXPosition"], (float)movementPatternProperties["spawnYPosition"]);
                     break;
                 case "enemy":
-                    int lifeSpan = (int)entityProperties["lifeSpan"];
+                    PowerUp powerUp = PowerUpFactory.CreatePowerUp((Dictionary<string, object>)entityProperties["powerUp"]);
 
                     switch (enemyType)
                     {
-                        case "exampleEnemy":
-                            entity = new ExampleEnemy(texture, color, movement, projectile, lifeSpan);
-                            break;
                         case "simpleGrunt":
-                            entity = new SimpleGrunt(texture, color, movement, projectile, lifeSpan);
+                            entity = new SimpleGrunt(texture, color, movement, powerUp, hp, attacks);
                             break;
                         case "complexGrunt":
-                            entity = new ComplexGrunt(texture, color, movement, projectile, lifeSpan);
+                            entity = new ComplexGrunt(texture, color, movement, powerUp, hp, attacks);
                             break;
                         case "midBoss":
-                            entity = new MidBoss(texture, color, movement, projectile, lifeSpan);
+                            entity = new MidBoss(texture, color, movement, powerUp, hp, attacks);
                             break;
                         case "finalBoss":
-                            entity = new FinalBoss(texture, color, movement, projectile, lifeSpan);
+                            List<Attack> phase2Attacks = null;
+                            if (entityProperties["phase2Attacks"] is List<Dictionary<string, object>>)
+                            {
+                                phase2Attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["phase2Attacks"]);
+                            }
+                            else if (entityProperties["phase2Attacks"] is Dictionary<string, object>)
+                            {
+                                phase2Attacks = AttackFactory.CreateAttacks((Dictionary<string, object>)entityProperties["phase2Attacks"]);
+                            }
+
+                            entity = new FinalBoss(texture, color, movement, powerUp, hp, attacks, phase2Attacks);
                             break;
                     }
 
@@ -74,8 +89,6 @@
             {
                 entity.Movement.Parent = entity;
             }
-
-            entity.Projectile.Movement.Parent = entity;
 
             return entity;
         }

@@ -3,38 +3,164 @@
     using System;
     using System.Collections.Generic;
     using BulletHell.Sprites.Movement_Patterns;
-    using BulletHell.Sprites.Projectiles;
+    using BulletHell.States;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal abstract class Entity : Sprite, ICloneable
+    public abstract class Entity : Sprite
     {
-        public Projectile Projectile;
-        public ushort AttackSpeed = 1;
+        public int HP;
+        public List<Attack> Attacks = new List<Attack>();
+        public Vector2 SpawnPosition;
+        public Vector2 DespawnPosition;
+        public bool ReachedStart = false; // bool for if entity reached start position
+        public bool Exiting = false; // bool for if it is time to exit
+        public float DamageModifier = 1.0F;
+        public float DamageLevel;
+        protected double Points;
+        private bool initializedSpawningPosition = false;
+        private bool initializedDespawningPosition = false;
+        private bool initializedMovementPosition = false;
+        private Vector2 positionWhenDespawningBegins;
 
-        protected Entity(Texture2D texture, Color color, MovementPattern movement, Projectile projectile)
+        public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
             : base(texture, color, movement)
         {
-            this.Projectile = projectile;
+            this.Attacks = attacks;
+            this.HP = hp;
         }
 
-        public object Clone() => this.MemberwiseClone();
-
-        protected void Attack(List<Sprite> sprites)
+        public virtual void LaunchAttack(object source, EventArgs args)
         {
-            // TODO: needs refactoring and moved to Attack object
-            Projectile newProjectile = this.Projectile.Clone() as Projectile;
-            int projectileSpeed = newProjectile.Movement.Speed;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.Parent = newProjectile;
-            Vector2 velocity = newProjectile.Movement.Velocity;
-            velocity.Normalize();
-            velocity.X *= projectileSpeed;
-            velocity.Y *= projectileSpeed;
-            newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.Position = new Vector2(this.Rectangle.Center.X, this.Rectangle.Center.Y);
-            newProjectile.Parent = this;
-            sprites.Add(newProjectile);
+            if (this.ReachedStart && !this.Exiting)
+            {
+                Attack attackClone = (Attack)((Attack)source).Clone();
+                attackClone.CooldownToAttack.Stop();
+                attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
+                attackClone.Attacker = this;
+
+                GameState.Attacks.Add(attackClone);
+                attackClone.CooldownToCreateProjectile.Elapsed += attackClone.CreateProjectile;
+                attackClone.CooldownToCreateProjectile.Start();
+            }
+        }
+
+        public override object Clone()
+        {
+            Entity newEntity = (Entity)this.MemberwiseClone();
+            if (this.Movement != null)
+            {
+                MovementPattern newMovement = (MovementPattern)this.Movement.Clone();
+                newEntity.Movement = newMovement;
+            }
+
+            List<Attack> newAttacks = new List<Attack>();
+
+            foreach (Attack attack in this.Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newEntity;
+
+                newAttack.ExecuteAttackEventHandler += newEntity.LaunchAttack;
+
+                newAttacks.Add(newAttack);
+            }
+
+            newEntity.Attacks = newAttacks;
+
+            return newEntity;
+        }
+
+        public void Respawn()
+        {
+            this.ReachedStart = false;
+            this.initializedSpawningPosition = false;
+        }
+
+        public virtual double GetPoints()
+        {
+            return this.Points;
+        }
+
+        protected virtual void Move()
+        {
+            // For spawning
+            if (this.ReachedStart == false && this.Exiting == false)
+            {
+                if (this.initializedSpawningPosition == false)
+                {
+                    this.initializedSpawningPosition = true;
+                    this.Movement.CurrentPosition = this.SpawnPosition;
+                    this.Movement.CurrentSpeed = this.Movement.Speed * 2;
+                    this.Movement.Velocity = MovementPattern.CalculateVelocity(this.SpawnPosition, this.Movement.StartPosition, this.Movement.CurrentSpeed);
+                }
+
+                if (this.Movement.ExceededPosition(this.SpawnPosition, this.Movement.StartPosition, this.Movement.Velocity))
+                {
+                    this.ReachedStart = true;
+                }
+                else
+                {
+                    this.Movement.Move();
+                }
+            }
+
+            // For movement
+            else if (this.ReachedStart == true && this.Exiting == false)
+            {
+                if (this.initializedMovementPosition == false)
+                {
+                    this.initializedMovementPosition = true;
+                    this.Attacks.ForEach(item =>
+                    {
+                        item.Attacker = this;
+                        item.CooldownToAttack.Elapsed += item.ExecuteAttack;
+                        item.CooldownToAttack.Start();
+                    });
+
+                    this.Movement.InitializeMovement();
+                }
+
+                if (this.Movement.CompletedMovement == true)
+                {
+                    this.Exiting = true;
+                }
+                else
+                {
+                    this.Movement.Move();
+                }
+            }
+
+            // For despawning
+            else if (this.ReachedStart == true && this.Exiting == true)
+            {
+                if (this.initializedDespawningPosition == false)
+                {
+                    this.initializedDespawningPosition = true;
+
+                    // In the case that a despawn position is not provided it goes to the spawn position
+                    if (this.DespawnPosition.Equals(default(Vector2)))
+                    {
+                        this.DespawnPosition = this.SpawnPosition;
+                    }
+
+                    this.Movement.CurrentSpeed = this.Movement.Speed * 2;
+                    this.positionWhenDespawningBegins = this.Movement.CurrentPosition;
+
+                    this.Movement.Velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
+
+                    this.Attacks.ForEach(item => item.CooldownToAttack.Stop());
+                }
+
+                if (this.Movement.ExceededPosition(this.positionWhenDespawningBegins, this.DespawnPosition, this.Movement.Velocity))
+                {
+                    this.isRemoved = true;
+                }
+                else
+                {
+                    this.Movement.Move();
+                }
+            }
         }
     }
 }

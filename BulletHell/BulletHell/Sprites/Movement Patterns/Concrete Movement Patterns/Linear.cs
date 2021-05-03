@@ -4,11 +4,10 @@
 
     internal class Linear : MovementPattern
     {
-        public Linear(Vector2 velocity, int speed)
-            : base()
+        public Linear(Vector2 startPosition, Vector2 velocity, int speed)
+            : base(startPosition, speed)
         {
             this.Velocity = velocity;
-            this.Speed = speed;
         }
 
         public override void Move()

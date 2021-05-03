@@ -1,77 +1,97 @@
 ﻿namespace BulletHell.Sprites.Entities.Enemies.Concrete_Enemies
 {
     using System.Collections.Generic;
+    using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
+    using BulletHell.Sprites.PowerUps;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     internal class FinalBoss : Enemy
     {
-        private int previousTime = 0;
+        private List<Attack> phase2Attacks;
+        private int initialHP;
+        private Timer swapToPhase2;
+        private bool swappedToPhase2 = false;
 
-        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, Projectile projectile, int lifeSpan)
-            : base(texture, color, movement, projectile, lifeSpan)
+        public FinalBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks, List<Attack> phase2Attacks)
+            : base(texture, color, movement, powerUp, hp, attacks)
         {
-            this.points = 1.50;
+            this.phase2Attacks = phase2Attacks;
+            this.initialHP = hp;
+            this.swapToPhase2 = new Timer(5 * 1000);
+            this.swapToPhase2.Stop();
+            this.swapToPhase2.AutoReset = false;
+            this.swapToPhase2.Elapsed += this.SwitchToPhase2DueToTime;
+            this.textureScale = 1;
+            this.Points = 1.5;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            base.Update(gameTime, sprites);
-
-            if (this.previousTime != (int)gameTime.TotalGameTime.TotalSeconds)
+            if (!this.Exiting && this.ReachedStart)
             {
-                this.Attack(sprites);
+                this.swapToPhase2.Start();
             }
 
-            this.previousTime = (int)gameTime.TotalGameTime.TotalSeconds;
+            if (this.HP <= this.initialHP / 2.0 && !this.swappedToPhase2)
+            {
+                this.BeginPhase2Attacks();
+            }
+
+            base.Update(gameTime, sprites);
         }
 
-        private new void Attack(List<Sprite> sprites)
+        public override object Clone()
         {
-            // TODO: needs refactoring and moved to Attack object
-            /*Projectile newProjectile = this.Projectile.Clone() as Projectile;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.velocity = this.Movement.velocity;
-            newProjectile.Movement.Position = this.Movement.Position;
-            int projectileSpeed = newProjectile.Movement.Speed;
-            newProjectile.Movement.velocity.X = 0;
-            newProjectile.Movement.velocity.Y = 1;
-            newProjectile.Movement.velocity.X *= projectileSpeed;
-            newProjectile.Movement.velocity.Y *= projectileSpeed;
-            newProjectile.Movement.Position = this.Movement.Position;
-            newProjectile.Parent = this;
+            FinalBoss newFinalBoss = base.Clone() as FinalBoss;
+            newFinalBoss.initialHP = this.initialHP;
+            newFinalBoss.swappedToPhase2 = this.swappedToPhase2;
+            newFinalBoss.swapToPhase2 = new Timer(this.swapToPhase2.Interval);
+            newFinalBoss.swapToPhase2.AutoReset = this.swapToPhase2.AutoReset;
+            newFinalBoss.swapToPhase2.Enabled = this.swapToPhase2.Enabled;
+            newFinalBoss.swapToPhase2.Elapsed += newFinalBoss.SwitchToPhase2DueToTime;
 
-            sprites.Add(newProjectile);
+            List<Attack> newPhase2Attacks = new List<Attack>();
+            foreach (Attack attack in this.phase2Attacks)
+            {
+                Attack newAttack = (Attack)attack.Clone();
+                newAttack.Attacker = newFinalBoss;
 
-            newProjectile = this.Projectile.Clone() as Projectile;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.velocity = this.Movement.velocity;
-            newProjectile.Movement.Position = this.Movement.Position;
-            projectileSpeed = newProjectile.Movement.Speed;
-            newProjectile.Movement.velocity.X = 0;
-            newProjectile.Movement.velocity.Y = 1;
-            newProjectile.Movement.velocity.X *= projectileSpeed;
-            newProjectile.Movement.velocity.Y *= projectileSpeed;
-            newProjectile.Movement.velocity.X += 2;
-            newProjectile.Parent = this;
+                newAttack.ExecuteAttackEventHandler += newFinalBoss.LaunchAttack;
 
-            sprites.Add(newProjectile);
+                newPhase2Attacks.Add(newAttack);
+            }
 
-            newProjectile = this.Projectile.Clone() as Projectile;
-            newProjectile.Movement = this.Projectile.Movement.Clone() as MovementPattern;
-            newProjectile.Movement.velocity = this.Movement.velocity;
-            newProjectile.Movement.Position = this.Movement.Position;
-            projectileSpeed = newProjectile.Movement.Speed;
-            newProjectile.Movement.velocity.X = 0;
-            newProjectile.Movement.velocity.Y = 1;
-            newProjectile.Movement.velocity.X *= projectileSpeed;
-            newProjectile.Movement.velocity.Y *= projectileSpeed;
-            newProjectile.Movement.velocity.X -= 2;
-            newProjectile.Parent = this;
+            newFinalBoss.phase2Attacks = newPhase2Attacks;
 
-            sprites.Add(newProjectile);*/
+            return newFinalBoss;
+        }
+
+        private void SwitchToPhase2DueToTime(object source, ElapsedEventArgs args)
+        {
+            this.swapToPhase2.Stop();
+            if (!this.isRemoved)
+            {
+                this.BeginPhase2Attacks();
+            }
+        }
+
+        private void BeginPhase2Attacks()
+        {
+            this.swappedToPhase2 = true;
+
+            this.Attacks.ForEach(item => item.CooldownToAttack.Stop());
+
+            this.phase2Attacks.ForEach(item =>
+            {
+                item.Attacker = this;
+                item.CooldownToAttack.Elapsed += item.ExecuteAttack;
+                item.CooldownToCreateProjectile.Elapsed += item.CreateProjectile;
+                item.ExecuteAttackEventHandler += this.LaunchAttack;
+                item.CooldownToAttack.Start();
+            });
         }
     }
 }
