@@ -17,6 +17,7 @@
         public bool Exiting = false; // bool for if it is time to exit
         public float DamageModifier = 1.0F;
         public float DamageLevel;
+        protected double Points;
         private bool initializedSpawningPosition = false;
         private bool initializedDespawningPosition = false;
         private bool initializedMovementPosition = false;
@@ -74,6 +75,11 @@
         {
             this.ReachedStart = false;
             this.initializedSpawningPosition = false;
+        }
+
+        public virtual double GetPoints()
+        {
+            return this.Points;
         }
 
         protected virtual void Move()

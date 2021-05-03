@@ -32,6 +32,7 @@
             this.spawning = true;
             this.Invincible = true;
             this.DamageLevel = 0;
+            this.Points = 0;
 
             foreach (Attack attack in attacks)
             {
@@ -139,6 +140,11 @@
             {
                 item.CooldownToAttack.Stop();
             });
+        }
+
+        public void IncreasePoints(double pointValue)
+        {
+            this.Points += pointValue;
         }
 
         private void SetInvincibility(GameTime gameTime)

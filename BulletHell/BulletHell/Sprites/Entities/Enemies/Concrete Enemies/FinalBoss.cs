@@ -25,6 +25,7 @@
             this.swapToPhase2.AutoReset = false;
             this.swapToPhase2.Elapsed += this.SwitchToPhase2DueToTime;
             this.textureScale = 1;
+            this.Points = 1.5;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

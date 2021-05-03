@@ -360,7 +360,7 @@
                 [ 240, 200 ]
               ]
             ],
-            "speed": 2.5,
+            "speed": 3,
             "numberOfCycles": 3
           }
         }
