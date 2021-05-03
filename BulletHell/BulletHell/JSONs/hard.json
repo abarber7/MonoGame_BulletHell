@@ -172,7 +172,7 @@
             "yPosition": 0,
             "xVelocity": 0,
             "yVelocity": 1,
-            "speed": 3
+            "speed": 2
           }
         },
         "movementPattern": {
@@ -275,8 +275,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100 ],
             "endXPosition": [ 150, 240, 330, 195, 285, 240 ],
             "endYPosition": [ 50, 50, 50, 75, 75, 100 ],
             "speed": 2,
@@ -295,8 +295,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100, -100, -100, -100 ],
             "endXPosition": [ 100, 190, 280, 370, 145, 235, 325, 190, 280 ],
             "endYPosition": [ 50, 50, 50, 50, 75, 75, 75, 100, 100 ],
             "speed": 2,
@@ -315,8 +315,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100 ],
             "endXPosition": [ 150, 240, 330, 195, 285, 240 ],
             "endYPosition": [ 50, 50, 50, 75, 75, 100 ],
             "speed": 2,
@@ -348,7 +348,7 @@
         {
           "entityAmount": 1,
           "entityType": "midBoss",
-          "delayTillSpawn": 0,
+          "delayTillSpawn": [ 0 ],
           "movementPattern": {
             "movementPatternType": "pattern",
             "spawnXPosition": [ 240 ],
@@ -360,7 +360,23 @@
                 [ 240, 200 ]
               ]
             ],
-            "speed": 2.5,
+            "speed": 3,
+            "numberOfCycles": 3
+          }
+        },
+        {
+          "entityAmount": 3,
+          "entityType": "complexGrunt",
+          "delayTillSpawn": [ 0, 0, 0 ],
+          "movementPattern": {
+            "movementPatternType": "backAndForth",
+            "spawnXPosition": [ 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100 ],
+            "startXPosition": [ 50, 380, 100 ],
+            "startYPosition": [ 100, 100, 150 ],
+            "endXPosition": [ 100, 330, 380 ],
+            "endYPosition": [ 200, 200, 150 ],
+            "speed": 2,
             "numberOfCycles": 3
           }
         }
@@ -376,8 +392,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "backAndForth",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100 ],
             "startXPosition": [ 100, 380, 100, 380, 100, 380 ],
             "startYPosition": [ 50, 150, 50, 50, 50, 50 ],
             "endXPosition": [ 380, 100, 100, 380, 380, 100 ],
@@ -398,8 +414,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "backAndForth",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100, -100, -100, -100 ],
             "startXPosition": [ 100, 380, 100, 380, 100, 380, 100, 380, 240 ],
             "startYPosition": [ 50, 150, 50, 50, 50, 50, 150, 150, 50 ],
             "endXPosition": [ 380, 100, 100, 380, 240, 240, 240, 240, 240 ],
@@ -414,8 +430,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100 ],
             "endXPosition": [ 150, 240, 330, 195, 285, 240 ],
             "endYPosition": [ 50, 50, 50, 75, 75, 100 ],
             "speed": 2,
@@ -434,8 +450,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "backAndForth",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100, -100, -100, -100 ],
             "startXPosition": [ 100, 380, 100, 380, 100, 380, 100, 380, 240 ],
             "startYPosition": [ 50, 150, 50, 50, 50, 50, 150, 150, 50 ],
             "endXPosition": [ 380, 100, 100, 380, 240, 240, 240, 240, 240 ],
@@ -450,8 +466,8 @@
           "delayTillSpawn": [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
+            "spawnXPosition": [ 240, 240, 240, 240, 240, 240, 240, 240, 240 ],
+            "spawnYPosition": [ -100, -100, -100, -100, -100, -100, -100, -100, -100 ],
             "endXPosition": [ 100, 190, 280, 370, 145, 235, 325, 190, 280 ],
             "endYPosition": [ 50, 50, 50, 50, 75, 75, 75, 100, 100 ],
             "speed": 2,
@@ -467,17 +483,17 @@
         {
           "entityAmount": 1,
           "entityType": "finalBoss",
-          "delayTillSpawn": 0,
+          "delayTillSpawn": [ 0 ],
           "movementPattern": {
             "movementPatternType": "randomWithBounds",
-            "spawnXPosition": 240,
-            "spawnYPosition": -100,
-            "startXPosition": 0,
-            "startYPosition": 50,
-            "upperXBound": 380,
-            "lowerXBound": 100,
-            "upperYBound": 200,
-            "lowerYBound": 50,
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "startXPosition": [ 0 ],
+            "startYPosition": [ 50 ],
+            "upperXBound": [ 380 ],
+            "lowerXBound": [ 100 ],
+            "upperYBound": [ 200 ],
+            "lowerYBound": [ 50 ],
             "speed": 3,
             "timeBeforeExit": 30
           }
