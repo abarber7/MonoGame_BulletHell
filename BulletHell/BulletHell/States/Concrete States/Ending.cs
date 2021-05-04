@@ -1,8 +1,5 @@
 ﻿namespace BulletHell.States
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using BulletHell.Ending;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
@@ -35,7 +32,7 @@
         public override void LoadContent()
         {
             // SPLASH SCREEN
-            this.Ssm = new SplashScreenManager(3, 5, 3, Keys.Space);
+            this.Ssm = new SplashScreenManager(5, 10, 5, Keys.S);
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -44,11 +41,11 @@
 
         public override void Update(GameTime gameTime)
         {
-                this.Ssm.Update(gameTime);
-                if (!this.Ssm.Running)
-                {
-                    StateManager.ChangeState(new GameOverWin());
-                }
+            this.Ssm.Update(gameTime);
+            if (!this.Ssm.Running)
+            {
+                StateManager.ChangeState(new GameOverWin());
+            }
         }
     }
 }

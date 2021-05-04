@@ -17,6 +17,7 @@
         {
             this.DropLoot = false;
             this.PowerUp = powerUp;
+            this.PowerUp.Parent = this;
         }
 
         public bool DropLoot { get; set; }
@@ -28,31 +29,31 @@
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
+            this.Color = this.originalColor;
             this.Move();
         }
 
         public override void OnCollision(Sprite sprite)
         {
-            if (sprite is Projectile projectile)
+            // Ignore projectiles from fellow enemies/self
+            if (sprite is Projectile projectile && projectile.Parent is Player)
             {
-                // Ignore projectiles from fellow enemies/self
-                if (projectile.Parent is Player)
-                {
-                    this.HP -= Convert.ToInt32(projectile.Damage);
-                    if (this.HP <= 0)
-                    {
-                        this.IsRemoved = true;
-                        Random rnd = new Random();
-                        if (rnd.Next(1, 101) <= this.PowerUp.DropPercent)
-                        {
-                            this.DropLoot = true; // random <= to powerUp field's  dropPercent here, if so dropLoot is set to True, GameState checks and drops if so. i.e. adds this enemies PowerUp powerUp to the enemies sprite list in GameState.. Alex
-                        }
-                    }
-                }
+                this.HP -= Convert.ToInt32(projectile.Damage);
+                this.Color = Color.Red;
             }
             else if (sprite is Player)
             {
+                this.HP = 0;
+            }
+
+            if (this.HP <= 0)
+            {
                 this.IsRemoved = true;
+                Random rnd = new Random();
+                if (rnd.Next(1, 101) <= this.PowerUp.DropPercent)
+                {
+                    this.DropLoot = true; // random <= to powerUp field's dropPercent here, if so dropLoot is set to True, GameState checks and drops if so. i.e. adds this enemies PowerUp powerUp to the enemies sprite list in GameState.. Alex
+                }
             }
         }
 
@@ -65,11 +66,24 @@
             velocity.X *= Convert.ToSingle(powerUp.Movement.Speed);
             velocity.Y *= Convert.ToSingle(powerUp.Movement.Speed);
             powerUp.Movement.Velocity = velocity;
+            powerUp.Parent = this;
+            powerUp.Movement.Parent = powerUp;
 
             Random random = new Random();
             int screenMiddle = GraphicManagers.GraphicsDeviceManager.PreferredBackBufferWidth / 2;
             powerUp.Movement.CurrentPosition = new Vector2(random.Next(screenMiddle - (screenMiddle / 2), screenMiddle + (screenMiddle / 2)), 70); // Spawn origin x-coordinate randomized in center portion of screen
             return powerUp;
+        }
+
+        // Return points if dead.
+        public override double GetPoints()
+        {
+            if (this.HP <= 0)
+            {
+                return base.GetPoints();
+            }
+
+            return 0;
         }
 
         public override object Clone()

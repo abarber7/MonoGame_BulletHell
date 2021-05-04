@@ -92,7 +92,7 @@
         "cooldownToCreateProjectile": 0.025,
         "projectile": {
           "projectileType": "bullet",
-          "textureName": "Bullet",
+          "textureName": "enemyProjectile",
           "color": "Blue",
           "damage": 5,
           "movementPattern": {

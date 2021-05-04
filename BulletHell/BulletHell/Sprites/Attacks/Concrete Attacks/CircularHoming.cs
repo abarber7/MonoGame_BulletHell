@@ -61,11 +61,6 @@
             this.NumberOfTimesProjectilesHaveLaunched++;
         }
 
-        private void Move()
-        {
-            this.Movement.Move();
-        }
-
         public override object Clone()
         {
             CircularHoming newAttack = (CircularHoming)this.MemberwiseClone();
@@ -95,6 +90,11 @@
             newAttack.CooldownToCreateProjectile = newCooldownToCreateProjectile;
 
             return newAttack;
+        }
+
+        private void Move()
+        {
+            this.Movement.Move();
         }
     }
 }

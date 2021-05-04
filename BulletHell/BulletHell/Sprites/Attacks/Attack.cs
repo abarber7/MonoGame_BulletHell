@@ -1,7 +1,6 @@
 ﻿namespace BulletHell.Sprites
 {
     using System;
-    using System.Diagnostics;
     using System.Timers;
     using BulletHell.Sprites.Entities;
     using BulletHell.Sprites.Movement_Patterns;

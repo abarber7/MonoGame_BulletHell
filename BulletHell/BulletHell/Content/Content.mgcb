@@ -49,54 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:damageUp.png
 
-#begin EndingScreen/Endingscreen1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:EndingScreen/Endingscreen1.png
-
-#begin EndingScreen/Endingscreen2.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:EndingScreen/Endingscreen2.jpg
-
-#begin EndingScreen/Endingscreen3.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:EndingScreen/Endingscreen3.jpg
-
-#begin EndingScreen/endingscreen4.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:EndingScreen/endingscreen4.png
-
 #begin enemyProjectile.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -120,6 +72,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:finalBoss.png
+
+#begin FinalEndScreen.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:FinalEndScreen.jpg
 
 #begin Fonts/Font.spritefont
 /importer:FontDescriptionImporter
@@ -151,6 +115,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:lifeUp.png
+
+#begin menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:menu.mp3
 
 #begin midBoss.png
 /importer:TextureImporter
@@ -211,6 +181,36 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:simpleGrunt.png
+
+#begin Songs/battle song + anxiety.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/battle song + anxiety.mp3
+
+#begin Songs/battle song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/battle song.mp3
+
+#begin Songs/ending song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/ending song.mp3
+
+#begin Songs/menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/menu.mp3
+
+#begin Songs/panda.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/panda.mp3
 
 #begin Titles/Bo&Long2.png
 /importer:TextureImporter

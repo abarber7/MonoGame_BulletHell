@@ -42,4 +42,7 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\EndingScreen\" />
+  </ItemGroup>
 </Project>

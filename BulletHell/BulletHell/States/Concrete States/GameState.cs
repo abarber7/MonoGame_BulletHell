@@ -14,6 +14,7 @@
     using BulletHell.Waves;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Media;
 
     public class GameState : State
     {
@@ -27,6 +28,9 @@
         private SpriteFont font;
         private bool finalBossDefeated = false;
         private List<ICommand> commandQueue = null;
+        private List<Song> song = new List<Song>();
+        private Song song1 = TextureFactory.Content.Load<Song>("Songs/battle song");
+        private Song song2 = TextureFactory.Content.Load<Song>("Songs/battle song + anxiety");
 
         public GameState()
         : base()
@@ -59,17 +63,18 @@
             {
                 projectile.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                // this.DrawBoxAroundSprite(projectile, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             foreach (var enemy in Enemies.ToArray())
             {
                 enemy.Draw(this.spriteBatch);
 
-                this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
+                // this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
             this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("{0:C}", Player.GetPoints()), new Vector2(10, 25), Color.Black);
 
             this.spriteBatch.End();
         }
@@ -80,6 +85,17 @@
             this.LoadPlayer();
             this.LoadWaves();
             this.CreateStats();
+            this.song.Add(this.song1);
+            this.song.Add(this.song2);
+            MediaPlayer.Volume = 0.4f;
+            MediaPlayer.Play(this.song[0]);
+            MediaPlayer.MediaStateChanged += this.MediaPlayer_MediaStateChanged;
+        }
+
+        public void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            // 0.0f is silent, 1.0f is full volume
+            MediaPlayer.Play(this.song[1]);
         }
 
         public override void Update(GameTime gameTime)
@@ -176,6 +192,9 @@
             {
                 if (Enemies[i].IsRemoved)
                 {
+                    Enemy enemy = (Enemy)Enemies[i];
+                    Player.IncreasePoints(enemy.GetPoints());
+
                     if (Enemies[i] is FinalBoss)
                     {
                         this.finalBossDefeated = true;
@@ -183,7 +202,6 @@
                     }
                     else
                     {
-                        Enemy enemy = (Enemy)Enemies[i];
                         if (enemy.DropLoot)
                         {
                             Projectiles.Add(enemy.GetLoot()); // powerUp has a movement pattern, its update will just move it down
