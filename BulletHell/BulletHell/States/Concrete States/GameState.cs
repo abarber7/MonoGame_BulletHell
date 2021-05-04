@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using BulletHell.Game_Utilities;
     using BulletHell.Sprites;
@@ -24,6 +25,7 @@
         public static List<Sprite> Projectiles;
         private List<Wave> waves;
         private List<SpawnableSprite> enemiesToSpawn;
+        private readonly object enemiesToSpawnLock = new object();
         private double timeUntilNextWave = 0;
         private SpriteFont font;
         private bool finalBossDefeated = false;
@@ -88,6 +90,7 @@
             this.song.Add(this.song1);
             this.song.Add(this.song2);
             MediaPlayer.Volume = 0.4f;
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(this.song[0]);
             MediaPlayer.MediaStateChanged += this.MediaPlayer_MediaStateChanged;
         }
@@ -261,9 +264,12 @@
 
         private void SpawnEnemies(object source, EventArgs e)
         {
-            SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
-            this.enemiesToSpawn.Remove(enemyToSpawn);
-            Enemies.Add(enemyToSpawn.GetSprite());
+            lock (this.enemiesToSpawnLock)
+            {
+                SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
+                this.enemiesToSpawn.Remove(enemyToSpawn);
+                Enemies.Add(enemyToSpawn.GetSprite());
+            }
         }
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)

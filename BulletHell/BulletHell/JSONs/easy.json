@@ -61,8 +61,8 @@
 
       "attacks": {
         "attackName": "basicLinear",
-        "cooldownToAttack": 0.5,
-        "cooldownToCreateProjectile": 0.025,
+        "cooldownToAttack": 2,
+        "cooldownToCreateProjectile": 0,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "enemyProjectile",
@@ -78,14 +78,9 @@
           }
         },
         "movementPattern": {
-          "movementPatternType": "circular",
-          "timesToCycles": 2,
-          "originXPosition": 0,
-          "originYPosition": 0,
-          "radius": 0,
-          "amountToIncreaseRadiusBy": 0.375,
-          "degreesToRotate": 5,
-          "startingDegrees": 90
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
         }
       }
     },
@@ -270,15 +265,15 @@
       "waveDuration": 15,
       "entityGroups": [
         {
-          "entityAmount": 2,
+          "entityAmount": 1,
           "entityType": "simpleGrunt",
-          "delayTillSpawn": [ 1, 1 ],
+          "delayTillSpawn": [ 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": [ 240, 240 ],
-            "spawnYPosition": [ -100, -100 ],
-            "endXPosition": [ 150, 330 ],
-            "endYPosition": [ 50, 50 ],
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "endXPosition": [ 150 ],
+            "endYPosition": [ 50 ],
             "speed": 2,
             "timeBeforeExit": 7.3
           }

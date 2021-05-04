@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Timers;
+    using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using BulletHell.States;
@@ -20,13 +22,16 @@
             if (this.NumberOfTimesToLaunchProjectiles <= this.NumberOfTimesProjectilesHaveLaunched || this.Attacker.IsRemoved)
             {
                 this.IsRemoved = true;
+                this.CooldownToAttack.Stop();
+                Debug.WriteLineIf(this.Attacker is Enemy, DateTime.Now + ": " + this.Attacker.GetHashCode() + " is stopping the Cooldown to Attack Timer for " + this.GetHashCode());
                 this.CooldownToCreateProjectile.Stop();
+                Debug.WriteLineIf(this.Attacker is Enemy, DateTime.Now + ": " + this.Attacker.GetHashCode() + " is stopping the Cooldown to Create Projectile Timer for " + this.GetHashCode());
             }
         }
 
         public override void CreateProjectile(object source, ElapsedEventArgs args)
         {
-            // this.PauseTimersWhileDebugging(source as Timer);
+            // this.ToggleTimer(source as Timer);
 
             Projectile newProjectile = this.ProjectileToLaunch.Clone() as Projectile;
             float projectileSpeed = newProjectile.Movement.Speed;
@@ -42,6 +47,8 @@
             GameState.Projectiles.Add(newProjectile);
 
             this.NumberOfTimesProjectilesHaveLaunched++;
+
+            // this.ToggleTimer(source as Timer);
         }
     }
 }

@@ -70,6 +70,8 @@
         public override object Clone()
         {
             Projectile newProjectile = this.MemberwiseClone() as Projectile;
+            newProjectile.Parent = this;
+
             if (this.Movement != null)
             {
                 MovementPattern newMovement = this.Movement.Clone() as MovementPattern;

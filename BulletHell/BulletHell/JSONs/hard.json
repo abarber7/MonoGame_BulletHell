@@ -78,14 +78,9 @@
           }
         },
         "movementPattern": {
-          "movementPatternType": "circular",
-          "timesToCycles": 2,
-          "originXPosition": 0,
-          "originYPosition": 0,
-          "radius": 0,
-          "amountToIncreaseRadiusBy": 0.375,
-          "degreesToRotate": 5,
-          "startingDegrees": 90
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
         }
       }
     },

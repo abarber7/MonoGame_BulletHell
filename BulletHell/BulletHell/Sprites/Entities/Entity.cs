@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.States;
     using Microsoft.Xna.Framework;
@@ -34,14 +36,17 @@
         {
             if (this.ReachedStart && !this.Exiting)
             {
+                Debug.WriteLineIf(this is Enemy, DateTime.Now + ": " + source.GetHashCode() + " is being launched.");
                 Attack attackClone = (Attack)((Attack)source).Clone();
                 attackClone.CooldownToAttack.Stop();
+
                 attackClone.Movement.CurrentPosition = this.Movement.CurrentPosition;
                 attackClone.Attacker = this;
 
                 GameState.Attacks.Add(attackClone);
                 attackClone.CooldownToCreateProjectile.Elapsed += attackClone.CreateProjectile;
                 attackClone.CooldownToCreateProjectile.Start();
+                Debug.WriteLineIf(this is Enemy, DateTime.Now + ": " + attackClone.GetHashCode() + " is starting the Cooldown to Create Projectile Timer for " + attackClone.GetHashCode());
             }
         }
 
@@ -114,8 +119,8 @@
                     this.Attacks.ForEach(item =>
                     {
                         item.Attacker = this;
-                        item.CooldownToAttack.Elapsed += item.ExecuteAttack;
                         item.CooldownToAttack.Start();
+                        Debug.WriteLineIf(this is Enemy, DateTime.Now + ": " + item.Attacker.GetHashCode() + " is starting the Cooldown to Attack Timer for " + item.GetHashCode());
                     });
 
                     this.Movement.InitializeMovement();
@@ -149,7 +154,11 @@
 
                     this.Movement.Velocity = MovementPattern.CalculateVelocity(this.Movement.CurrentPosition, this.DespawnPosition, this.Movement.CurrentSpeed);
 
-                    this.Attacks.ForEach(item => item.CooldownToAttack.Stop());
+                    this.Attacks.ForEach(item =>
+                    {
+                        item.CooldownToAttack.Stop();
+                        Debug.WriteLineIf(this is Enemy, DateTime.Now + ": " + item.Attacker.GetHashCode() + " is stoping the Cooldown to Attack Timer for " + item.GetHashCode());
+                    });
                 }
 
                 if (this.Movement.ExceededPosition(this.positionWhenDespawningBegins, this.DespawnPosition, this.Movement.Velocity))

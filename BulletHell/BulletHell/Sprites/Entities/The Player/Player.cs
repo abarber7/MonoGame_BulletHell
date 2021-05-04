@@ -36,6 +36,7 @@
 
             foreach (Attack attack in attacks)
             {
+                attack.CooldownToAttack.Elapsed += attack.ExecuteAttack;
                 attack.ExecuteAttackEventHandler += this.LaunchAttack;
                 attack.Attacker = this;
                 attack.ProjectileToLaunch.Parent = attack;
