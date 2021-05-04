@@ -7,6 +7,7 @@
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Media;
 
     public class GameOverLose : State
     {
@@ -14,6 +15,7 @@
         private SnowEmitter snowEmitter;
         private Texture2D gameOverTexture;
         private Texture2D gameOverTexture2;
+        private Song song;
 
         public GameOverLose()
           : base()
@@ -94,6 +96,9 @@
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
             this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
+            this.song = TextureFactory.Content.Load<Song>("Songs/panda");
+            MediaPlayer.Volume = 0.4f;
+            MediaPlayer.Play(this.song);
         }
 
         public override void Draw(GameTime gameTime)
