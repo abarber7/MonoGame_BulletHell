@@ -14,6 +14,7 @@
     using BulletHell.Waves;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Media;
 
     public class GameState : State
     {
@@ -27,6 +28,9 @@
         private SpriteFont font;
         private bool finalBossDefeated = false;
         private List<ICommand> commandQueue = null;
+        private List<Song> song = new List<Song>();
+        private Song song1 = TextureFactory.Content.Load<Song>("Songs/battle song");
+        private Song song2 = TextureFactory.Content.Load<Song>("Songs/battle song + anxiety");
 
         public GameState()
         : base()
@@ -81,6 +85,17 @@
             this.LoadPlayer();
             this.LoadWaves();
             this.CreateStats();
+            this.song.Add(this.song1);
+            this.song.Add(this.song2);
+            MediaPlayer.Volume = 0.4f;
+            MediaPlayer.Play(this.song[0]);
+            MediaPlayer.MediaStateChanged += this.MediaPlayer_MediaStateChanged;
+        }
+
+        public void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            // 0.0f is silent, 1.0f is full volume
+            MediaPlayer.Play(this.song[1]);
         }
 
         public override void Update(GameTime gameTime)

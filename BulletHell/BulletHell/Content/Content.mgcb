@@ -176,6 +176,36 @@
 /processorParam:TextureFormat=Color
 /build:simpleGrunt.png
 
+#begin Songs/battle song + anxiety.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/battle song + anxiety.mp3
+
+#begin Songs/battle song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/battle song.mp3
+
+#begin Songs/ending song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/ending song.mp3
+
+#begin Songs/menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/menu.mp3
+
+#begin Songs/panda.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/panda.mp3
+
 #begin Titles/Bo&Long2.png
 /importer:TextureImporter
 /processor:TextureProcessor
