@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Timers;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
@@ -38,7 +37,7 @@
             velocity.X *= Convert.ToSingle(projectileSpeed);
             velocity.Y *= Convert.ToSingle(projectileSpeed);
             newProjectile.Movement.Velocity = velocity;
-            newProjectile.Movement.CurrentPosition = this.Movement.CurrentPosition;
+            newProjectile.Movement.CurrentPosition = this.Attacker.Rectangle.Center.ToVector2(); // previously, in case of issues: this.Movement.CurrentPosition;
             newProjectile.Parent = this.Attacker;
             GameState.Projectiles.Add(newProjectile);
 

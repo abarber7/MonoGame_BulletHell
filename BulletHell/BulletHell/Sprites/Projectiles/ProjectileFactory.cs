@@ -21,7 +21,6 @@
             Color color = System.Drawing.Color.FromName(colorName).ToXNA();
 
             MovementPattern movement = MovementPatternFactory.CreateMovementPattern((Dictionary<string, object>)projectileProperties["movementPattern"]);
-            movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Origin is based on texture
 
             int damage = Convert.ToInt32((float)projectileProperties["damage"]);
 

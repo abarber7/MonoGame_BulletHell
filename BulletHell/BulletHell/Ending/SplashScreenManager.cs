@@ -29,7 +29,7 @@
         public SplashScreenManager(float fadeIn, float wait, float fadeOut, Keys skipButton)
         {
             List<Texture2D> images = new List<Texture2D>();
-            this.imageTexture = TextureFactory.GetTexture("EndingScreen/FinalEndScreen");
+            this.imageTexture = TextureFactory.GetTexture("FinalEndScreen");
 
             images.Add(this.imageTexture);
 

@@ -28,7 +28,6 @@
             {
                 movementPatternProperties = (Dictionary<string, object>)entityProperties["movementPattern"];
                 movement = MovementPatternFactory.CreateMovementPattern(movementPatternProperties);
-                movement.Origin = new Vector2(texture.Width / 2, texture.Height / 2); // Orgin is based on texture
             }
 
             string enemyType = (string)entityProperties["entityType"];

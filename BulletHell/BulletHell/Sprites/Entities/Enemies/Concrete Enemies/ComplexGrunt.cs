@@ -12,6 +12,7 @@
         public ComplexGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attack)
             : base(texture, color, movement, powerUp, hp, attack)
         {
+            this.Points = 0.5;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

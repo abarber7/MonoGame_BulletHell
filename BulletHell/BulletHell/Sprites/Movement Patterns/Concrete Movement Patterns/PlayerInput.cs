@@ -41,22 +41,27 @@
             }
             else
             {
+                bool isMoving = false;
                 if (Keyboard.GetState().IsKeyDown(Input.Left))
                 {
                     this.velocity.X = -this.CurrentSpeed;
+                    isMoving = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Input.Right))
                 {
                     this.velocity.X = this.CurrentSpeed;
+                    isMoving = true;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Input.Up))
                 {
                     this.velocity.Y = -this.CurrentSpeed;
+                    isMoving = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Input.Down))
                 {
                     this.velocity.Y = this.CurrentSpeed;
+                    isMoving = true;
                 }
 
                 if (this.IsTouchingLeftOfScreen() || this.IsTouchingRightOfScreen())
@@ -69,7 +74,11 @@
                     this.velocity.Y = 0;
                 }
 
-                base.Move();
+                if (isMoving)
+                {
+                    base.Move();
+                }
+
                 this.velocity = Vector2.Zero;
             }
         }
