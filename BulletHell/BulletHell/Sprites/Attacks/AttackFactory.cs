@@ -11,7 +11,7 @@
 
     internal class AttackFactory
     {
-        public static List<Attack> CreateAttacks(List<Dictionary<string, object>> listOfAttackProperties)
+        public static List<Attack> CreateAttacks(List<object> listOfAttackProperties)
         {
             List<Attack> attacks = new List<Attack>();
 

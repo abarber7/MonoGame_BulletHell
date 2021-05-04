@@ -12,7 +12,7 @@
         public MidBoss(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks)
             : base(texture, color, movement, powerUp, hp, attacks)
         {
-            this.Points = 1.0;
+            this.points = 1.0;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)

@@ -19,10 +19,10 @@
         public bool Exiting = false; // bool for if it is time to exit
         public float DamageModifier = 1.0F;
         public float DamageLevel;
-        protected double Points;
-        private bool initializedSpawningPosition = false;
-        private bool initializedDespawningPosition = false;
-        private bool initializedMovementPosition = false;
+        protected double points;
+        protected bool initializedSpawningPosition = false;
+        protected bool initializedDespawningPosition = false;
+        protected bool initializedMovementPosition = false;
         private Vector2 positionWhenDespawningBegins;
 
         public Entity(Texture2D texture, Color color, MovementPattern movement, int hp, List<Attack> attacks)
@@ -34,7 +34,7 @@
 
         public virtual void LaunchAttack(object source, EventArgs args)
         {
-            if (this.ReachedStart && !this.Exiting)
+            if (this.ReachedStart && !this.Exiting && !this.isRemoved)
             {
                 Debug.WriteLineIf(this is Enemy, DateTime.Now + ": " + source.GetHashCode() + " is being launched.");
                 Attack attackClone = (Attack)((Attack)source).Clone();
@@ -47,6 +47,10 @@
                 attackClone.CooldownToCreateProjectile.Elapsed += attackClone.CreateProjectile;
                 attackClone.CooldownToCreateProjectile.Start();
                 Debug.WriteLineIf(this is Enemy, DateTime.Now + ": " + attackClone.GetHashCode() + " is starting the Cooldown to Create Projectile Timer for " + attackClone.GetHashCode());
+            }
+            else if (this.isRemoved)
+            {
+                (source as Attack).CooldownToAttack.Stop();
             }
         }
 
@@ -84,7 +88,7 @@
 
         public virtual double GetPoints()
         {
-            return this.Points;
+            return this.points;
         }
 
         protected virtual void Move()
@@ -106,7 +110,7 @@
                 }
                 else
                 {
-                    this.Movement.Move();
+                    this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
 

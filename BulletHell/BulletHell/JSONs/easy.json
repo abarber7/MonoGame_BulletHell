@@ -152,33 +152,62 @@
         }
       },
 
-      "attacks": {
-        "attackName": "circle",
-        "cooldownToAttack": 1,
-        "cooldownToCreateProjectile": 0.25,
-        "projectile": {
-          "projectileType": "pushBullet",
-          "textureName": "enemyProjectile",
-          "color": "Yellow",
-          "damage": 5,
+      "attacks": [
+        {
+          "attackName": "circle",
+          "cooldownToAttack": 1,
+          "cooldownToCreateProjectile": 0.25,
+          "projectile": {
+            "projectileType": "bullet",
+            "textureName": "enemyProjectile",
+            "color": "Red",
+            "damage": 5,
+            "movementPattern": {
+              "movementPatternType": "linear",
+              "xPosition": 0,
+              "yPosition": 0,
+              "xVelocity": 0,
+              "yVelocity": 1,
+              "speed": 2.5
+            }
+          },
           "movementPattern": {
-            "movementPatternType": "linear",
+            "movementPatternType": "static",
             "xPosition": 0,
-            "yPosition": 0,
-            "xVelocity": 0,
-            "yVelocity": 1,
-            "speed": 5
-          }
+            "yPosition": 0
+          },
+          "numberOfProjectiles": 100,
+          "degreesToStart": 0,
+          "degreesToEnd": 360
         },
-        "movementPattern": {
-          "movementPatternType": "static",
-          "xPosition": 0,
-          "yPosition": 0
-        },
-        "numberOfProjectiles": 5,
-        "degreesToStart": 45,
-        "degreesToEnd": 135
-      }
+        {
+          "attackName": "circle",
+          "cooldownToAttack": 4,
+          "cooldownToCreateProjectile": 0.25,
+          "projectile": {
+            "projectileType": "pushBullet",
+            "textureName": "enemyProjectile",
+            "color": "Yellow",
+            "damage": 5,
+            "movementPattern": {
+              "movementPatternType": "linear",
+              "xPosition": 0,
+              "yPosition": 0,
+              "xVelocity": 0,
+              "yVelocity": 1,
+              "speed": 5
+            }
+          },
+          "movementPattern": {
+            "movementPatternType": "static",
+            "xPosition": 0,
+            "yPosition": 0
+          },
+          "numberOfProjectiles": 16,
+          "degreesToStart": 0,
+          "degreesToEnd": 360
+        }
+      ]
     },
     {
       "entityType": "finalBoss",

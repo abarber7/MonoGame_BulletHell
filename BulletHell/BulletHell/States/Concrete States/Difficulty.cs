@@ -143,7 +143,7 @@
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("single");
+            GameLoader.LoadGame("easy");
 
             StateManager.ChangeState(new GameState());
         }

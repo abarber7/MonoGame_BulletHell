@@ -36,9 +36,9 @@
             int hp = Convert.ToInt32((float)entityProperties["hp"]);
 
             List<Attack> attacks = null;
-            if (entityProperties["attacks"] is List<Dictionary<string, object>>)
+            if (entityProperties["attacks"] is List<object>)
             {
-                 attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["attacks"]);
+                 attacks = AttackFactory.CreateAttacks((List<object>)entityProperties["attacks"]);
             }
             else if (entityProperties["attacks"] is Dictionary<string, object>)
             {
@@ -69,7 +69,7 @@
                             List<Attack> phase2Attacks = null;
                             if (entityProperties["phase2Attacks"] is List<Dictionary<string, object>>)
                             {
-                                phase2Attacks = AttackFactory.CreateAttacks((List<Dictionary<string, object>>)entityProperties["phase2Attacks"]);
+                                phase2Attacks = AttackFactory.CreateAttacks((List<object>)entityProperties["phase2Attacks"]);
                             }
                             else if (entityProperties["phase2Attacks"] is Dictionary<string, object>)
                             {

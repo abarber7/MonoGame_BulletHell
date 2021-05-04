@@ -97,7 +97,7 @@
 
             this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.GetTexture("Particles/Snow")));
             this.song = TextureFactory.Content.Load<Song>("Songs/panda");
-            MediaPlayer.Volume = 0.4f;
+            MediaPlayer.Volume = 0.3f;
             MediaPlayer.Play(this.song);
         }
 

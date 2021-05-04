@@ -27,7 +27,7 @@
             this.fadeOutTime = Math.Max(fadeOutTime, min);
             this.Prepare();
             this.song = TextureFactory.Content.Load<Song>("Songs/ending song");
-            MediaPlayer.Volume = 0.4f;
+            MediaPlayer.Volume = 0.3f;
             MediaPlayer.Play(this.song);
         }
 

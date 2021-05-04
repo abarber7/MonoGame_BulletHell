@@ -12,7 +12,7 @@
         public SimpleGrunt(Texture2D texture, Color color, MovementPattern movement, PowerUp powerUp, int hp, List<Attack> attacks)
             : base(texture, color, movement, powerUp, hp, attacks)
         {
-            this.Points = 0.1;
+            this.points = 0.1;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> sprites)
