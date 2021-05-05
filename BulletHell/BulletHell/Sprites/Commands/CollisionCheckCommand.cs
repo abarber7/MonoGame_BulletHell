@@ -13,6 +13,6 @@
             this.sprites = sprites;
         }
 
-        public void Execute() => this.focusSprite?.CheckForCollision(this.sprites);
+        public void Execute() => this.focusSprite?.CheckForCollision(this.sprites.FindAll(item => item != null));
     }
 }

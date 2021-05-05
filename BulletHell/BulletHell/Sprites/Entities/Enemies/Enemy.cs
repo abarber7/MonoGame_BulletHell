@@ -75,6 +75,17 @@
             return powerUp;
         }
 
+        // Return points if dead.
+        public override double GetPoints()
+        {
+            if (this.HP <= 0)
+            {
+                return base.GetPoints();
+            }
+
+            return 0;
+        }
+
         public override object Clone()
         {
             Enemy newEntity = (Enemy)this.MemberwiseClone();

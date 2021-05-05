@@ -6,7 +6,9 @@
     using BulletHell.States.Emitters;
     using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Media;
 
     public class MenuState : State
     {
@@ -16,6 +18,7 @@
         private Texture2D mainMenuTexture2;
         private Texture2D mainMenuTexture3;
         private Texture2D mainMenuTexture4;
+        private Song song;
 
         public MenuState()
           : base()
@@ -59,6 +62,8 @@
             };
         }
 
+        public static ContentManager Content { get; set; }
+
         public object GraphicsDevice { get; private set; }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -100,6 +105,16 @@
             this.spriteBatch = new SpriteBatch(GraphicManagers.GraphicsDevice);
 
             this.snowEmitter = new SnowEmitter(new SpriteLike(TextureFactory.Content.Load<Texture2D>("Particles/Snow")));
+            this.song = TextureFactory.Content.Load<Song>("menu");
+            MediaPlayer.Play(this.song);
+            MediaPlayer.Volume = 0.3f;
+
+            MediaPlayer.MediaStateChanged += this.MediaPlayer_MediaStateChanged;
+        }
+
+        public void MediaPlayer_MediaStateChanged(object sender, EventArgs e)
+        {
+            MediaPlayer.Play(this.song);
         }
 
         public override void Draw(GameTime gameTime)

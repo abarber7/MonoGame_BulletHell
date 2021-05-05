@@ -122,7 +122,7 @@
 
         private void NewGameHardButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("demo");
+            GameLoader.LoadGame("hard");
 
             StateManager.ChangeState(new GameState());
         }
@@ -136,14 +136,14 @@
 
         private void NewGameNormalButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("single");
+            GameLoader.LoadGame("normal");
 
             StateManager.ChangeState(new GameState());
         }
 
         private void NewGameEasyButton_Click(object sender, EventArgs e)
         {
-            GameLoader.LoadGame("noEnemies");
+            GameLoader.LoadGame("easy");
 
             StateManager.ChangeState(new GameState());
         }

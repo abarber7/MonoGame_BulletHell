@@ -1,8 +1,10 @@
 ﻿namespace BulletHell.Sprites
 {
     using System;
+    using System.Diagnostics;
     using System.Timers;
     using BulletHell.Sprites.Entities;
+    using BulletHell.Sprites.Entities.Enemies;
     using BulletHell.Sprites.Movement_Patterns;
     using BulletHell.Sprites.Projectiles;
     using Microsoft.Xna.Framework;
@@ -50,12 +52,24 @@
             Timer newCooldownToAttackTimer = new Timer(newAttack.CooldownToAttack.Interval);
             newCooldownToAttackTimer.AutoReset = newAttack.CooldownToAttack.AutoReset;
             newCooldownToAttackTimer.Enabled = newAttack.CooldownToAttack.Enabled;
+            newCooldownToAttackTimer.Elapsed += newAttack.ExecuteAttack;
             newAttack.CooldownToAttack = newCooldownToAttackTimer;
 
             Timer newCooldownToCreateProjectile = new Timer(newAttack.CooldownToCreateProjectile.Interval);
             newCooldownToCreateProjectile.AutoReset = newAttack.CooldownToCreateProjectile.AutoReset;
             newCooldownToCreateProjectile.Enabled = newAttack.CooldownToCreateProjectile.Enabled;
+            newCooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
             newAttack.CooldownToCreateProjectile = newCooldownToCreateProjectile;
+
+            if (newAttack.ExecuteAttackEventHandler != null)
+            {
+                foreach (Delegate d in newAttack.ExecuteAttackEventHandler.GetInvocationList())
+                {
+                    newAttack.ExecuteAttackEventHandler -= (EventHandler)d;
+                }
+            }
+
+            // Debug.WriteLine(DateTime.Now + ": " + newAttack.GetHashCode() + " has been created from clone.");
 
             return newAttack;
         }
@@ -66,14 +80,18 @@
 
         public void ExecuteAttack(object source, ElapsedEventArgs args)
         {
-            // this.PauseTimersWhileDebugging(source as Timer);
+            // this.ToggleTimer(source as Timer);
+
+            Debug.WriteLineIf(this.Attacker is Enemy, DateTime.Now + ": " + this.Attacker.GetHashCode() + " is attacking from " + this.GetHashCode() + " at " + this.Attacker.Movement.CurrentPosition.ToString());
             this.ExecuteAttackEventHandler.Invoke(this, null);
+
+            // this.ToggleTimer(source as Timer);
         }
 
-        protected void PauseTimersWhileDebugging(Timer source)
+        protected void ToggleTimer(Timer source)
         {
 #if DEBUG
-            source.Stop();
+            source.Enabled = !source.Enabled;
 #endif
         }
     }

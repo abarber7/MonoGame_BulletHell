@@ -82,11 +82,13 @@
             Timer newCooldownToAttackTimer = new Timer(newAttack.CooldownToAttack.Interval);
             newCooldownToAttackTimer.AutoReset = newAttack.CooldownToAttack.AutoReset;
             newCooldownToAttackTimer.Enabled = newAttack.CooldownToAttack.Enabled;
+            newCooldownToAttackTimer.Elapsed += newAttack.ExecuteAttack;
             newAttack.CooldownToAttack = newCooldownToAttackTimer;
 
             Timer newCooldownToCreateProjectile = new Timer(newAttack.CooldownToCreateProjectile.Interval);
             newCooldownToCreateProjectile.AutoReset = newAttack.CooldownToCreateProjectile.AutoReset;
             newCooldownToCreateProjectile.Enabled = newAttack.CooldownToCreateProjectile.Enabled;
+            newCooldownToCreateProjectile.Elapsed += newAttack.CreateProjectile;
             newAttack.CooldownToCreateProjectile = newCooldownToCreateProjectile;
 
             return newAttack;
