@@ -20,12 +20,12 @@
 
     public class GameState : State
     {
-        public static List<Sprite> Attacks;
+        public static List<Sprite> Attacks = new List<Sprite>();
         public static Player Player;
-        public static List<Sprite> Enemies;
-        public static List<Sprite> Projectiles;
-        private List<Wave> waves;
-        private List<SpawnableSprite> enemiesToSpawn;
+        public static List<Sprite> Enemies = new List<Sprite>();
+        public static List<Sprite> Projectiles = new List<Sprite>();
+        private List<Wave> waves = new List<Wave>();
+        private List<SpawnableSprite> enemiesToSpawn = new List<SpawnableSprite>();
         private readonly object enemiesToSpawnLock = new object();
         private double timeUntilNextWave = 0;
         private SpriteFont font;
@@ -130,6 +130,11 @@
 
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
+
+            if (Player.HP == 1)
+            {
+                MediaPlayer.Play(this.song[1]);
+            }
 
             if (Player.HP == 0 || this.finalBossDefeated)
             {
