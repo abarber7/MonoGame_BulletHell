@@ -171,7 +171,7 @@
                 }
                 else
                 {
-                    this.Movement.Move();
+                    this.Movement.CurrentPosition += this.Movement.Velocity;
                 }
             }
         }
