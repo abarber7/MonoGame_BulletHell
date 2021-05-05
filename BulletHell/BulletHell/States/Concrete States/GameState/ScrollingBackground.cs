@@ -25,7 +25,7 @@
 
         public void Update()
         {
-            this.Rectangle.Y += 3;
+            this.Rectangle.Y += 1;
         }
     }
 }
