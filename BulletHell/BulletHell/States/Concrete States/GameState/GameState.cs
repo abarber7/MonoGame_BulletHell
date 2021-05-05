@@ -81,8 +81,8 @@
                 // this.DrawBoxAroundSprite(enemy, Color.Chartreuse); // rectangle/hitbox visual TESTING
             }
 
-            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(10, 10), Color.Black);
-            this.spriteBatch.DrawString(this.font, string.Format("{0:C}", Player.GetPoints()), new Vector2(10, 25), Color.Black);
+            this.spriteBatch.DrawString(this.font, string.Format("Lives: {0}", Player.HP), new Vector2(20, 15), Color.DarkRed, 0, new Vector2(10, 10), 1.5f, SpriteEffects.None, 0);
+            this.spriteBatch.DrawString(this.font, string.Format("{0:C}", Player.GetPoints()), new Vector2(20, 35), Color.PaleGreen, 0, new Vector2(10, 10), 1.5f, SpriteEffects.None, 0);
 
             this.spriteBatch.End();
         }
