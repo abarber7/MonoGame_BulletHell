@@ -131,9 +131,13 @@
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
 
-            if (Player.HP == 1)
+            if (Player.HP == 1 && MediaPlayer.Queue.ActiveSong != this.song[1])
             {
                 MediaPlayer.Play(this.song[1]);
+            }
+            else if (Player.HP > 1 && MediaPlayer.Queue.ActiveSong == this.song[1])
+            {
+                MediaPlayer.Play(this.song[0]); // no more panic song
             }
 
             if (Player.HP == 0 || this.finalBossDefeated)
