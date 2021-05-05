@@ -32,10 +32,11 @@
             this.spawning = true;
             this.Invincible = true;
             this.DamageLevel = 0;
-            this.Points = 0;
+            this.points = 0;
 
             foreach (Attack attack in attacks)
             {
+                attack.CooldownToAttack.Elapsed += attack.ExecuteAttack;
                 attack.ExecuteAttackEventHandler += this.LaunchAttack;
                 attack.Attacker = this;
                 attack.ProjectileToLaunch.Parent = attack;
@@ -135,16 +136,20 @@
             this.IsRemoved = false;
             this.spawning = true;
             this.Invincible = true;
+            this.ReachedStart = false;
             this.initialSpawnTime = gameTime.TotalGameTime.TotalSeconds;
             this.Attacks.ForEach(item =>
             {
                 item.CooldownToAttack.Stop();
             });
+            this.initializedSpawningPosition = false;
+            this.initializedDespawningPosition = false;
+            this.initializedMovementPosition = false;
         }
 
         public void IncreasePoints(double pointValue)
         {
-            this.Points += pointValue;
+            this.points += pointValue;
         }
 
         private void SetInvincibility(GameTime gameTime)

@@ -10,7 +10,7 @@
       "spawnYPosition": 800,
       "startXPosition": 240,
       "startYPosition": 600,
-      "speed": 2
+      "speed": 3
     },
     "attacks": {
       "attackName": "basicLinear",
@@ -46,8 +46,8 @@
       "lifeSpan": 15,
       "powerUp": {
         "powerUpType": "damageUp",
-        "textureName": "damageUp",
-        "color": "Red",
+        "textureName": "fortune",
+        "color": "White",
         "dropPercent": 100,
         "movementPattern": {
           "movementPatternType": "linear",
@@ -61,8 +61,8 @@
 
       "attacks": {
         "attackName": "basicLinear",
-        "cooldownToAttack": 0.5,
-        "cooldownToCreateProjectile": 0.025,
+        "cooldownToAttack": 2,
+        "cooldownToCreateProjectile": 0,
         "projectile": {
           "projectileType": "bullet",
           "textureName": "enemyProjectile",
@@ -78,14 +78,9 @@
           }
         },
         "movementPattern": {
-          "movementPatternType": "circular",
-          "timesToCycles": 2,
-          "originXPosition": 0,
-          "originYPosition": 0,
-          "radius": 0,
-          "amountToIncreaseRadiusBy": 0.375,
-          "degreesToRotate": 5,
-          "startingDegrees": 90
+          "movementPatternType": "static",
+          "xPosition": 0,
+          "yPosition": 0
         }
       }
     },
@@ -96,9 +91,9 @@
       "hp": 10,
       "lifeSpan": 15,
       "powerUp": {
-        "powerUpType": "damageUp",
-        "textureName": "damageUp",
-        "color": "Red",
+        "powerUpType": "extraLife",
+        "textureName": "lifeUp",
+        "color": "White",
         "dropPercent": 100,
         "movementPattern": {
           "movementPatternType": "linear",
@@ -143,9 +138,9 @@
       "hp": 10,
       "lifeSpan": 30,
       "powerUp": {
-        "powerUpType": "damageUp",
-        "textureName": "damageUp",
-        "color": "Red",
+        "powerUpType": "extraLife",
+        "textureName": "lifeUp",
+        "color": "White",
         "dropPercent": 100,
         "movementPattern": {
           "movementPatternType": "linear",
@@ -157,33 +152,62 @@
         }
       },
 
-      "attacks": {
-        "attackName": "circle",
-        "cooldownToAttack": 1,
-        "cooldownToCreateProjectile": 0.25,
-        "projectile": {
-          "projectileType": "pushBullet",
-          "textureName": "enemyProjectile",
-          "color": "Yellow",
-          "damage": 5,
+      "attacks": [
+        {
+          "attackName": "circle",
+          "cooldownToAttack": 1,
+          "cooldownToCreateProjectile": 0.25,
+          "projectile": {
+            "projectileType": "bullet",
+            "textureName": "enemyProjectile",
+            "color": "Red",
+            "damage": 5,
+            "movementPattern": {
+              "movementPatternType": "linear",
+              "xPosition": 0,
+              "yPosition": 0,
+              "xVelocity": 0,
+              "yVelocity": 1,
+              "speed": 2
+            }
+          },
           "movementPattern": {
-            "movementPatternType": "linear",
+            "movementPatternType": "static",
             "xPosition": 0,
-            "yPosition": 0,
-            "xVelocity": 0,
-            "yVelocity": 1,
-            "speed": 5
-          }
+            "yPosition": 0
+          },
+          "numberOfProjectiles": 250,
+          "degreesToStart": 0,
+          "degreesToEnd": 360
         },
-        "movementPattern": {
-          "movementPatternType": "static",
-          "xPosition": 0,
-          "yPosition": 0
-        },
-        "numberOfProjectiles": 5,
-        "degreesToStart": 45,
-        "degreesToEnd": 135
-      }
+        {
+          "attackName": "circle",
+          "cooldownToAttack": 3,
+          "cooldownToCreateProjectile": 0.25,
+          "projectile": {
+            "projectileType": "pushBullet",
+            "textureName": "enemyProjectile",
+            "color": "Yellow",
+            "damage": 5,
+            "movementPattern": {
+              "movementPatternType": "linear",
+              "xPosition": 0,
+              "yPosition": 0,
+              "xVelocity": 0,
+              "yVelocity": 1,
+              "speed": 5
+            }
+          },
+          "movementPattern": {
+            "movementPatternType": "static",
+            "xPosition": 0,
+            "yPosition": 0
+          },
+          "numberOfProjectiles": 16,
+          "degreesToStart": 0,
+          "degreesToEnd": 360
+        }
+      ]
     },
     {
       "entityType": "finalBoss",
@@ -270,15 +294,15 @@
       "waveDuration": 15,
       "entityGroups": [
         {
-          "entityAmount": 2,
+          "entityAmount": 1,
           "entityType": "simpleGrunt",
-          "delayTillSpawn": [ 1, 1 ],
+          "delayTillSpawn": [ 1 ],
           "movementPattern": {
             "movementPatternType": "runAndGun",
-            "spawnXPosition": [ 240, 240 ],
-            "spawnYPosition": [ -100, -100 ],
-            "endXPosition": [ 150, 330 ],
-            "endYPosition": [ 50, 50 ],
+            "spawnXPosition": [ 240 ],
+            "spawnYPosition": [ -100 ],
+            "endXPosition": [ 150 ],
+            "endYPosition": [ 50 ],
             "speed": 2,
             "timeBeforeExit": 7.3
           }
@@ -346,7 +370,7 @@
       "waveDuration": 30,
       "entityGroups": [
         {
-          "entityAmount": 1 ,
+          "entityAmount": 1,
           "entityType": "midBoss",
           "delayTillSpawn": [ 0 ],
           "movementPattern": {

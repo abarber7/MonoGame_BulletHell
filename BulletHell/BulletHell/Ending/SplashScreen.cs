@@ -1,8 +1,10 @@
 ﻿namespace BulletHell.Ending
 {
     using System;
+    using BulletHell.Utilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Media;
 
     public class SplashScreen
     {
@@ -14,6 +16,7 @@
         private float fadeInTime;
         private float waitTime;
         private float fadeOutTime;
+        private Song song;
 
         public SplashScreen(Texture2D image, float fadeInTime, float waitTime, float fadeOutTime)
         {
@@ -23,6 +26,9 @@
             this.waitTime = Math.Max(waitTime, min);
             this.fadeOutTime = Math.Max(fadeOutTime, min);
             this.Prepare();
+            this.song = TextureFactory.Content.Load<Song>("Songs/ending song");
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.Play(this.song);
         }
 
         public enum Status

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using BulletHell.Game_Utilities;
     using BulletHell.Sprites;
@@ -10,23 +11,31 @@
     using BulletHell.Sprites.Entities.Enemies.Concrete_Enemies;
     using BulletHell.Sprites.Projectiles.Concrete_Projectiles;
     using BulletHell.Sprites.The_Player;
+    using BulletHell.States.Concrete_States.GameState;
     using BulletHell.Utilities;
     using BulletHell.Waves;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Media;
 
     public class GameState : State
     {
-        public static List<Sprite> Attacks;
+        public static List<Sprite> Attacks = new List<Sprite>();
         public static Player Player;
-        public static List<Sprite> Enemies;
-        public static List<Sprite> Projectiles;
-        private List<Wave> waves;
-        private List<SpawnableSprite> enemiesToSpawn;
+        public static List<Sprite> Enemies = new List<Sprite>();
+        public static List<Sprite> Projectiles = new List<Sprite>();
+        private List<Wave> waves = new List<Wave>();
+        private List<SpawnableSprite> enemiesToSpawn = new List<SpawnableSprite>();
+        private readonly object enemiesToSpawnLock = new object();
         private double timeUntilNextWave = 0;
         private SpriteFont font;
         private bool finalBossDefeated = false;
         private List<ICommand> commandQueue = null;
+        private List<Song> song = new List<Song>();
+        private Song song1 = TextureFactory.Content.Load<Song>("Songs/battle song");
+        private Song song2 = TextureFactory.Content.Load<Song>("Songs/battle song + anxiety");
+        private ScrollingBackground background1;
+        private ScrollingBackground background2;
 
         public GameState()
         : base()
@@ -41,6 +50,9 @@
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             this.spriteBatch.Begin();
+
+            this.background1.Draw(this.spriteBatch);
+            this.background2.Draw(this.spriteBatch);
 
             Player.Draw(this.spriteBatch);
 
@@ -81,14 +93,48 @@
             this.LoadPlayer();
             this.LoadWaves();
             this.CreateStats();
+
+            this.song.Add(this.song1);
+            this.song.Add(this.song2);
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(this.song[0]);
+            MediaPlayer.MediaStateChanged += this.MediaPlayer_MediaStateChanged;
+
+            this.background1 = new ScrollingBackground(new Rectangle(0, -720, 480, 720));
+            this.background2 = new ScrollingBackground(new Rectangle(0, 0, 480, 720));
+        }
+
+        public void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            // 0.0f is silent, 1.0f is full volume
+            MediaPlayer.Play(this.song[1]);
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (this.background1.Rectangle.Y + this.background1.Texture.Height >= 720)
+            {
+                this.background1.Rectangle.Y = -720;
+            }
+
+            if (this.background2.Rectangle.Y + this.background2.Texture.Height >= 720)
+            {
+                this.background2.Rectangle.Y = this.background1.Rectangle.Y + this.background1.Texture.Height;
+            }
+
+            this.background1.Update();
+            this.background2.Update();
+
             this.CheckAndDeployWave(gameTime);
 
             this.CreateCommands(gameTime); // Create fresh command queue
             this.ExecuteCommands(); // Update sprites, check for collisions, clear queue
+
+            if (Player.HP == 1)
+            {
+                MediaPlayer.Play(this.song[1]);
+            }
 
             if (Player.HP == 0 || this.finalBossDefeated)
             {
@@ -126,7 +172,7 @@
             this.commandQueue.Add(new UpdateCommand(Player, gameTime, GameState.Attacks));
 
             // Create enemy update commands
-            Enemies.ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, Attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
+            Enemies.ToArray().ToList().ForEach((e) => { this.commandQueue.Add(new UpdateCommand(e, gameTime, Attacks)); }); // attacks used here as container where enemy's Attack() adds sprites
 
             // Create attack update commands
             Attacks.ToArray().ToList().ForEach((a) => { this.commandQueue.Add(new UpdateCommand(a, gameTime, Projectiles)); }); // attacks add projectiles
@@ -140,7 +186,7 @@
             this.commandQueue.Add(new CollisionCheckCommand(Player, enemiesAndProjectileList)); // Did player hit any enemies or projectiles
 
             // Create enemy collision checks (purpose is to see if player projectiles hit any)
-            Enemies.ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, Projectiles)); }); // Did player projectiles hit any enemies
+            Enemies.ToArray().ToList().ForEach((enemy) => { this.commandQueue.Add(new CollisionCheckCommand(enemy, Projectiles.ToArray().ToList())); }); // Did player projectiles hit any enemies
 
             // Create projectile collision checks (purpose for the moment is check projectile on projectile collision for PushBullet
             List<Sprite> projectiles = Projectiles.ToArray().ToList();
@@ -246,9 +292,12 @@
 
         private void SpawnEnemies(object source, EventArgs e)
         {
-            SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
-            this.enemiesToSpawn.Remove(enemyToSpawn);
-            Enemies.Add(enemyToSpawn.GetSprite());
+            lock (this.enemiesToSpawnLock)
+            {
+                SpawnableSprite enemyToSpawn = (SpawnableSprite)source;
+                this.enemiesToSpawn.Remove(enemyToSpawn);
+                Enemies.Add(enemyToSpawn.GetSprite());
+            }
         }
 
         private void DrawBoxAroundSprite(Sprite sprite, Color color)

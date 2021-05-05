@@ -65,7 +65,7 @@
                 if (this.screens[i].CurrentStatus != SplashScreen.Status.NotReady)
                 {
                     this.screens[i].Update(gt);
-                    if (Keyboard.GetState().IsKeyDown(Keys.S))
+                    if (Keyboard.GetState().IsKeyDown(Keys.Home))
                     {
                         this.screens[i].End();
                     }
