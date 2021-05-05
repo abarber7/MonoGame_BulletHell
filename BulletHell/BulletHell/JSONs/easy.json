@@ -370,7 +370,7 @@
       "waveDuration": 30,
       "entityGroups": [
         {
-          "entityAmount": 1 ,
+          "entityAmount": 1,
           "entityType": "midBoss",
           "delayTillSpawn": [ 0 ],
           "movementPattern": {
